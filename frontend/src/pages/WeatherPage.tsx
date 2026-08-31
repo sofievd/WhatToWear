@@ -14,7 +14,6 @@ export function WeatherPage(){
     return (
         <main className="weather-page">
             <section className="weather-card">
-                <p className="weather-eyebrow">Weather</p>
 
                 <h1>Check the weather</h1>
 
