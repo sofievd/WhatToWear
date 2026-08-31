@@ -1,11 +1,20 @@
 package se.sofievd.backend.enitiy;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="clothes")
 public class Clothing {
-    private  String name;
-    private  String category;
-    private  Double cloValue;
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "item")
+    private String name;
+    private String category;
+    @Column(name = "clo-value")
+    private Double cloValue;
 
     public Clothing() {
     }
