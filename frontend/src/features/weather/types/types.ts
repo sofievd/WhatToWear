@@ -1,6 +1,6 @@
 export interface WeatherData {
     temperature : number,
     condition : string,
-    windspeed: number,
+    windSpeed: number,
     precipitation: number;
 }
