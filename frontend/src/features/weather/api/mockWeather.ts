@@ -6,5 +6,4 @@ export const mockWeather: WeatherData = {
   condition: "Partly Cloudy",
   windSpeed: 12,
   precipitation: 20,
-  precipitationDescription: "Light rain",
 };

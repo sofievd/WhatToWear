@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
+import WearWiseLogo from "../assets/W.png";
 
 export function WeatherPage() {
   const [location, setLocation] = useState("");
@@ -13,6 +14,9 @@ export function WeatherPage() {
 
   return (
     <main className="weather-page">
+      <div className="app-header">
+        <img src={WearWiseLogo} alt="WearWise" className="logo" />
+      </div>
       <section className="weather-card">
         <h1>Check the weather</h1>
 

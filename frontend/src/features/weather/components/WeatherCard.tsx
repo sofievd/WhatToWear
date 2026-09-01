@@ -14,12 +14,29 @@ function getRainDescription(mm: number) {
 
 export function WeatherCard({ weather }: WeatherCardProps) {
   return (
-    <section aria-label="Current weather">
-      {" "}
-      <h2>Temperature: {weather.temperature}°C</h2>{" "}
-      <p>Feels like: {weather.feelsLike}°C</p> <p>{weather.condition}</p>{" "}
-      <p>Wind: {weather.windSpeed} m/s</p>{" "}
-      <p> Precipitation: {weather.precipitation} mm ({getRainDescription(weather.precipitation)}) </p>{" "}
+    <section className="weather-display" aria-label="Current weather">
+      <div className="temp-main">
+        <h2 className="temp-value">{weather.temperature}°C</h2>
+        <p className="temp-feels">Feels like {weather.feelsLike}°C</p>
+      </div>
+
+      <div className="weather-details">
+        <div className="detail-item">
+          <span className="detail-label">Condition</span>
+          <span className="detail-value">{weather.condition}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Wind</span>
+          <span className="detail-value">{weather.windSpeed} m/s</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Precipitation</span>
+          <span className="detail-value">
+            {weather.precipitation} mm (
+            {getRainDescription(weather.precipitation)})
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
