@@ -4,5 +4,4 @@ export interface WeatherData {
   condition: string;
   windSpeed: number;
   precipitation: number;
-  precipitationDescription?: string;
 }
