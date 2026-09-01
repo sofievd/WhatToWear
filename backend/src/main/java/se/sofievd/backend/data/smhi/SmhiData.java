@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "relative_humidity",
         "precipitation_amount_min",
         "precipitation_amount_max",
-        "predominant_precipitation_type_at_surface"
+        "predominant_precipitation_type_at_surface",
+        "symbol_code"
 })
 public class SmhiData {
 
@@ -32,6 +33,9 @@ public class SmhiData {
 
     @JsonProperty("predominant_precipitation_type_at_surface")
     private Integer predominantPrecipitationTypeAtSurface;
+
+    @JsonProperty("symbol_code")
+    private Integer symbolCode;
 
     @JsonProperty("air_temperature")
     public Double getAirTemperature() {
@@ -93,6 +97,16 @@ public class SmhiData {
         this.predominantPrecipitationTypeAtSurface = predominantPrecipitationTypeAtSurface;
     }
 
+    @JsonProperty("symbol_code")
+    public Integer getSymbolCode() {
+        return symbolCode;
+    }
+
+    @JsonProperty("symbol_code")
+    public void setSymbolCode(Integer symbolCode) {
+        this.symbolCode = symbolCode;
+    }
+
     @Override
     public String toString() {
         return "SmhiData{" +
@@ -102,6 +116,7 @@ public class SmhiData {
                 ", precipitationAmountMin=" + precipitationAmountMin +
                 ", precipitationAmountMax=" + precipitationAmountMax +
                 ", predominantPrecipitationTypeAtSurface=" + predominantPrecipitationTypeAtSurface +
+                ", symbolCode=" + symbolCode +
                 '}';
     }
 }
