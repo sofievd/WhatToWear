@@ -9,8 +9,11 @@ export function WeatherCard({ weather }: WeatherCardProps) {
       <h2>Temperature:{weather.temperature}°C</h2>
       <p>Feels like: {weather.feelsLike}°C</p>
       <p>{weather.condition}</p>
-      <p>Wind {weather.windSpeed} mps</p>
-      <p>Precipitation {weather.precipitation}%</p>
+      <p>Wind {weather.windSpeed} m/s</p>
+      <p>Precipitation {weather.precipitation}mm </p>
+      {weather.precipitationDescription && (
+        <p>{weather.precipitationDescription}</p>
+      )}
     </section>
   );
 }
