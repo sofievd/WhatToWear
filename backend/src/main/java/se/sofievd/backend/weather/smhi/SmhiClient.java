@@ -1,10 +1,11 @@
-package se.sofievd.backend.client;
+package se.sofievd.backend.weather.smhi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import se.sofievd.backend.data.smhi.SmhiWeather;
+import se.sofievd.backend.weather.smhi.model.SmhiPolygon;
+import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 
 @Service
 public class SmhiClient {
@@ -29,6 +30,13 @@ public class SmhiClient {
                 .retrieve()
                 .body(SmhiWeather.class);
 
+    }
+
+    public SmhiPolygon getForecastArea(){
+        return restClient.get()
+                .uri("/geotype/polygon.json")
+                .retrieve()
+                .body(SmhiPolygon.class);
     }
 
 
