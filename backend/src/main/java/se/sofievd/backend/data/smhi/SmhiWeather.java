@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,10 +16,10 @@ import java.util.List;
 })
 public class SmhiWeather {
     @JsonProperty("createdTime")
-    private String createdTime;
+    private OffsetDateTime createdTime;
 
     @JsonProperty("referenceTime")
-    private String referenceTime;
+    private OffsetDateTime referenceTime;
 
     @JsonProperty("geometry")
     private Geometry geometry;
@@ -27,22 +28,22 @@ public class SmhiWeather {
     private List<TimeSerie> timeSeries;
 
     @JsonProperty("createdTime")
-    public String getCreatedTime() {
+    public OffsetDateTime getCreatedTime() {
         return createdTime;
     }
 
     @JsonProperty("createdTime")
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
     @JsonProperty("referenceTime")
-    public String getReferenceTime() {
+    public OffsetDateTime getReferenceTime() {
         return referenceTime;
     }
 
     @JsonProperty("referenceTime")
-    public void setReferenceTime(String referenceTime) {
+    public void setReferenceTime(OffsetDateTime referenceTime) {
         this.referenceTime = referenceTime;
     }
 
