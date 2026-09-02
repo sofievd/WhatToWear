@@ -1,4 +1,4 @@
-package se.sofievd.backend.service;
+package se.sofievd.backend.outfit;
 
 public class InsulationCalculator {
 }
