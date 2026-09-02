@@ -146,60 +146,97 @@ button:disabled {
 
 /* Weather Display */
 .weather-display {
-  margin-top: 40px;
-  padding: 32px 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  color: white;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+  margin-top: 8px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #d9e1ee;
+  border-radius: 18px;
+  color: #17294d;
+  box-shadow: 0 8px 24px rgba(23, 41, 77, 0.08);
+}
+
+.weather-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.weather-eyebrow {
+  margin: 0;
+  color: #e77d72;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.weather-city {
+  margin: 2px 0 0;
+  color: #17294d;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.weather-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  color: #17294d;
+  background: #edf3fb;
+  border-radius: 14px;
 }
 
 .temp-main {
   text-align: center;
-  margin-bottom: 30px;
+  margin: 18px 0 20px;
 }
 
 .temp-value {
   margin: 0;
-  font-size: clamp(3rem, 9vw, 4.5rem);
+  font-size: 3.25rem;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.02em;
 }
 
 .temp-feels {
   margin: 12px 0 0;
-  font-size: 1.1rem;
-  opacity: 0.95;
+  color: #667085;
+  font-size: 0.9rem;
 }
 
 .weather-details {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .detail-item {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 14px;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 5px;
+  min-width: 0;
+  padding: 10px 9px;
+  background: #f7f9fc;
+  border-radius: 10px;
+  border: 1px solid #e7edf5;
 }
 
 .detail-label {
-  font-size: 0.875rem;
+  color: #667085;
+  font-size: 0.65rem;
   font-weight: 600;
-  opacity: 0.9;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .detail-value {
-  font-size: 1.125rem;
+  overflow-wrap: anywhere;
+  color: #17294d;
+  font-size: 0.85rem;
   font-weight: 600;
 }
 
@@ -214,19 +251,16 @@ button:disabled {
 }
 
 .skeleton-display {
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.8) 0%,
-    rgba(118, 75, 162, 0.8) 100%
-  );
+  background: #e9eef6;
+  border-color: #d9e1ee;
 }
 
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.15) 25%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.15) 75%
+    rgba(255, 255, 255, 0.35) 25%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.35) 75%
   );
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
