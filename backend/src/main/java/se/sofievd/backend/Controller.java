@@ -3,14 +3,14 @@ package se.sofievd.backend;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.sofievd.backend.data.Weather;
-import se.sofievd.backend.dto.ClothingDto;
-import se.sofievd.backend.dto.WeatherResponseDto;
-import se.sofievd.backend.enitiy.Clothing;
-import se.sofievd.backend.service.ClothingMapper;
-import se.sofievd.backend.service.ClothingService;
-import se.sofievd.backend.service.WeatherMapper;
-import se.sofievd.backend.service.WeatherService;
+import se.sofievd.backend.weather.Weather;
+import se.sofievd.backend.outfit.ClothingDto;
+import se.sofievd.backend.weather.WeatherResponseDto;
+import se.sofievd.backend.outfit.Clothing;
+import se.sofievd.backend.outfit.ClothingMapper;
+import se.sofievd.backend.outfit.ClothingService;
+import se.sofievd.backend.weather.WeatherMapper;
+import se.sofievd.backend.weather.WeatherService;
 
 import java.util.List;
 
