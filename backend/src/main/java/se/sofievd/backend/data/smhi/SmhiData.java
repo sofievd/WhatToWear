@@ -26,13 +26,13 @@ public class SmhiData {
     private Integer relativeHumidity;
 
     @JsonProperty("precipitation_amount_min")
-    private Double precipitationAmountMin;
+    private Double minPrecipitation;
 
     @JsonProperty("precipitation_amount_max")
-    private Double precipitationAmountMax;
+    private Double maxPrecipitation;
 
     @JsonProperty("predominant_precipitation_type_at_surface")
-    private Integer predominantPrecipitationTypeAtSurface;
+    private Integer typeOfPrecipitation;
 
     @JsonProperty("symbol_code")
     private Integer symbolCode;
@@ -68,33 +68,33 @@ public class SmhiData {
     }
 
     @JsonProperty("precipitation_amount_min")
-    public Double getPrecipitationAmountMin() {
-        return precipitationAmountMin;
+    public Double getMinPrecipitation() {
+        return minPrecipitation;
     }
 
     @JsonProperty("precipitation_amount_min")
-    public void setPrecipitationAmountMin(Double precipitationAmountMin) {
-        this.precipitationAmountMin = precipitationAmountMin;
+    public void setMinPrecipitation(Double precipitationAmountMin) {
+        this.minPrecipitation = precipitationAmountMin;
     }
 
     @JsonProperty("precipitation_amount_max")
-    public Double getPrecipitationAmountMax() {
-        return precipitationAmountMax;
+    public Double getMaxPrecipitation() {
+        return maxPrecipitation;
     }
 
     @JsonProperty("precipitation_amount_max")
-    public void setPrecipitationAmountMax(Double precipitationAmountMax) {
-        this.precipitationAmountMax = precipitationAmountMax;
+    public void setMaxPrecipitation(Double precipitationAmountMax) {
+        this.maxPrecipitation = precipitationAmountMax;
     }
 
     @JsonProperty("predominant_precipitation_type_at_surface")
-    public Integer getPredominantPrecipitationTypeAtSurface() {
-        return predominantPrecipitationTypeAtSurface;
+    public Integer getTypeOfPrecipitation() {
+        return typeOfPrecipitation;
     }
 
     @JsonProperty("predominant_precipitation_type_at_surface")
-    public void setPredominantPrecipitationTypeAtSurface(Integer predominantPrecipitationTypeAtSurface) {
-        this.predominantPrecipitationTypeAtSurface = predominantPrecipitationTypeAtSurface;
+    public void setTypeOfPrecipitation(Integer predominantPrecipitationTypeAtSurface) {
+        this.typeOfPrecipitation = predominantPrecipitationTypeAtSurface;
     }
 
     @JsonProperty("symbol_code")
@@ -113,9 +113,9 @@ public class SmhiData {
                 "airTemperature=" + airTemperature +
                 ", windSpeed=" + windSpeed +
                 ", relativeHumidity=" + relativeHumidity +
-                ", precipitationAmountMin=" + precipitationAmountMin +
-                ", precipitationAmountMax=" + precipitationAmountMax +
-                ", predominantPrecipitationTypeAtSurface=" + predominantPrecipitationTypeAtSurface +
+                ", precipitationAmountMin=" + minPrecipitation +
+                ", precipitationAmountMax=" + maxPrecipitation +
+                ", predominantPrecipitationTypeAtSurface=" + typeOfPrecipitation +
                 ", symbolCode=" + symbolCode +
                 '}';
     }
