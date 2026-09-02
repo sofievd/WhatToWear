@@ -1,4 +1,4 @@
-package se.sofievd.backend.enitiy;
+package se.sofievd.backend.outfit;
 
 import jakarta.persistence.*;
 

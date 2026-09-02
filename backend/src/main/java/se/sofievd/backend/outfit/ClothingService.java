@@ -1,10 +1,8 @@
-package se.sofievd.backend.service;
+package se.sofievd.backend.outfit;
 
 import org.springframework.stereotype.Service;
-import se.sofievd.backend.client.SmhiClient;
-import se.sofievd.backend.data.smhi.SmhiWeather;
-import se.sofievd.backend.enitiy.Clothing;
-import se.sofievd.backend.repository.ClothingRepository;
+import se.sofievd.backend.weather.smhi.SmhiClient;
+import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 
 import java.util.List;
 

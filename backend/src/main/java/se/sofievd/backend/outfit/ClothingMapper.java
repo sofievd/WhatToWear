@@ -1,7 +1,4 @@
-package se.sofievd.backend.service;
-
-import se.sofievd.backend.dto.ClothingDto;
-import se.sofievd.backend.enitiy.Clothing;
+package se.sofievd.backend.outfit;
 
 public class ClothingMapper {
 
