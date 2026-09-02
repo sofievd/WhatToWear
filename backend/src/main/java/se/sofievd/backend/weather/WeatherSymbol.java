@@ -1,4 +1,4 @@
-package se.sofievd.backend.enums;
+package se.sofievd.backend.weather;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

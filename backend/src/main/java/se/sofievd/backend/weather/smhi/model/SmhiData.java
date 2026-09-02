@@ -1,4 +1,4 @@
-package se.sofievd.backend.data.smhi;
+package se.sofievd.backend.weather.smhi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
