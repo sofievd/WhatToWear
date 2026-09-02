@@ -11,17 +11,13 @@ export function OutfitCard({ category, name, image }: OutfitCardProps) {
         1. THE CONTAINER: We give it a strict height (140px).
         2. relative: This traps the absolute image inside this specific box. 
       */}
-      <div className="relative w-full h-[140px]">
+      <div className="relative w-full h-[160px] overflow-hidden">
         {image ? (
           <img
             src={image}
             alt={name}
-            /* 
-              3. THE FIX: absolute inset-0 forces the image to perfectly map to the 140px box.
-              4. object-contain keeps the proportions right.
-              5. p-6 gives it that nice wide padding so it matches your inspiration screenshot!
-            */
-            className="absolute inset-0 w-full h-full object-contain p-6 mix-blend-multiply"
+         
+            className="absolute inset-0 w-full h-full object-contain scale-125 mix-blend-multiply"
           />
         ) : (
           <div className="absolute inset-0 m-4 rounded-md bg-[#F0EFEB]" />
