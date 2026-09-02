@@ -1,4 +1,4 @@
-package se.sofievd.backend.common;
+package se.sofievd.backend.common.exception;
 
 public class LocationNotSupportedException extends RuntimeException {
 

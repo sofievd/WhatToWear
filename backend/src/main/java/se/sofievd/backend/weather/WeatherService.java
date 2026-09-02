@@ -2,7 +2,7 @@ package se.sofievd.backend.weather;
 
 import org.springframework.stereotype.Service;
 import se.sofievd.backend.weather.smhi.SmhiClient;
-import se.sofievd.backend.common.LocationNotSupportedException;
+import se.sofievd.backend.common.exception.LocationNotSupportedException;
 import se.sofievd.backend.weather.smhi.model.SmhiData;
 import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 import se.sofievd.backend.weather.smhi.model.TimeSerie;
