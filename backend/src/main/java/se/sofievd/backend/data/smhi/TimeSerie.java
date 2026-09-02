@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "time",
@@ -12,31 +15,31 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class TimeSerie {
     @JsonProperty("time")
-    private String time;
+    private OffsetDateTime time;
 
     @JsonProperty("intervalParametersStartTime")
-    private String intervalParameterStartTime;
+    private OffsetDateTime intervalParameterStartTime;
 
     @JsonProperty("data")
     private SmhiData data;
 
     @JsonProperty("time")
-    public String getTime() {
+    public OffsetDateTime getTime() {
         return time;
     }
 
     @JsonProperty("time")
-    public void setTime(String time) {
+    public void setTime(OffsetDateTime time) {
         this.time = time;
     }
 
     @JsonProperty("intervalParametersStartTime")
-    public String getIntervalParameterStartTime() {
+    public OffsetDateTime getIntervalParameterStartTime() {
         return intervalParameterStartTime;
     }
 
     @JsonProperty("intervalParametersStartTime")
-    public void setIntervalParameterStartTime(String intervalParameterStartTime) {
+    public void setIntervalParameterStartTime(OffsetDateTime intervalParameterStartTime) {
         this.intervalParameterStartTime = intervalParameterStartTime;
     }
 
