@@ -3,7 +3,12 @@ package se.sofievd.backend.weather.smhi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
+import se.sofievd.backend.common.exception.SmhiApiException;
+import se.sofievd.backend.common.exception.SmhiUnavailableException;
 import se.sofievd.backend.weather.smhi.model.SmhiPolygon;
 import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 
@@ -21,14 +26,34 @@ public class SmhiClient {
     }
 
     public SmhiWeather getForecast(double lon, double lat) {
-        String uri = "/geotype/point/lon/" + lon + "/lat/" + lat + "/data.json?parameters=" +PARAMETERS;
-        log.info("latitude: {}, longitude: {}", lat, lon);
-        log.info("parameters: {}", PARAMETERS);
-        log.info(uri);
-        return restClient.get()
-                .uri("/geotype/point/lon/{lon}/lat/{lat}/data.json?parameters={}", lon, lat,PARAMETERS)
-                .retrieve()
-                .body(SmhiWeather.class);
+        log.info("getting SMHI forecast. longitude: {}, lattitude: {}", lon, lat);
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/geotype/point/lon/{lon}/lat/{lat}/data.json")
+                            .queryParam("parameters", PARAMETERS)
+                            .build(lon, lat))
+                    .retrieve()
+                    .body(SmhiWeather.class);
+        }catch (HttpClientErrorException e){
+            log.warn(  "SMHI client error. status={}, body={}",
+                    e.getStatusCode(),
+                    e.getResponseBodyAsString());
+            throw new SmhiApiException("SMHI rejected the request: " + e.getStatusCode());
+        }catch (HttpServerErrorException e){
+            log.error(
+                    "SMHI server error. status={}, body={}",
+                    e.getStatusCode(),
+                    e.getResponseBodyAsString()
+            );
+            throw new SmhiUnavailableException("SMHI is currently unavailable");
+        } catch (ResourceAccessException e) {
+            log.error("Could not connect to SMHI", e);
+
+            throw new SmhiUnavailableException(
+                    "Could not connect to SMHI"
+            );
+        }
 
     }
 
