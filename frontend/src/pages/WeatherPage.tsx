@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
-import WearWiseLogo from "../assets/W.png";
+import WearWiseLogo from "../assets/logo.png";
 
 export function WeatherPage() {
   const [location, setLocation] = useState("");
