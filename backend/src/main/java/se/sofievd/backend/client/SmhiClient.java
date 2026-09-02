@@ -10,6 +10,7 @@ import se.sofievd.backend.data.smhi.SmhiWeather;
 public class SmhiClient {
     private final static String ENTRY_POINT = "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1";
     private static final Logger log = LoggerFactory.getLogger(SmhiClient.class);
+    private static final String PARAMETERS = "air_temperature,wind_speed,relative_humidity,precipitation_amount_max,precipitation_amount_min,predominant_precipitation_type_at_surface,symbol_code";
     private final RestClient restClient;
 
     public SmhiClient() {
@@ -18,10 +19,13 @@ public class SmhiClient {
                 .build();
     }
 
-    public SmhiWeather getForecast(double lat, double lon) {
+    public SmhiWeather getForecast(double lon, double lat) {
+        String uri = "/geotype/point/lon/" + lon + "/lat/" + lat + "/data.json?parameters=" +PARAMETERS;
         log.info("latitude: {}, longitude: {}", lat, lon);
+        log.info("parameters: {}", PARAMETERS);
+        log.info(uri);
         return restClient.get()
-                .uri("/geotype/point/lon/{lon}/lat/{lat}/data.json?parameters=air_temperature,wind_speed,relative_humidity,predominant_precipitation_type_at_surface,precipitation_amount_mean,precipitation_amount_max,precipitation_amount_min", lon, lat)
+                .uri("/geotype/point/lon/{lon}/lat/{lat}/data.json?parameters={}", lon, lat,PARAMETERS)
                 .retrieve()
                 .body(SmhiWeather.class);
 
