@@ -4,31 +4,37 @@ interface OutfitCardProps {
   image?: string;
 }
 
-export function OutfitCard({
-  category,
-  name,
-  image,
-}: OutfitCardProps) {
+export function OutfitCard({ category, name, image }: OutfitCardProps) {
   return (
-    <article className="overflow-hidden rounded-3xl bg-white shadow-sm">
-      <div className="flex h-48 items-center justify-center bg-white">
+    <article className="flex flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_4px_16px_rgba(23,41,77,0.04)]">
+      {/* 
+        1. THE CONTAINER: We give it a strict height (140px).
+        2. relative: This traps the absolute image inside this specific box. 
+      */}
+      <div className="relative w-full h-[140px]">
         {image ? (
           <img
             src={image}
             alt={name}
-            className="h-full w-full object-contain p-5"
+            /* 
+              3. THE FIX: absolute inset-0 forces the image to perfectly map to the 140px box.
+              4. object-contain keeps the proportions right.
+              5. p-6 gives it that nice wide padding so it matches your inspiration screenshot!
+            */
+            className="absolute inset-0 w-full h-full object-contain p-6 mix-blend-multiply"
           />
         ) : (
-          <div className="h-full w-full bg-slate-50" />
+          <div className="absolute inset-0 m-4 rounded-md bg-[#F0EFEB]" />
         )}
       </div>
 
-      <div className="px-4 pb-5 pt-3">
-        <p className="text-xs font-bold tracking-wide text-slate-500">
+      {/* Text Container */}
+      <div className="flex flex-col px-4 pb-4 pt-1">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[#8A94A6]">
           {category}
         </p>
 
-        <h3 className="mt-1 text-base font-bold leading-tight text-slate-900">
+        <h3 className="mt-1 text-[13px] font-bold leading-snug text-[#17294D]">
           {name}
         </h3>
       </div>

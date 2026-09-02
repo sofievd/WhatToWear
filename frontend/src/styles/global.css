@@ -8,7 +8,7 @@
     sans-serif;
 
   color: #111827;
-  background: #f9fafb;
+  background: #dfe3e8;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,10 +18,12 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: #dfe3e8;
 }
 
 button,
