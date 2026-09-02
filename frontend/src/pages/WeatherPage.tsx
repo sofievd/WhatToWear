@@ -1,52 +1,63 @@
 import { useState } from "react";
-import { WeatherSection } from "../features/weather/components/WeatherSection";
-import WearWiseLogo from "../assets/logo.png";
+import { AppHeader } from "../components/AppHeader";
+import { CitySearch } from "../features/weather/components/CitySearch";
+import { CurrentWeather } from "../features/weather/components/CurrentWeather";
+import { OutfitGrid } from "../features/weather/components/OutfitGrid";
+import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
+import { useWeather } from "../features/weather/hooks/useWeatherData";
+import { PreferencesBar } from "../features/weather/components/PreferancesBar";
 
 export function WeatherPage() {
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("San Francisco");
+
+  const { data } = useWeather();
+
   function handleSearch() {
     const trimmedLocation = location.trim();
+
     if (!trimmedLocation) {
       return;
     }
-    console.log("Searching weather for: ", trimmedLocation);
+
+    console.log("Searching weather for:", trimmedLocation);
   }
 
   return (
-    <main className="weather-page">
-      <div className="app-header">
-        <img src={WearWiseLogo} alt="WearWise" className="logo" />
-      </div>
-      <section className="weather-card">
-        <h1>Check the weather</h1>
+    <main className="min-h-screen bg-[#F7F5F0] px-4 pb-10">
+      <div className="mx-auto w-full max-w-md">
+        <AppHeader />
 
-        <p className="weather-description">
-          Enter a location to get the current weather.
-        </p>
-
-        <div className="weather-search">
-          <label htmlFor="location">Location</label>
-
-          <input
-            id="location"
-            type="text"
+        <div className="space-y-5">
+          <CitySearch
             value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            placeholder="Enter a city"
-            autoComplete="off"
+            onChange={setLocation}
+            onSearch={handleSearch}
           />
 
-          <button
-            type="button"
-            onClick={handleSearch}
-            disabled={!location.trim()}
-          >
-            Get Weather
-          </button>
-        </div>
-      </section>
+          {data && (
+            <CurrentWeather
+              weather={data}
+              city={location}
+            />
+          )}
 
-      <WeatherSection />
+          <PreferencesBar />
+
+          <section className="pt-1">
+            <p className="text-xs font-medium uppercase tracking-wide text-[#E77D72]">
+              Today's selection
+            </p>
+
+            <h1 className="mt-2 font-serif text-[30px] leading-tight text-[#17294D]">
+              Your Recommended Outfit
+            </h1>
+          </section>
+
+          <OutfitGrid />
+
+          <WhyThisOutfit />
+        </div>
+      </div>
     </main>
   );
 }
