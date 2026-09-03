@@ -2,12 +2,16 @@ package se.sofievd.backend.weather.smhi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import se.sofievd.backend.common.exception.SmhiApiException;
+import se.sofievd.backend.common.exception.SmhiBadRequestException;
+import se.sofievd.backend.common.exception.SmhiRateLimitException;
 import se.sofievd.backend.common.exception.SmhiUnavailableException;
 import se.sofievd.backend.weather.smhi.model.SmhiPolygon;
 import se.sofievd.backend.weather.smhi.model.SmhiWeather;
@@ -34,25 +38,24 @@ public class SmhiClient {
                             .queryParam("parameters", PARAMETERS)
                             .build(lon, lat))
                     .retrieve()
+                    .onStatus(status -> status.value() == 400 ,
+                            ((request, response) -> {
+                                throw new SmhiBadRequestException("SMHI rejected the coordinates/request");
+                            })
+                            )
+                    .onStatus( status -> status.value() == 429,
+                            ((request, response) -> {
+                                throw new SmhiRateLimitException("SMHI rate limit reached");
+                            })
+                    )
+                    .onStatus(HttpStatusCode::is5xxServerError,
+                            ((request, response) -> {
+                                throw new SmhiUnavailableException( "SMHI server error: " + response.getStatusCode());
+                            }))
                     .body(SmhiWeather.class);
-        }catch (HttpClientErrorException e){
-            log.warn(  "SMHI client error. status={}, body={}",
-                    e.getStatusCode(),
-                    e.getResponseBodyAsString());
-            throw new SmhiApiException("SMHI rejected the request: " + e.getStatusCode());
-        }catch (HttpServerErrorException e){
-            log.error(
-                    "SMHI server error. status={}, body={}",
-                    e.getStatusCode(),
-                    e.getResponseBodyAsString()
-            );
-            throw new SmhiUnavailableException("SMHI is currently unavailable");
-        } catch (ResourceAccessException e) {
-            log.error("Could not connect to SMHI", e);
-
-            throw new SmhiUnavailableException(
-                    "Could not connect to SMHI"
-            );
+        }catch (ResourceAccessException e){
+            log.warn("SMHI client error.");
+            throw new SmhiApiException("SMHI connection failed");
         }
 
     }
