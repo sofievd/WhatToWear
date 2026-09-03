@@ -34,7 +34,7 @@ export function useWeather() {
       setState({
         data: null,
         isLoading: false,
-        error: "We couldn't load the weather. Please try again.",
+        error: "We couldn't load the weather right now.",
       });
     }
   }, []);
