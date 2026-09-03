@@ -1,6 +1,5 @@
 import { useWeather } from "../hooks/useWeatherData";
 import { WeatherCard } from "./WeatherCard";
-import { WeatherCardSkeleton } from "./WeatherCardSkeleton";
 import { WeatherError } from "./WeatherError";
 
 interface WeatherSectionProps {
