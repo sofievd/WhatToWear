@@ -1,6 +1,8 @@
 package se.sofievd.backend.weather;
 
 import org.springframework.stereotype.Service;
+import se.sofievd.backend.weather.openmeteo.OpenMeteoClient;
+import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
 import se.sofievd.backend.weather.smhi.SmhiClient;
 import se.sofievd.backend.common.exception.LocationNotSupportedException;
 import se.sofievd.backend.weather.smhi.model.SmhiData;
@@ -18,11 +20,13 @@ public class WeatherService {
 
     private final SmhiClient smhiClient;
     private final SmhiAreaService areaService;
+    private final OpenMeteoClient openMeteoClient;
     private static final ZoneId SWEDEN_ZONE = ZoneId.of("Europe/Stockholm");
 
-    public WeatherService(SmhiClient smhiClient, SmhiAreaService areaService) {
+    public WeatherService(SmhiClient smhiClient, SmhiAreaService areaService, OpenMeteoClient openMeteoClient) {
         this.smhiClient = smhiClient;
         this.areaService = areaService;
+        this.openMeteoClient = openMeteoClient;
     }
 
     public Weather getWeather(Double longitude, Double latitude) {
@@ -34,6 +38,13 @@ public class WeatherService {
 
         SmhiWeather smhiWeather = smhiClient.getForecast(latitude, longitude);
         return getNowWeather(smhiWeather);
+    }
+
+    public String getOpenMeteoWeather(Double longitude, Double latitude){
+        OpenMeteoWeather openMeteoWeather = openMeteoClient.getForecast(longitude, latitude);
+        System.out.println(openMeteoWeather);
+       // return openMeteoWeather;
+        return "meteo weather gotten";
     }
 
     private List<TimeSerie> getTodayTimes(List<TimeSerie> timeSerieList) {
@@ -53,7 +64,7 @@ public class WeatherService {
         SmhiData weatherNow = timeSerieNow.getData();
         Double temperature = weatherNow.getAirTemperature();
         Integer humidity = weatherNow.getRelativeHumidity();
-        Double windSpeed = weatherNow.getWindSpeed();
+        Double windSpeed = calculateWindSpeed(weatherNow.getWindSpeed());
         Double precipitation = calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
         Double feelLikeTemperature = calculateFeelLikeTemperature(temperature, humidity, windSpeed);
         Integer symbolCode = weatherNow.getSymbolCode();
@@ -78,6 +89,10 @@ public class WeatherService {
     private Double calculateFeelLikeTemperature(Double airTemperature, Integer humidity, Double windSpeed) {
         double pressure = ((double) humidity / 100) * 6.105 * Math.exp((17.27 * airTemperature) / (237.7 + airTemperature));
         return airTemperature + (0.33 * pressure) - (0.7 * windSpeed) - 4.0;
+    }
+
+    private Double calculateWindSpeed(Double windSpeed){
+        return (windSpeed * 3.6);
     }
 
     private String getPrecipitationDescription(Double precipitation) {
