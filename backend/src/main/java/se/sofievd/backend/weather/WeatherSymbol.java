@@ -15,23 +15,23 @@ public enum WeatherSymbol {
     OVERCAST(6, "Overcast"),
     FOG(7, "Fog"),
 
-    // Regen (Waterdichte/waterafstotende laag nodig)
+    // rain
     LIGHT_RAIN_SHOWERS(8, "Light rain showers"),
     MODERATE_RAIN_SHOWERS(9, "Moderate rain showers"),
     HEAVY_RAIN_SHOWERS(10, "Heavy rain showers"),
     THUNDERSTORM(11, "Thunderstorm"),
 
-    // Sleet / Natte sneeuw
+    // Sleet
     LIGHT_SLEET_SHOWERS(12, "Light sleet showers"),
     MODERATE_SLEET_SHOWERS(13, "Moderate sleet showers"),
     HEAVY_SLEET_SHOWERS(14, "Heavy sleet showers"),
 
-    // Sneeuw (Isolerende + waterafstotende laag)
+    // Snow
     LIGHT_SNOW_SHOWERS(15, "Light snow showers"),
     MODERATE_SNOW_SHOWERS(16, "Moderate snow showers"),
     HEAVY_SNOW_SHOWERS(17, "Heavy snow showers"),
 
-    // Continu neerslag
+    // Continu rain
     LIGHT_RAIN(18, "Light rain"),
     MODERATE_RAIN(19, "Moderate rain"),
     HEAVY_RAIN(20, "Heavy rain"),
