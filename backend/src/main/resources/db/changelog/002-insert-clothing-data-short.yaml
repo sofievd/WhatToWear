@@ -1,0 +1,158 @@
+databaseChangeLog:
+  - changeSet:
+      id: "002"
+      author: "Sofie Van Dingenen"
+      changes:
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Underwear" }
+              - column: { name: item, value: "underwear" }
+              - column: { name: clo-value, valueNumeric: "0.04" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Underwear" }
+              - column: { name: item, value: "long underwear" }
+              - column: { name: clo-value, valueNumeric: "0.15" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Underwear" }
+              - column: { name: item, value: "undershirt" }
+              - column: { name: clo-value, valueNumeric: "0.09" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Shirts" }
+              - column: { name: item, value: "short sleeve shirt" }
+              - column: { name: clo-value, valueNumeric: "0.09" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Shirts" }
+              - column: { name: item, value: "long sleeve shirt" }
+              - column: { name: clo-value, valueNumeric: "0.25" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Shirts" }
+              - column: { name: item, value: "flannel shirt" }
+              - column: { name: clo-value, valueNumeric: "0.34" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Trousers" }
+              - column: { name: item, value: "shorts" }
+              - column: { name: clo-value, valueNumeric: "0.06" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Trousers" }
+              - column: { name: item, value: "trousers" }
+              - column: { name: clo-value, valueNumeric: "0.25" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Trousers" }
+              - column: { name: item, value: "flannel trousers" }
+              - column: { name: clo-value, valueNumeric: "0.28" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Sweaters" }
+              - column: { name: item, value: "thin sweater" }
+              - column: { name: clo-value, valueNumeric: "0.20" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Sweaters" }
+              - column: { name: item, value: "thick sweater" }
+              - column: { name: clo-value, valueNumeric: "0.35" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Dresses" }
+              - column: { name: item, value: "light dress" }
+              - column: { name: clo-value, valueNumeric: "0.25" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Dresses" }
+              - column: { name: item, value: "heavy dress" }
+              - column: { name: clo-value, valueNumeric: "0.40" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Jackets" }
+              - column: { name: item, value: "light jacket" }
+              - column: { name: clo-value, valueNumeric: "0.25" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Jackets" }
+              - column: { name: item, value: "jacket" }
+              - column: { name: clo-value, valueNumeric: "0.35" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Outerwear" }
+              - column: { name: item, value: "coat" }
+              - column: { name: clo-value, valueNumeric: "0.60" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Outerwear" }
+              - column: { name: item, value: "down jacket" }
+              - column: { name: clo-value, valueNumeric: "0.55" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Outerwear" }
+              - column: { name: item, value: "parka" }
+              - column: { name: clo-value, valueNumeric: "0.70" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Outerwear" }
+              - column: { name: item, value: "insulated pants" }
+              - column: { name: clo-value, valueNumeric: "0.35" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "socks" }
+              - column: { name: clo-value, valueNumeric: "0.05" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "boots" }
+              - column: { name: clo-value, valueNumeric: "0.10" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "gloves" }
+              - column: { name: clo-value, valueNumeric: "0.05" }
