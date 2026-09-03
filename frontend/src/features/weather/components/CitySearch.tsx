@@ -12,24 +12,27 @@ export function CitySearch({
   onSearch,
 }: CitySearchProps) {
   return (
-    <div className="relative">
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSearch();
+      }}
+      className="relative"
+    >
       <Search
         size={21}
         strokeWidth={2}
-        className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
+        aria-hidden="true"
+        className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"
       />
 
       <input
-        type="text"
+        type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            onSearch();
-          }
-        }}
         placeholder="Search city..."
-        autoComplete="on"
+        aria-label="Search for a city"
+        autoComplete="off"
         className="
           h-14
           w-full
@@ -50,6 +53,6 @@ export function CitySearch({
           focus:ring-slate-200
         "
       />
-    </div>
+    </form>
   );
 }

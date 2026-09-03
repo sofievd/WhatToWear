@@ -7,16 +7,18 @@ import { PreferencesBar } from "../features/weather/components/PreferancesBar";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 
 export function WeatherPage() {
-  const [location, setLocation] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [city, setCity] = useState("");
 
   function handleSearch() {
-    const trimmedLocation = location.trim();
+    const trimmedCity = searchValue.trim();
 
-    if (!trimmedLocation) {
+    if (!trimmedCity) {
       return;
     }
 
-    console.log("Searching weather for:", trimmedLocation);
+    setCity(trimmedCity);
+    console.log("Searching weather for:", trimmedCity);
   }
 
   return (
@@ -27,12 +29,12 @@ export function WeatherPage() {
 
         <div className="space-y-6">
           <CitySearch
-            value={location}
-            onChange={setLocation}
+            value={searchValue}
+            onChange={setSearchValue}
             onSearch={handleSearch}
           />
 
-          <WeatherSection city={location} />
+          <WeatherSection city={city} />
 
           <PreferencesBar />
 
