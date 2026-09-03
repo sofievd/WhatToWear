@@ -32,7 +32,7 @@ public class Controller {
 
     @GetMapping("/api/weather")
     public ResponseEntity<WeatherResponseDto> getWeather(){
-        Weather response = weatherService.getWeather(59.334591, 18.063240);
+        Weather response = weatherService.getWeather(18.063240, 59.334591);
         return ResponseEntity.ok().body(WeatherMapper.toWeatherResponseDto(response));
     }
 
