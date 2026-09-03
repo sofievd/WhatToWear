@@ -1,6 +1,6 @@
 import type { WeatherData } from "../types/types";
-import { mockWeather } from "./mockWeather";
+import { apiClient } from "./client";
 
 export async function getWeatherData(): Promise<WeatherData> {
-  return mockWeather;
+  return apiClient<WeatherData>("/api/weather");
 }
