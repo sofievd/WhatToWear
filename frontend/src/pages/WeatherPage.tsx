@@ -7,7 +7,7 @@ import { PreferencesBar } from "../features/weather/components/PreferancesBar";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 
 export function WeatherPage() {
-  const [location, setLocation] = useState("San Francisco");
+  const [location, setLocation] = useState("");
 
   function handleSearch() {
     const trimmedLocation = location.trim();

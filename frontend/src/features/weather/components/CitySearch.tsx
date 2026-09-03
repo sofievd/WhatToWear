@@ -29,7 +29,7 @@ export function CitySearch({
           }
         }}
         placeholder="Search city..."
-        autoComplete="off"
+        autoComplete="on"
         className="
           h-14
           w-full
