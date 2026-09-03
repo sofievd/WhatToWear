@@ -1,7 +1,9 @@
 export interface WeatherData {
   temperature: number;
   feelsLike: number;
-  condition: string;
+  condition: number;
+  conditionDescription: string;
   windSpeed: number;
   precipitation: number;
+  precipitationDescription: string;
 }

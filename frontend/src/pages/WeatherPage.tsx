@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { AppHeader } from "../components/AppHeader";
 import { CitySearch } from "../features/weather/components/CitySearch";
-import { CurrentWeather } from "../features/weather/components/CurrentWeather";
 import { OutfitGrid } from "../features/weather/components/OutfitGrid";
 import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
-import { useWeather } from "../features/weather/hooks/useWeatherData";
 import { PreferencesBar } from "../features/weather/components/PreferancesBar";
+import { WeatherSection } from "../features/weather/components/WeatherSection";
 
 export function WeatherPage() {
   const [location, setLocation] = useState("San Francisco");
-
-  const { data } = useWeather();
 
   function handleSearch() {
     const trimmedLocation = location.trim();
@@ -35,7 +32,7 @@ export function WeatherPage() {
             onSearch={handleSearch}
           />
 
-          {data && <CurrentWeather weather={data} city={location} />}
+          <WeatherSection city={location} />
 
           <PreferencesBar />
 

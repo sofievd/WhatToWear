@@ -3,7 +3,11 @@ import { WeatherCard } from "./WeatherCard";
 import { WeatherCardSkeleton } from "./WeatherCardSkeleton";
 import { WeatherError } from "./WeatherError";
 
-export function WeatherSection() {
+interface WeatherSectionProps {
+  city: string;
+}
+
+export function WeatherSection({ city }: WeatherSectionProps) {
   const { data, isLoading, error, retry } = useWeather();
 
   if (isLoading) {
@@ -18,5 +22,5 @@ export function WeatherSection() {
     return null;
   }
 
-  return <WeatherCard weather={data} />;
+  return <WeatherCard weather={data} city={city} />;
 }
