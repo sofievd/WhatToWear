@@ -146,7 +146,21 @@ databaseChangeLog:
         - insert:
             tableName: clothes
             columns:
-              - column: { name: category, value: "Accessories" }
+              - column: { name: category, value: "Footwear" }
+              - column: { name: item, value: "dress shoes" }
+              - column: { name: clo-value, valueNumeric: "0.02" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Footwear" }
+              - column: { name: item, value: "heels" }
+              - column: { name: clo-value, valueNumeric: "0.02" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Footwear" }
               - column: { name: item, value: "boots" }
               - column: { name: clo-value, valueNumeric: "0.10" }
 
@@ -154,5 +168,25 @@ databaseChangeLog:
             tableName: clothes
             columns:
               - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "socks" }
+              - column: { name: clo-value, valueNumeric: "0.05" }
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
               - column: { name: item, value: "gloves" }
               - column: { name: clo-value, valueNumeric: "0.05" }
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: {name: category, value: "Accessories"}
+              - column: {name: item, value: "scarf"}
+              - column: {name: clo-value, valueNumeric: "0.05"}
+
+        - insert:
+            tableName: clothes
+            columns:
+              - column: {name: category, value: "Accessories"}
+              - column: {name: item, value: "hat"}
+              - column: {name: clo-value, valueNumeric: "0.03"}
