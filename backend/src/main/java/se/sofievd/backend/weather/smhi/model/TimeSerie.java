@@ -1,11 +1,10 @@
-package se.sofievd.backend.data.smhi;
+package se.sofievd.backend.weather.smhi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

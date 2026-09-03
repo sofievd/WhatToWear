@@ -1,7 +1,4 @@
-package se.sofievd.backend.service;
-
-import se.sofievd.backend.data.Weather;
-import se.sofievd.backend.dto.WeatherResponseDto;
+package se.sofievd.backend.weather;
 
 public class WeatherMapper {
 

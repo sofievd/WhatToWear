@@ -1,4 +1,4 @@
-package se.sofievd.backend.dto;
+package se.sofievd.backend.outfit;
 
 public record ClothingDto(String name,
                           String category,

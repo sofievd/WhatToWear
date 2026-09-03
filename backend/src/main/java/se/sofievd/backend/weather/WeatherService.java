@@ -1,12 +1,12 @@
-package se.sofievd.backend.service;
+package se.sofievd.backend.weather;
 
 import org.springframework.stereotype.Service;
-import se.sofievd.backend.client.SmhiClient;
-import se.sofievd.backend.data.Weather;
-import se.sofievd.backend.data.smhi.SmhiData;
-import se.sofievd.backend.data.smhi.SmhiWeather;
-import se.sofievd.backend.data.smhi.TimeSerie;
-import se.sofievd.backend.enums.WeatherSymbol;
+import se.sofievd.backend.weather.smhi.SmhiClient;
+import se.sofievd.backend.common.exception.LocationNotSupportedException;
+import se.sofievd.backend.weather.smhi.model.SmhiData;
+import se.sofievd.backend.weather.smhi.model.SmhiWeather;
+import se.sofievd.backend.weather.smhi.model.TimeSerie;
+import se.sofievd.backend.weather.smhi.SmhiAreaService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,15 +17,22 @@ import java.util.List;
 public class WeatherService {
 
     private final SmhiClient smhiClient;
+    private final SmhiAreaService areaService;
     private static final ZoneId SWEDEN_ZONE = ZoneId.of("Europe/Stockholm");
 
-    public WeatherService(SmhiClient smhiClient) {
+    public WeatherService(SmhiClient smhiClient, SmhiAreaService areaService) {
         this.smhiClient = smhiClient;
+        this.areaService = areaService;
     }
 
     public Weather getWeather(Double longitude, Double latitude) {
-        SmhiWeather smhiWeather = smhiClient.getForecast(latitude, longitude);
+        if(!areaService.isInsideArea(longitude, latitude)){
+            throw new LocationNotSupportedException(
+                    "Location is outside the SMHI forecast area"
+            );
+        }
 
+        SmhiWeather smhiWeather = smhiClient.getForecast(latitude, longitude);
         return getNowWeather(smhiWeather);
     }
 
