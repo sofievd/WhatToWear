@@ -36,7 +36,7 @@ public class WeatherService {
             );
         }
 
-        SmhiWeather smhiWeather = smhiClient.getForecast(latitude, longitude);
+        SmhiWeather smhiWeather = smhiClient.getForecast(longitude, latitude);
         return getNowWeather(smhiWeather);
     }
 
