@@ -30,13 +30,57 @@ public class RecommendationService {
         double temperature = calculator.calculateEffectiveTemperature(weather.getFeelsLikeTemperature(), ToleranceLevel.NEUTRAL.getTemperatureOffset());
         double targetCloValue = calculator.calculateTargetClo(temperature, ActivityLevel.WALKING.getMetValue(), weather.getWindSpeed());
 
-        Clothing outfit = clothingService.findBestItemFromDb("shirts", targetCloValue);
         OutfitRecommendation recommendation = new OutfitRecommendation(targetCloValue);
+        double baseTarget = Math.min(targetCloValue, 0.25);
+        Clothing baseLayer = getBaseLayer(baseTarget);
 
-        recommendation.setBaseLayer(outfit);
+        Double remainingClo = targetCloValue - (baseLayer!= null ? baseLayer.getCloValue() : baseTarget);
+        Clothing bottomLayer = getBottom();
+
+        recommendation.setBaseLayer(baseLayer);
+        recommendation.setBottom(bottomLayer);
+        if(remainingClo > 0.15){
+            double midTarget = Math.min(remainingClo, 0.40);
+            Clothing midLayer = getMidLayer(midTarget);
+            recommendation.setMidLayer(midLayer);
+            if(midLayer != null){
+                remainingClo -= midLayer.getCloValue();
+            }
+        }
+
+        if(remainingClo > 0.15){
+            Clothing outerLayer = getOuterLayer(remainingClo);
+            recommendation.setOuterLayer(outerLayer);
+        }
+
+        recommendation.setFootwear(clothingService.findBestItemFromDb("footwear", 0.10));
+
+        if(temperature < 5.0){
+            Clothing accessory = getAccessory();
+            recommendation.setAccessory(accessory);
+        }
 
         return recommendation;
     }
 
+    private Clothing getBaseLayer(double targetClo){
+        return clothingService.findBestItemFromDb("shirts", targetClo);
+    }
+
+    private Clothing getBottom(){
+        return clothingService.findBestItemFromDb("trousers", 0.25);
+    }
+
+    private Clothing getMidLayer(double targetClo){
+        return clothingService.findBestItemFromDb("sweaters", targetClo);
+    }
+
+    private Clothing getOuterLayer(double targetClo){
+        return clothingService.findBestItemFromCategories(List.of("jackets", "outerwear"), targetClo);
+    }
+
+    private Clothing getAccessory(){
+        return clothingService.findBestItemFromDb("accessories", 0.15);
+    }
 
 }
