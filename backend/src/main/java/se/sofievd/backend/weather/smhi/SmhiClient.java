@@ -18,7 +18,7 @@ import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 
 @Service
 public class SmhiClient {
-    private final static String ENTRY_POINT = "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1";
+    private static final String ENTRY_POINT = "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1";
     private static final Logger log = LoggerFactory.getLogger(SmhiClient.class);
     private static final String PARAMETERS = "air_temperature,wind_speed,relative_humidity,precipitation_amount_max,precipitation_amount_min,predominant_precipitation_type_at_surface,symbol_code";
     private final RestClient restClient;
@@ -30,7 +30,7 @@ public class SmhiClient {
     }
 
     public SmhiWeather getForecast(double lon, double lat) {
-        log.info("getting SMHI forecast. longitude: {}, lattitude: {}", lon, lat);
+        log.info("Getting SMHI forecast. Longitude: {}, Latitude: {}", lon, lat);
         try {
             return restClient.get()
                     .uri(uriBuilder -> uriBuilder
