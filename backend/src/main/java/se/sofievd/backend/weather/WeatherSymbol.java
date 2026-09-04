@@ -61,6 +61,24 @@ public enum WeatherSymbol {
                 .orElseThrow(() -> new IllegalArgumentException("Unknown SMHI weer-code: " + code));
     }
 
+    public static WeatherSymbol fromWmoCode(int code) {
+        return switch (code) {
+            case 0 -> CLEAR_SKY;
+            case 1 -> NEARLY_CLEAR_SKY;
+            case 2 -> VARIABLE_CLOUDINESS;
+            case 3 -> OVERCAST;
+            case 45, 48 -> FOG;
+            case 51, 53, 55, 56, 57 -> LIGHT_RAIN;
+            case 61, 63, 66, 80, 81 -> MODERATE_RAIN;
+            case 65, 67, 82 -> HEAVY_RAIN;
+            case 71, 77, 85 -> LIGHT_SNOWFALL;
+            case 73, 86 -> MODERATE_SNOWFALL;
+            case 75 -> HEAVY_SNOWFALL;
+            case 95, 96, 99 -> THUNDERSTORM;
+            default -> throw new IllegalArgumentException("Unknown WMO weather code: " + code);
+        };
+    }
+
     @JsonValue
     public int getCode() {
         return code;

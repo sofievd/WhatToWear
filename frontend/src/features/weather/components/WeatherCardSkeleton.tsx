@@ -4,6 +4,9 @@ export function WeatherCardSkeleton() {
       className="weather-display skeleton-display"
       aria-label="Loading weather data"
     >
+      <p className="mb-4 text-center text-sm font-medium text-[#667085]">
+        Loading weather...
+      </p>
       <div className="temp-main">
         <div className="skeleton skeleton-temp" />
         <div className="skeleton skeleton-feels" />

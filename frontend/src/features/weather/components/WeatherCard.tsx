@@ -71,7 +71,7 @@ export function WeatherCard({ weather, city }: WeatherCardProps) {
 
       <div className="temp-main">
         <h2 className="temp-value">{weather.temperature}°C</h2>
-        <p className="temp-feels">Feels like {weather.feelsLike}°C</p>
+        <p className="temp-feels">Feels like {(weather.feelsLike).toFixed(1)}°C</p>
       </div>
 
       <div className="weather-details">
@@ -84,7 +84,7 @@ export function WeatherCard({ weather, city }: WeatherCardProps) {
         <div className="detail-item">
           <span className="detail-label">Wind </span>
           <span className="detail-value whitespace-nowrap">
-            {weather.windSpeed} km/h
+            {(weather.windSpeed).toFixed(1)} km/h
           </span>
         </div>
         <div className="detail-item">
