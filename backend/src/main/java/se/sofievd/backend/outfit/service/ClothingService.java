@@ -44,4 +44,27 @@ public class ClothingService {
         return matches.get(0);
     }
 
+
+    public Clothing findBestItemFromCategories(List<String> categories, double targetClo) {
+        double minClo = Math.max(0.0, targetClo - 0.20);
+        double maxClo = targetClo + 0.20;
+
+        for (String category : categories) {
+            List<Clothing> matches = clothingRepository.findByCategoryAndCloValueBetween(category, minClo, maxClo);
+            if (!matches.isEmpty()) {
+                return matches.get(0);
+            }
+        }
+
+        // Fallback: Als er geen item in de Clo-marge zit, haal het eerste beschikbare item uit de eerste categorie
+        for (String category : categories) {
+            List<Clothing> anyItems = clothingRepository.findByCategoryAndCloValueBetween(category, 0.0, 5.0);
+            if (!anyItems.isEmpty()) {
+                return anyItems.get(0);
+            }
+        }
+
+        return null;
+    }
+
 }
