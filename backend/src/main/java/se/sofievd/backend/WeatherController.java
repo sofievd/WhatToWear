@@ -15,11 +15,11 @@ import se.sofievd.backend.weather.WeatherService;
 import java.util.List;
 
 @RestController
-public class Controller {
+public class WeatherController {
     private final ClothingService clothingService;
     private final WeatherService weatherService;
 
-    public Controller(ClothingService clothingService, WeatherService weatherService) {
+    public WeatherController(ClothingService clothingService, WeatherService weatherService) {
         this.clothingService = clothingService;
         this.weatherService = weatherService;
     }
