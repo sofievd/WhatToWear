@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "latitude",
         "longitude",
         "timezone",
-        "hourly"
+        "current"
 })
 public class OpenMeteoWeather {
 
@@ -22,8 +22,8 @@ public class OpenMeteoWeather {
     @JsonProperty("timezone")
     private String timezone;
 
-    @JsonProperty("hourly")
-    private OpenMeteoData openMeteoData;
+    @JsonProperty("current")
+    private OpenMeteoCurrent current;
 
     @JsonProperty("latitude")
     public Double getLatitude() {
@@ -55,14 +55,14 @@ public class OpenMeteoWeather {
         this.timezone = timezone;
     }
 
-    @JsonProperty("hourly")
-    public OpenMeteoData getOpenMeteoData() {
-        return openMeteoData;
+    @JsonProperty("current")
+    public OpenMeteoCurrent getCurrent() {
+        return current;
     }
 
-    @JsonProperty("hourly")
-    public void setOpenMeteoData(OpenMeteoData openMeteoData) {
-        this.openMeteoData = openMeteoData;
+    @JsonProperty("current")
+    public void setCurrent(OpenMeteoCurrent current) {
+        this.current = current;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class OpenMeteoWeather {
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", timezone='" + timezone + '\'' +
-                ", openMeteoData=" + openMeteoData +
+                ", current=" + current +
                 '}';
     }
 }

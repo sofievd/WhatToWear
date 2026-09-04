@@ -32,8 +32,8 @@ public class CityService {
                 .map(city -> new CitySuggestion(
                         city.name(),
                         city.country(),
-                        city.latitude(),
-                        city.longitude()
+                    city.longitude(),
+                    city.latitude()
                 ))
                 .toList();
     }

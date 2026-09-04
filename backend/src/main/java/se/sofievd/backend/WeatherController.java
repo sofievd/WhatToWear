@@ -2,6 +2,7 @@ package se.sofievd.backend;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.sofievd.backend.weather.Weather;
 import se.sofievd.backend.outfit.ClothingDto;
@@ -31,8 +32,11 @@ public class WeatherController {
     }
 
     @GetMapping("/api/weather")
-    public ResponseEntity<WeatherResponseDto> getWeather(){
-        Weather response = weatherService.getWeather(18.063240, 59.334591);
+    public ResponseEntity<WeatherResponseDto> getWeather(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude
+    ){
+        Weather response = weatherService.getGlobalWeather(longitude, latitude);
         return ResponseEntity.ok().body(WeatherMapper.toWeatherResponseDto(response));
     }
 
