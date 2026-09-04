@@ -5,24 +5,48 @@ import { OutfitGrid } from "../features/weather/components/OutfitGrid";
 import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
 import { PreferencesBar } from "../features/weather/components/PreferancesBar";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
+import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
+import type { CitySuggestion } from "../features/weather/types/types";
 
 export function WeatherPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [city, setCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState<CitySuggestion | null>(null);
+
+  // The city that was actually submitted with the Search button.
+  const [submittedCity, setSubmittedCity] = useState<CitySuggestion | null>(
+    null,
+  );
+
+  const {
+    data: suggestions = [],
+    isLoading: isLoadingSuggestions,
+    isError: isSuggestionsError,
+  } = useCitySuggestions(searchValue);
+
+  function handleCityChange(value: string) {
+    setSearchValue(value);
+    setSelectedCity(null);
+  }
+
+  function handleCitySelect(city: CitySuggestion) {
+    setSelectedCity(city);
+    setSearchValue(city.name);
+    setSubmittedCity(city);
+  }
 
   function handleSearch() {
-    const trimmedCity = searchValue.trim();
+    const cityToSubmit = selectedCity ?? suggestions[0];
 
-    if (!trimmedCity) {
+    if (!cityToSubmit) {
       return;
     }
 
-    setCity(trimmedCity);
-    console.log("Searching weather for:", trimmedCity);
+    setSelectedCity(cityToSubmit);
+    setSearchValue(cityToSubmit.name);
+    setSubmittedCity(cityToSubmit);
   }
 
   return (
-    // Updated background color to #FCFBF8 to match the logo background perfectly
     <main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-4">
       <div className="mx-auto w-full max-w-[390px]">
         <AppHeader />
@@ -30,11 +54,20 @@ export function WeatherPage() {
         <div className="space-y-6">
           <CitySearch
             value={searchValue}
-            onChange={setSearchValue}
+            onChange={handleCityChange}
+            suggestions={selectedCity ? [] : suggestions}
+            hasSelectedCity={selectedCity !== null}
+            onSelectSuggestion={handleCitySelect}
             onSearch={handleSearch}
+            isLoading={isLoadingSuggestions}
+            isError={isSuggestionsError}
           />
 
-          <WeatherSection city={city} />
+          <WeatherSection
+            city={submittedCity?.name ?? ""}
+            latitude={submittedCity?.latitude ?? null}
+            longitude={submittedCity?.longitude ?? null}
+          />
 
           <PreferencesBar />
 

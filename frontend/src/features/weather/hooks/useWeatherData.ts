@@ -1,50 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
-import type { WeatherData } from "../types/types";
+import { useQuery } from "@tanstack/react-query";
 import { getWeatherData } from "../api/weatherService";
 
-interface WeatherState {
-  data: WeatherData | null;
-  isLoading: boolean;
-  error: string | null;
-}
+export function useWeather(
+  latitude: number | null,
+  longitude: number | null,
+) {
+  return useQuery({
+    queryKey: ["weather", latitude, longitude],
 
-export function useWeather() {
-  const [state, setState] = useState<WeatherState>({
-    data: null,
-    isLoading: true,
-    error: null,
+    queryFn: () => getWeatherData(latitude!, longitude!),
+
+    enabled: latitude !== null && longitude !== null,
   });
-
-  const loadWeather = useCallback(async () => {
-    setState({
-      data: null,
-      isLoading: true,
-      error: null,
-    });
-
-    try {
-      const data = await getWeatherData();
-
-      setState({
-        data,
-        isLoading: false,
-        error: null,
-      });
-    } catch {
-      setState({
-        data: null,
-        isLoading: false,
-        error: "We couldn't load the weather right now.",
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    void loadWeather();
-  }, [loadWeather]);
-
-  return {
-    ...state,
-    retry: loadWeather,
-  };
 }
