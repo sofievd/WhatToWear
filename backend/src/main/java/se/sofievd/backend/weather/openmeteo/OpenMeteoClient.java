@@ -34,6 +34,7 @@ public class OpenMeteoClient {
                             .queryParam("latitude", lat)
                             .queryParam("longitude", lon)
                             .queryParam("current", PARAMETERS)
+                            .queryParam("hourly", PARAMETERS)
                             .queryParam("timezone", "auto")
                             .build())
                     .retrieve()
