@@ -16,6 +16,10 @@ public class CityService {
     }
     public List<CitySuggestion> searchCities(String query) {
 
+        if (query == null || query.trim().length() < 2) {
+            return List.of();
+        }
+
         OpenMeteoGeocodingResponse response =
                 geocodingClient.searchCities(query);
 
