@@ -1,16 +1,23 @@
 import { Search } from "lucide-react";
+import type { CitySuggestion } from "../types/types";
 
 interface CitySearchProps {
   value: string;
+  suggestions: CitySuggestion[];
   onChange: (value: string) => void;
+  onSelectSuggestion: (city: CitySuggestion) => void;
   onSearch: () => void;
 }
 
 export function CitySearch({
   value,
+  suggestions,
   onChange,
+  onSelectSuggestion,
   onSearch,
 }: CitySearchProps) {
+  const showSuggestions = value.trim().length >= 2;
+
   return (
     <form
       onSubmit={(event) => {
@@ -53,6 +60,41 @@ export function CitySearch({
           focus:ring-slate-200
         "
       />
+      {showSuggestions && (
+        <div className=" absolute z-10 mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg ">
+          {" "}
+          {suggestions.length > 0 ? (
+            <ul>
+              {" "}
+              {suggestions.map((city) => (
+                <li key={`${city.name}-${city.latitude}-${city.longitude}`}>
+                  {" "}
+                  <button
+                    type="button"
+                    onClick={() => onSelectSuggestion(city)}
+                    className=" w-full px-5 py-3 text-left transition hover:bg-slate-50 "
+                  >
+                    {" "}
+                    <span className="block font-medium text-slate-800">
+                      {" "}
+                      {city.name}{" "}
+                    </span>{" "}
+                    <span className="block text-sm text-slate-500">
+                      {" "}
+                      {city.country}{" "}
+                    </span>{" "}
+                  </button>{" "}
+                </li>
+              ))}{" "}
+            </ul>
+          ) : (
+            <p className="px-5 py-4 text-sm text-slate-500">
+              {" "}
+              No cities found.{" "}
+            </p>
+          )}{" "}
+        </div>
+      )}
     </form>
   );
 }
