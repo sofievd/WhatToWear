@@ -36,4 +36,11 @@ public class Controller {
         return ResponseEntity.ok().body(WeatherMapper.toWeatherResponseDto(response));
     }
 
+
+
+    @GetMapping("/api/weather/meteo")
+    public ResponseEntity<String> getMeteoWeather(){
+        String response = weatherService.getOpenMeteoWeather(59.334591, 18.063240);
+        return ResponseEntity.ok().body(response);
+    }
 }
