@@ -1,13 +1,15 @@
 import WearWiseLogo from "../assets/logo.png";
+import { AuthControls } from "./AuthControls";
 
 export function AppHeader() {
   return (
-    <header className="flex justify-center pt-3 pb-3">
+    <header className="relative flex justify-center px-1 pb-3 pt-3">
       <img
         src={WearWiseLogo}
         alt="WearWise"
         className="h-35 w-auto object-contain"
       />
+      <AuthControls />
     </header>
   );
 }

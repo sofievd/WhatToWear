@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: "003"
+      author: "WearWise"
+      changes:
+        - createTable:
+            tableName: user_preferences
+            columns:
+              - column:
+                  name: clerk_user_id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: activity
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thermal_sensitivity
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: style
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false

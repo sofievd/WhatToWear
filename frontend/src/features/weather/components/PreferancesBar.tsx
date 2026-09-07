@@ -15,6 +15,7 @@ export type Preferences = {
 };
 
 type PreferencesBarProps = {
+  initialPreferences?: Preferences;
   onSave?: (preferences: Preferences) => void;
 };
 
@@ -50,9 +51,11 @@ const styleOptions: Array<{ label: string; value: Preferences["style"] }> = [
   { label: "More Masculine", value: "masculine" },
 ];
 
-export function PreferencesBar({ onSave }: PreferencesBarProps) {
+export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [preferences, setPreferences] = useState(defaultPreferences);
+  const [preferences, setPreferences] = useState(
+    () => initialPreferences ?? loadGuestPreferences(),
+  );
 
   useEffect(() => {
     if (!isOpen) {
@@ -77,6 +80,7 @@ export function PreferencesBar({ onSave }: PreferencesBarProps) {
   }
 
   function handleSave() {
+    localStorage.setItem("wearwise-preferences", JSON.stringify(preferences));
     onSave?.(preferences);
     setIsOpen(false);
   }
@@ -99,7 +103,9 @@ export function PreferencesBar({ onSave }: PreferencesBarProps) {
 
         <span className="flex items-center gap-3">
           <span className="text-sm text-[#3F90FF]">
-            {preferences.activity[0].toUpperCase() + preferences.activity.slice(1)} · Default
+            {preferences.activity[0].toUpperCase() +
+              preferences.activity.slice(1)}{" "}
+            · Default
           </span>
           <ChevronDown
             size={19}
@@ -145,21 +151,29 @@ export function PreferencesBar({ onSave }: PreferencesBarProps) {
             </div>
           </PreferenceGroup>
 
-          <PreferenceGroup icon={<Thermometer size={19} />} title="Thermal sensitivity">
+          <PreferenceGroup
+            icon={<Thermometer size={19} />}
+            title="Thermal sensitivity"
+          >
             <div className="grid grid-cols-3 gap-1 rounded-2xl bg-[#EDF1F9] p-1">
               {thermalOptions.map((option) => (
                 <PreferenceOption
                   key={option.value}
                   label={option.label}
                   selected={preferences.thermalSensitivity === option.value}
-                  onClick={() => updatePreference("thermalSensitivity", option.value)}
+                  onClick={() =>
+                    updatePreference("thermalSensitivity", option.value)
+                  }
                   className="min-h-11 rounded-xl border-0 px-2 text-xs sm:text-sm"
                 />
               ))}
             </div>
           </PreferenceGroup>
 
-          <PreferenceGroup icon={<Sparkles size={19} />} title="Style preference">
+          <PreferenceGroup
+            icon={<Sparkles size={19} />}
+            title="Style preference"
+          >
             <div className="flex flex-wrap gap-2">
               {styleOptions.map((option) => (
                 <PreferenceOption
@@ -183,6 +197,20 @@ export function PreferencesBar({ onSave }: PreferencesBarProps) {
       )}
     </section>
   );
+}
+
+function loadGuestPreferences(): Preferences {
+  const storedPreferences = localStorage.getItem("wearwise-preferences");
+
+  if (!storedPreferences) {
+    return defaultPreferences;
+  }
+
+  try {
+    return { ...defaultPreferences, ...JSON.parse(storedPreferences) };
+  } catch {
+    return defaultPreferences;
+  }
 }
 
 function PreferenceGroup({

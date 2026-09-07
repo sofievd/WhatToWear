@@ -22,9 +22,21 @@ export function getWeatherData(
 
 export function savePreferences(
   preferences: Preferences,
+  token: string,
 ): Promise<PreferencesResponse> {
   return apiClient<PreferencesResponse>("/api/preferences", {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(preferences),
+  });
+}
+
+export function getPreferences(token: string): Promise<Preferences | null> {
+  return apiClient<Preferences | null>("/api/preferences", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 }

@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppAuth } from "../auth/AuthContext";
 import { AppHeader } from "../components/AppHeader";
 import { CitySearch } from "../features/weather/components/CitySearch";
 import { OutfitGrid } from "../features/weather/components/OutfitGrid";
 import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
 import { PreferencesBar } from "../features/weather/components/PreferancesBar";
-import { savePreferences } from "../features/weather/api/weatherService";
+import {
+  getPreferences,
+  savePreferences,
+} from "../features/weather/api/weatherService";
+import type { Preferences } from "../features/weather/components/PreferancesBar";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
 
 export function WeatherPage() {
+  const { isSignedIn, getToken } = useAppAuth();
+  const [accountPreferences, setAccountPreferences] =
+    useState<Preferences | undefined>();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCity, setSelectedCity] = useState<CitySuggestion | null>(null);
 
@@ -23,6 +31,35 @@ export function WeatherPage() {
     isLoading: isLoadingSuggestions,
     isError: isSuggestionsError,
   } = useCitySuggestions(searchValue);
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      return;
+    }
+
+    void getToken().then((token) => {
+      if (!token) {
+        return;
+      }
+
+      return getPreferences(token).then((savedPreferences) => {
+        if (savedPreferences) {
+          setAccountPreferences(savedPreferences);
+        }
+      });
+    }).catch(() => undefined);
+  }, [getToken, isSignedIn]);
+
+  async function handlePreferencesSave(preferences: Preferences) {
+    if (!isSignedIn) {
+      return;
+    }
+
+    const token = await getToken();
+    if (token) {
+      await savePreferences(preferences, token).catch(() => undefined);
+    }
+  }
 
   function handleCityChange(value: string) {
     setSearchValue(value);
@@ -70,7 +107,11 @@ export function WeatherPage() {
             longitude={submittedCity?.longitude ?? null}
           />
 
-          <PreferencesBar onSave={(preferences) => void savePreferences(preferences)} />
+          <PreferencesBar
+            key={isSignedIn ? (accountPreferences ? "account-loaded" : "account-empty") : "guest"}
+            initialPreferences={isSignedIn ? accountPreferences : undefined}
+            onSave={(preferences) => void handlePreferencesSave(preferences)}
+          />
 
           <section className="pt-2">
             <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#E77D72]">

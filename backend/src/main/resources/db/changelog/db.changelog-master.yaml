@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/001-create-clothes-table.yaml
   - include:
       file: db/changelog/002-insert-clothing-data-short.yaml
+  - include:
+      file: db/changelog/003-create-user-preferences-table.yaml
