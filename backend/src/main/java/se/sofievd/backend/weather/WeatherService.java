@@ -62,7 +62,7 @@ public class WeatherService {
                 symbol.getCode(),
                 symbol,
                 current.getPrecipitation(),
-                getPrecipitationDescription(current.getPrecipitation()),
+                WeatherCalculationUtils.getPrecipitationDescription(current.getPrecipitation()),
                 LocalDateTime.now()
         );
     }
@@ -84,12 +84,12 @@ public class WeatherService {
         SmhiData weatherNow = timeSerieNow.getData();
         Double temperature = weatherNow.getAirTemperature();
         Integer humidity = weatherNow.getRelativeHumidity();
-        Double windSpeed = calculateWindSpeed(weatherNow.getWindSpeed());
-        Double precipitation = calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
-        Double feelLikeTemperature = calculateFeelLikeTemperature(temperature, humidity, windSpeed);
+        Double windSpeed = WeatherCalculationUtils.calculateWindSpeed(weatherNow.getWindSpeed());
+        Double precipitation = WeatherCalculationUtils.calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
+        Double feelLikeTemperature = WeatherCalculationUtils.calculateFeelLikeTemperature(temperature, humidity, windSpeed);
         Integer symbolCode = weatherNow.getSymbolCode();
         WeatherSymbol weatherSymbol = WeatherSymbol.fromCode(symbolCode);
-        String precipitationDescription = getPrecipitationDescription(precipitation);
+        String precipitationDescription = WeatherCalculationUtils.getPrecipitationDescription(precipitation);
         return new Weather(temperature,
                 feelLikeTemperature,
                 windSpeed,
@@ -102,26 +102,5 @@ public class WeatherService {
                 );
     }
 
-    private Double calculateAveragePrecipitation(Double max, Double min) {
-        return (max + min) / 2;
-    }
-
-    private Double calculateFeelLikeTemperature(Double airTemperature, Integer humidity, Double windSpeed) {
-        double pressure = ((double) humidity / 100) * 6.105 * Math.exp((17.27 * airTemperature) / (237.7 + airTemperature));
-        return airTemperature + (0.33 * pressure) - (0.7 * windSpeed) - 4.0;
-    }
-
-    private Double calculateWindSpeed(Double windSpeed){
-        return (windSpeed * 3.6);
-    }
-
-    private String getPrecipitationDescription(Double precipitation) {
-        if ( precipitation == 0)return "No rain";
-        if (precipitation < 1) return "Very light rain";
-        if (precipitation < 5) return "Light rain";
-        if (precipitation < 10) return "Moderate rain";
-        if (precipitation < 20) return "Heavy rain";
-        return "Very heavy rain";
-    }
 
 }
