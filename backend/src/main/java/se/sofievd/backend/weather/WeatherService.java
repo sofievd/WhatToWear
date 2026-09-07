@@ -2,6 +2,7 @@ package se.sofievd.backend.weather;
 
 import org.springframework.stereotype.Service;
 import se.sofievd.backend.weather.openmeteo.OpenMeteoClient;
+import se.sofievd.backend.weather.openmeteo.model.OpenMeteoCurrent;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
 import se.sofievd.backend.weather.smhi.SmhiClient;
 import se.sofievd.backend.common.exception.LocationNotSupportedException;
@@ -45,6 +46,25 @@ public class WeatherService {
         System.out.println(openMeteoWeather);
        // return openMeteoWeather;
         return "meteo weather gotten";
+    }
+
+    public Weather getGlobalWeather(Double longitude, Double latitude) {
+        OpenMeteoCurrent current = openMeteoClient
+                .getForecast(longitude, latitude)
+                .getCurrent();
+        WeatherSymbol symbol = WeatherSymbol.fromWmoCode(current.getWeatherCode());
+
+        return new Weather(
+                current.getTemperature(),
+                current.getApparentTemperature(),
+                current.getWindSpeed(),
+                current.getRelativeHumidity(),
+                symbol.getCode(),
+                symbol,
+                current.getPrecipitation(),
+                getPrecipitationDescription(current.getPrecipitation()),
+                LocalDateTime.now()
+        );
     }
 
     private List<TimeSerie> getTodayTimes(List<TimeSerie> timeSerieList) {

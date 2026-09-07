@@ -7,3 +7,10 @@ export interface WeatherData {
   precipitation: number;
   precipitationDescription: string;
 }
+
+export interface CitySuggestion {
+  name: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
