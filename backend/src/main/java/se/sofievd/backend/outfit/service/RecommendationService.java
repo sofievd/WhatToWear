@@ -5,8 +5,8 @@ import se.sofievd.backend.outfit.model.ActivityLevel;
 import se.sofievd.backend.outfit.model.Clothing;
 import se.sofievd.backend.outfit.model.OutfitRecommendation;
 import se.sofievd.backend.outfit.model.ToleranceLevel;
-import se.sofievd.backend.weather.Weather;
-import se.sofievd.backend.weather.WeatherService;
+import se.sofievd.backend.weather.model.Weather;
+import se.sofievd.backend.weather.service.WeatherService;
 
 import java.util.List;
 
