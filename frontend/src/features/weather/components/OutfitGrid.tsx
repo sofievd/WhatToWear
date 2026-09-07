@@ -3,7 +3,11 @@ import { getClothing } from "../api/weatherService";
 import { OutfitCard } from "./OutfitCard";
 
 export function OutfitGrid() {
-  const { data: clothing = [], isLoading, isError } = useQuery({
+  const {
+    data: clothing = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["clothing"],
     queryFn: getClothing,
   });
