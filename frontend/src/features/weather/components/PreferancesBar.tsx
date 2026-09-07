@@ -16,7 +16,12 @@ export type Preferences = {
 
 type PreferencesBarProps = {
   initialPreferences?: Preferences;
-  onSave?: (preferences: Preferences) => void;
+  onSave?: (preferences: Preferences) => Promise<void> | void;
+};
+
+type Toast = {
+  message: string;
+  tone: "success" | "neutral" | "error";
 };
 
 const defaultPreferences: Preferences = {
@@ -51,11 +56,27 @@ const styleOptions: Array<{ label: string; value: Preferences["style"] }> = [
   { label: "More Masculine", value: "masculine" },
 ];
 
-export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarProps) {
+export function PreferencesBar({
+  initialPreferences,
+  onSave,
+}: PreferencesBarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [preferences, setPreferences] = useState(
+  const [savedPreferences, setSavedPreferences] = useState(
     () => initialPreferences ?? loadGuestPreferences(),
   );
+  const [draftPreferences, setDraftPreferences] = useState(
+    () => initialPreferences ?? loadGuestPreferences(),
+  );
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  useEffect(() => {
+    if (!toast) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setToast(null), 3200);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,34 +85,64 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        setDraftPreferences(savedPreferences);
         setIsOpen(false);
+        setToast({ message: "Preference changes canceled", tone: "neutral" });
       }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, savedPreferences]);
 
   function updatePreference<Key extends keyof Preferences>(
     key: Key,
     value: Preferences[Key],
   ) {
-    setPreferences((current) => ({ ...current, [key]: value }));
+    setDraftPreferences((current) => ({ ...current, [key]: value }));
   }
 
-  function handleSave() {
-    localStorage.setItem("wearwise-preferences", JSON.stringify(preferences));
-    onSave?.(preferences);
-    setIsOpen(false);
+  function openPreferences() {
+    setDraftPreferences(savedPreferences);
+    setIsOpen(true);
   }
+
+  function cancelChanges() {
+    setDraftPreferences(savedPreferences);
+    setIsOpen(false);
+    setToast({ message: "Preference changes canceled", tone: "neutral" });
+  }
+
+  async function handleSave() {
+    try {
+      await onSave?.(draftPreferences);
+      localStorage.setItem(
+        "wearwise-preferences",
+        JSON.stringify(draftPreferences),
+      );
+      setSavedPreferences(draftPreferences);
+      setIsOpen(false);
+      setToast({ message: "Preferences saved", tone: "success" });
+    } catch {
+      setToast({
+        message: "Could not save preferences. Please try again.",
+        tone: "error",
+      });
+    }
+  }
+
+  const isDefault = arePreferencesEqual(savedPreferences, defaultPreferences);
+  const activityLabel =
+    savedPreferences.activity[0].toUpperCase() +
+    savedPreferences.activity.slice(1);
 
   return (
-    <section className="space-y-3">
+    <section className="relative space-y-3">
       <button
         type="button"
         aria-expanded={isOpen}
         aria-controls="preferences-panel"
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={() => (isOpen ? cancelChanges() : openPreferences())}
         className="flex min-h-14 w-full items-center justify-between rounded-3xl border border-[#D9E1EE] bg-white px-5 text-left shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B91BB] focus-visible:ring-offset-2"
       >
         <span className="flex items-center gap-3">
@@ -103,9 +154,8 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
 
         <span className="flex items-center gap-3">
           <span className="text-sm text-[#3F90FF]">
-            {preferences.activity[0].toUpperCase() +
-              preferences.activity.slice(1)}{" "}
-            · Default
+            {activityLabel}
+            {isDefault ? " · Default" : ""}
           </span>
           <ChevronDown
             size={19}
@@ -130,8 +180,8 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
             </div>
             <button
               type="button"
-              aria-label="Close preferences"
-              onClick={() => setIsOpen(false)}
+              aria-label="Cancel preference changes"
+              onClick={cancelChanges}
               className="rounded-full p-2 text-[#667085] transition-colors hover:bg-white hover:text-[#17294D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B91BB]"
             >
               <X size={18} />
@@ -144,7 +194,7 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
                 <PreferenceOption
                   key={option.value}
                   label={option.label}
-                  selected={preferences.activity === option.value}
+                  selected={draftPreferences.activity === option.value}
                   onClick={() => updatePreference("activity", option.value)}
                 />
               ))}
@@ -160,7 +210,9 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
                 <PreferenceOption
                   key={option.value}
                   label={option.label}
-                  selected={preferences.thermalSensitivity === option.value}
+                  selected={
+                    draftPreferences.thermalSensitivity === option.value
+                  }
                   onClick={() =>
                     updatePreference("thermalSensitivity", option.value)
                   }
@@ -179,7 +231,7 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
                 <PreferenceOption
                   key={option.value}
                   label={option.label}
-                  selected={preferences.style === option.value}
+                  selected={draftPreferences.style === option.value}
                   onClick={() => updatePreference("style", option.value)}
                 />
               ))}
@@ -195,7 +247,39 @@ export function PreferencesBar({ initialPreferences, onSave }: PreferencesBarPro
           </button>
         </div>
       )}
+
+      {toast && (
+        <div
+          role={toast.tone === "error" ? "alert" : "status"}
+          aria-live="polite"
+          className={`fixed inset-x-4 bottom-4 z-20 mx-auto flex max-w-[358px] items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold shadow-lg ${
+            toast.tone === "success"
+              ? "border-[#B9DCCB] bg-[#F0FAF4] text-[#286345]"
+              : toast.tone === "error"
+                ? "border-[#F0C2BD] bg-[#FFF5F3] text-[#A34B43]"
+                : "border-[#D9E1EE] bg-white text-[#52627A]"
+          }`}
+        >
+          <span>{toast.message}</span>
+          <button
+            type="button"
+            aria-label="Dismiss notification"
+            onClick={() => setToast(null)}
+            className="rounded-full p-1 text-current/70 hover:bg-black/5 hover:text-current focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+          >
+            <X size={15} />
+          </button>
+        </div>
+      )}
     </section>
+  );
+}
+
+function arePreferencesEqual(first: Preferences, second: Preferences) {
+  return (
+    first.activity === second.activity &&
+    first.thermalSensitivity === second.thermalSensitivity &&
+    first.style === second.style
   );
 }
 

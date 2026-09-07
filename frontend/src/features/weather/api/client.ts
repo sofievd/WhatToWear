@@ -12,7 +12,7 @@ export async function apiClient<T>(
       ...options?.headers,
     },
   });
-  if (!response.ok){
+  if (!response.ok) {
     throw new Error(`API request failed: ${response.status}`);
   }
   if (response.status === 204) {

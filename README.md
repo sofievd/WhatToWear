@@ -1,6 +1,6 @@
 # WearWise
 
-weather prediction app 
+weather prediction app
 
 ### Authentication
 
@@ -58,4 +58,4 @@ liquibase:  enabled: true
 
 Start the application using the appropriate run configuration or command for your development environment.
 
-1. 
+1.

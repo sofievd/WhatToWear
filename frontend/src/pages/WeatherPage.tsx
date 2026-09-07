@@ -16,8 +16,9 @@ import type { CitySuggestion } from "../features/weather/types/types";
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
-  const [accountPreferences, setAccountPreferences] =
-    useState<Preferences | undefined>();
+  const [accountPreferences, setAccountPreferences] = useState<
+    Preferences | undefined
+  >();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCity, setSelectedCity] = useState<CitySuggestion | null>(null);
 
@@ -37,17 +38,19 @@ export function WeatherPage() {
       return;
     }
 
-    void getToken().then((token) => {
-      if (!token) {
-        return;
-      }
-
-      return getPreferences(token).then((savedPreferences) => {
-        if (savedPreferences) {
-          setAccountPreferences(savedPreferences);
+    void getToken()
+      .then((token) => {
+        if (!token) {
+          return;
         }
-      });
-    }).catch(() => undefined);
+
+        return getPreferences(token).then((savedPreferences) => {
+          if (savedPreferences) {
+            setAccountPreferences(savedPreferences);
+          }
+        });
+      })
+      .catch(() => undefined);
   }, [getToken, isSignedIn]);
 
   async function handlePreferencesSave(preferences: Preferences) {
@@ -57,7 +60,7 @@ export function WeatherPage() {
 
     const token = await getToken();
     if (token) {
-      await savePreferences(preferences, token).catch(() => undefined);
+      await savePreferences(preferences, token);
     }
   }
 
@@ -108,7 +111,13 @@ export function WeatherPage() {
           />
 
           <PreferencesBar
-            key={isSignedIn ? (accountPreferences ? "account-loaded" : "account-empty") : "guest"}
+            key={
+              isSignedIn
+                ? accountPreferences
+                  ? "account-loaded"
+                  : "account-empty"
+                : "guest"
+            }
             initialPreferences={isSignedIn ? accountPreferences : undefined}
             onSave={(preferences) => void handlePreferencesSave(preferences)}
           />
