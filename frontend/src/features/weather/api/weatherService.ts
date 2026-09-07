@@ -1,4 +1,4 @@
-import type { WeatherData } from "../types/types";
+import type { ClothingItem, WeatherData } from "../types/types";
 import { apiClient } from "./client";
 import type { Preferences } from "../components/PreferancesBar";
 
@@ -18,6 +18,10 @@ export function getWeatherData(
   return apiClient<WeatherData>(
     `/api/weather?latitude=${latitude}&longitude=${longitude}`,
   );
+}
+
+export function getClothing(): Promise<ClothingItem[]> {
+  return apiClient<ClothingItem[]>("/api/weather/clothes");
 }
 
 export function savePreferences(

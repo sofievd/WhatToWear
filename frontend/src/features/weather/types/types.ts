@@ -14,3 +14,10 @@ export interface CitySuggestion {
   latitude: number;
   longitude: number;
 }
+
+export interface ClothingItem {
+  name: string;
+  category: string;
+  cloValue: number;
+  imageUrl: string | null;
+}

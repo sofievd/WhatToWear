@@ -4,15 +4,14 @@ import { AppHeader } from "../components/AppHeader";
 import { CitySearch } from "../features/weather/components/CitySearch";
 import { OutfitGrid } from "../features/weather/components/OutfitGrid";
 import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
-import { PreferencesBar } from "../features/weather/components/PreferancesBar";
 import {
   getPreferences,
   savePreferences,
 } from "../features/weather/api/weatherService";
-import type { Preferences } from "../features/weather/components/PreferancesBar";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
+import { PreferencesBar, type Preferences } from "../features/weather/components/PreferancesBar";
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
