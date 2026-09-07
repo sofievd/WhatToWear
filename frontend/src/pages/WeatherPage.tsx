@@ -4,6 +4,7 @@ import { CitySearch } from "../features/weather/components/CitySearch";
 import { OutfitGrid } from "../features/weather/components/OutfitGrid";
 import { WhyThisOutfit } from "../features/weather/components/WhyThisOutfit";
 import { PreferencesBar } from "../features/weather/components/PreferancesBar";
+import { savePreferences } from "../features/weather/api/weatherService";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
@@ -69,7 +70,7 @@ export function WeatherPage() {
             longitude={submittedCity?.longitude ?? null}
           />
 
-          <PreferencesBar />
+          <PreferencesBar onSave={(preferences) => void savePreferences(preferences)} />
 
           <section className="pt-2">
             <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#E77D72]">
