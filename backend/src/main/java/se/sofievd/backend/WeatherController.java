@@ -26,8 +26,6 @@ public class WeatherController {
             @RequestParam Double longitude
     ){
         Weather response = weatherService.getGlobalWeather(longitude, latitude);
-    public ResponseEntity<WeatherResponseDto> getWeather() {
-        Weather response = weatherService.getWeather(59.334591, 18.063240);
         return ResponseEntity.ok().body(WeatherMapper.toWeatherResponseDto(response));
     }
 
