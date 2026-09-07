@@ -1,8 +1,15 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.sofievd.backend.weather.WeatherCalculationUtils;
+import se.sofievd.backend.weather.WeatherSymbol;
+import se.sofievd.backend.weather.model.Weather;
 import se.sofievd.backend.weather.openmeteo.OpenMeteoClient;
+import se.sofievd.backend.weather.openmeteo.model.HourlyWeather;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoCurrent;
+import se.sofievd.backend.weather.openmeteo.model.OpenMeteoData;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
 import se.sofievd.backend.weather.smhi.SmhiClient;
 import se.sofievd.backend.common.exception.LocationNotSupportedException;
@@ -14,11 +21,13 @@ import se.sofievd.backend.weather.smhi.SmhiAreaService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class WeatherService {
 
+    private static final Logger log = LoggerFactory.getLogger(WeatherService.class);
     private final SmhiClient smhiClient;
     private final SmhiAreaService areaService;
     private final OpenMeteoClient openMeteoClient;
@@ -41,11 +50,26 @@ public class WeatherService {
         return getNowWeather(smhiWeather);
     }
 
-    public String getOpenMeteoWeather(Double longitude, Double latitude){
+    public List<HourlyWeather> getOpenMeteoWeather(Double longitude, Double latitude){
         OpenMeteoWeather openMeteoWeather = openMeteoClient.getForecast(longitude, latitude);
-        System.out.println(openMeteoWeather);
-       // return openMeteoWeather;
-        return "meteo weather gotten";
+        //log.info("weatherdata: {}",openMeteoWeather);
+
+        OpenMeteoData data = openMeteoWeather.getHourly();
+        List<HourlyWeather> weatherList = new ArrayList<>();
+
+        for(int i = 0; i < data.getTime().size(); i++) {
+            HourlyWeather weather = new HourlyWeather();
+            weather.setTime(data.getTime().get(i));
+            weather.setTemperature(data.getTemperature().get(i));
+            weather.setPrecipitation(data.getPrecipitation().get(i));
+            weather.setApparentTemperature(data.getApparentTemperature().get(i));
+            weather.setWindSpeed(data.getWindSpeed().get(i));
+            weather.setRelativeHumidity(data.getRelativeHumidity().get(i));
+            weather.setWeatherCode(data.getWeatherCode().get(i));
+            weatherList.add(weather);
+        }
+
+        return weatherList;
     }
 
     public Weather getGlobalWeather(Double longitude, Double latitude) {
