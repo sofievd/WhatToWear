@@ -1,4 +1,4 @@
-package se.sofievd.backend.outfit;
+package se.sofievd.backend.outfit.model;
 
 import jakarta.persistence.*;
 
@@ -12,6 +12,7 @@ public class Clothing {
 
     @Column(name = "item")
     private String name;
+    @Column(name = "category")
     private String category;
     @Column(name = "clo-value")
     private Double cloValue;
@@ -56,5 +57,15 @@ public class Clothing {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Clothing{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", cloValue=" + cloValue +
+                '}';
     }
 }
