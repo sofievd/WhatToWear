@@ -1,4 +1,6 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.model;
+
+import se.sofievd.backend.weather.WeatherSymbol;
 
 import java.time.LocalDateTime;
 
