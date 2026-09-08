@@ -11,7 +11,10 @@ import {
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
-import { PreferencesBar, type Preferences } from "../features/weather/components/PreferancesBar";
+import {
+  PreferencesBar,
+  type Preferences,
+} from "../features/weather/components/PreferancesBar";
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
@@ -25,6 +28,7 @@ export function WeatherPage() {
   const [submittedCity, setSubmittedCity] = useState<CitySuggestion | null>(
     null,
   );
+  const [recommendationRequest, setRecommendationRequest] = useState(0);
 
   const {
     data: suggestions = [],
@@ -121,6 +125,14 @@ export function WeatherPage() {
             onSave={(preferences) => void handlePreferencesSave(preferences)}
           />
 
+          <button
+            type="button"
+            onClick={() => setRecommendationRequest((current) => current + 1)}
+            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2"
+          >
+            Get recommendation
+          </button>
+
           <section className="pt-2">
             <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#E77D72]">
               Today's selection
@@ -131,7 +143,7 @@ export function WeatherPage() {
             </h1>
           </section>
 
-          <OutfitGrid />
+          <OutfitGrid requestKey={recommendationRequest} />
 
           <WhyThisOutfit />
         </div>

@@ -21,3 +21,13 @@ export interface ClothingItem {
   cloValue: number;
   imageUrl: string | null;
 }
+
+export interface OutfitRecommendation {
+  targetCloValue: number;
+  baseLayer: ClothingItem | null;
+  midLayer: ClothingItem | null;
+  outerLayer: ClothingItem | null;
+  bottom: ClothingItem | null;
+  footwear: ClothingItem | null;
+  accessory: ClothingItem | null;
+}

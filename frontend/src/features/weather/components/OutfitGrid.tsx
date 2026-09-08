@@ -1,16 +1,37 @@
 import { useQuery } from "@tanstack/react-query";
-import { getClothing } from "../api/weatherService";
+import { getRecommendation } from "../api/weatherService";
 import { OutfitCard } from "./OutfitCard";
+import type { ClothingItem } from "../types/types";
 
-export function OutfitGrid() {
+export function OutfitGrid({ requestKey }: { requestKey: number }) {
   const {
-    data: clothing = [],
+    data: recommendation,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["clothing"],
-    queryFn: getClothing,
+    queryKey: ["recommendation", requestKey],
+    queryFn: getRecommendation,
+    enabled: requestKey > 0,
   });
+
+  const clothing = recommendation
+    ? [
+        recommendation.baseLayer,
+        recommendation.midLayer,
+        recommendation.outerLayer,
+        recommendation.bottom,
+        recommendation.footwear,
+        recommendation.accessory,
+      ].filter((item): item is ClothingItem => item !== null)
+    : [];
+
+  if (requestKey === 0) {
+    return (
+      <p className="rounded-2xl border border-[#D9E1EE] bg-white p-4 text-sm text-[#667085]">
+        Choose your city and preferences, then get a recommendation.
+      </p>
+    );
+  }
 
   if (isLoading) {
     return (
