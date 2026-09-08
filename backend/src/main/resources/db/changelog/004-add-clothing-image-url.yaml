@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: "004"
+      author: "Tehreem"
+      changes:
+        - addColumn:
+            tableName: clothes
+            columns:
+              - column:
+                  name: image_url
+                  type: varchar(500)

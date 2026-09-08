@@ -1,6 +1,18 @@
 # WearWise
 
-weather prediction app 
+weather prediction app
+
+### Authentication
+
+The app supports both guest and authenticated use. Guests can use weather and outfit features without an account; their preferences stay in the browser. Clerk accounts persist preferences in the backend database.
+
+To enable authentication locally:
+
+1. Create a Clerk application and copy its publishable key into `frontend/.env` as `VITE_CLERK_PUBLISHABLE_KEY`.
+2. Set the matching Clerk issuer URL in the backend environment as `CLERK_ISSUER_URL`.
+3. Start the frontend and backend normally.
+
+Without these variables, the frontend remains available in guest mode. The authenticated preferences API is `GET` and `POST /api/preferences`.
 
 ## Backend
 
@@ -46,4 +58,4 @@ liquibase:  enabled: true
 
 Start the application using the appropriate run configuration or command for your development environment.
 
-1. 
+1.
