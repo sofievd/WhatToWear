@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: "004"
-      author: "WearWise"
+      author: "Tehreem"
       changes:
         - addColumn:
             tableName: clothes
