@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.sofievd.backend.outfit.ClothingMapper;
-import se.sofievd.backend.outfit.ClothingService;
+import se.sofievd.backend.outfit.service.ClothingMapper;
+import se.sofievd.backend.outfit.service.ClothingService;
 
 @RestController
 @RequestMapping("/api/preferences")
