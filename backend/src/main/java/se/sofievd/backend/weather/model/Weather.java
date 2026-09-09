@@ -11,7 +11,7 @@ public class Weather {
     private Integer humidity;
     private Integer condition;
     private WeatherSymbol conditionDescription;
-    private LocalDateTime date;
+    private LocalDateTime time;
     private Double precipitation;
     private String precipitationDescription;
 
@@ -26,7 +26,7 @@ public class Weather {
                    WeatherSymbol conditionDescription,
                    Double precipitation,
                    String precipitationDescription,
-                   LocalDateTime date) {
+                   LocalDateTime time) {
         this.airTemperature = airTemperature;
         this.feelsLikeTemperature = feelsLikeTemperature;
         this.windSpeed = windSpeed;
@@ -35,7 +35,7 @@ public class Weather {
         this.conditionDescription = conditionDescription;
         this.precipitation = precipitation;
         this.precipitationDescription = precipitationDescription;
-        this.date = date;
+        this.time = time;
     }
 
     public Double getAirTemperature() {
@@ -62,12 +62,12 @@ public class Weather {
         this.humidity = humidity;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getTime() {
+        return time;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
     public Double getFeelsLikeTemperature() {
