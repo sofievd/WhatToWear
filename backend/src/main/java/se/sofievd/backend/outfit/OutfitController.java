@@ -31,7 +31,7 @@ public class OutfitController {
 
     @GetMapping("/api/recommendation")
     public ResponseEntity<OutfitRecommendation> getRecommendation(){
-        OutfitRecommendation recommendation = recommendationService.generateRecommendation();
+        OutfitRecommendation recommendation = recommendationService.generateRecommendation(18.063240, 58.334591);
         return ResponseEntity.ok().body(recommendation);
     }
 }

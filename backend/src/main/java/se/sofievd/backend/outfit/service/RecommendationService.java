@@ -23,9 +23,12 @@ public class RecommendationService {
         this.calculator = calculator;
     }
 
-    public OutfitRecommendation generateRecommendation(){
 
-        Weather weather = weatherService.getWeather(18.063240, 59.334591);
+    public OutfitRecommendation generateRecommendation(Double lon, Double lat){
+
+        Weather weather = weatherService.getGlobalWeather(lon, lat);
+
+
 
         double temperature = calculator.calculateEffectiveTemperature(weather.getFeelsLikeTemperature(), ToleranceLevel.NEUTRAL.getTemperatureOffset());
         double targetCloValue = calculator.calculateTargetClo(temperature, ActivityLevel.WALKING.getMetValue(), weather.getWindSpeed());
@@ -60,6 +63,11 @@ public class RecommendationService {
             recommendation.setAccessory(accessory);
         }
 
+        return recommendation;
+    }
+
+    private OutfitRecommendation createOutfitRecommendation(Double targetCloValue){
+        OutfitRecommendation recommendation = new OutfitRecommendation(targetCloValue);
         return recommendation;
     }
 
