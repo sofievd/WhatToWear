@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: "005"
+      author: "Tehreem"
+      changes:
+        - sql:
+            sql: |
+              WITH desired(category, item, clo_value, keep_count) AS (
+                VALUES
+                  ('Underwear', 'underwear', 0.04, 1),
+                  ('Underwear', 'long underwear', 0.15, 1),
+                  ('Underwear', 'undershirt', 0.09, 1),
+                  ('Shirts', 'short sleeve shirt', 0.09, 1),
+                  ('Shirts', 'long sleeve shirt', 0.25, 1),
+                  ('Shirts', 'flannel shirt', 0.34, 1),
+                  ('Trousers', 'shorts', 0.06, 1),
+                  ('Trousers', 'trousers', 0.25, 1),
+                  ('Trousers', 'flannel trousers', 0.28, 1),
+                  ('Sweaters', 'thin sweater', 0.20, 1),
+                  ('Sweaters', 'thick sweater', 0.35, 1),
+                  ('Dresses', 'light dress', 0.25, 1),
+                  ('Dresses', 'heavy dress', 0.40, 1),
+                  ('Jackets', 'light jacket', 0.25, 1),
+                  ('Jackets', 'jacket', 0.35, 1),
+                  ('Outerwear', 'coat', 0.60, 1),
+                  ('Outerwear', 'down jacket', 0.55, 1),
+                  ('Outerwear', 'parka', 0.70, 1),
+                  ('Outerwear', 'insulated pants', 0.35, 1),
+                  ('Accessories', 'socks', 0.05, 2),
+                  ('Accessories', 'gloves', 0.05, 1),
+                  ('Accessories', 'scarf', 0.05, 1),
+                  ('Accessories', 'hat', 0.03, 1),
+                  ('Footwear', 'dress shoes', 0.02, 1),
+                  ('Footwear', 'heels', 0.02, 1),
+                  ('Footwear', 'boots', 0.10, 1)
+              ), ranked AS (
+                SELECT c.id,
+                       row_number() OVER (
+                         PARTITION BY c.category, c.item, c."clo-value"
+                         ORDER BY c.id
+                       ) AS occurrence,
+                       COALESCE(d.keep_count, 0) AS keep_count
+                FROM clothes c
+                LEFT JOIN desired d
+                  ON d.category = c.category
+                 AND d.item = c.item
+                 AND d.clo_value = c."clo-value"
+              )
+              DELETE FROM clothes c
+              USING ranked r
+              WHERE c.id = r.id
+                AND r.occurrence > r.keep_count;
