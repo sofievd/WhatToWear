@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/005-keep-short-clothing-data.yaml
   - include:
       file: db/changelog/006-add-clothing-image-urls.yaml
+  - include:
+      file: db/changelog/007-update-clothing-data.yaml

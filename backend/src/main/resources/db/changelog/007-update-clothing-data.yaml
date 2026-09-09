@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: "007"
+      author: "Tehreem"
+      changes:
+        - sql:
+            sql: |
+              UPDATE clothes
+              SET item = CASE id
+                WHEN 51 THEN 'underwear'
+                WHEN 52 THEN 'long underwear'
+                WHEN 53 THEN 'undershirt'
+                WHEN 74 THEN 'socks'
+                ELSE item
+              END,
+              image_url = CASE id
+                WHEN 54 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/short-sleeve-shirt.jpeg'
+                WHEN 55 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/long-sleeve-shirt.jpeg'
+                WHEN 56 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/flannel-shirt.jpeg'
+                WHEN 57 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/shorts.jpeg'
+                WHEN 58 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/trousers.jpeg'
+                WHEN 59 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/flannel-trouser.jpeg'
+                WHEN 60 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/thin-sweater.jpeg'
+                WHEN 61 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/thick-sweater.jpeg'
+                WHEN 62 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/light-dress.jpeg'
+                WHEN 63 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/heavy-dress.jpeg'
+                WHEN 64 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/light-jacket.jpeg'
+                WHEN 65 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/jacket.jpeg'
+                WHEN 66 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/coat.jpeg'
+                WHEN 67 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/down-jacket.jpeg'
+                WHEN 68 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/parka.jpeg'
+                WHEN 69 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/insulated-pants.jpeg'
+                WHEN 70 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/socks.jpeg'
+                WHEN 71 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/dress-shoes.jpeg'
+                WHEN 72 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/heels.jpeg'
+                WHEN 73 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/boots.jpeg'
+                WHEN 75 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/gloves.jpeg'
+                WHEN 76 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/scarf.jpeg'
+                WHEN 77 THEN 'https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/hat-cap.jpeg'
+                ELSE image_url
+              END
+              WHERE id IN (51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77);
