@@ -3,26 +3,30 @@ package se.sofievd.backend.weather.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.sofievd.backend.common.exception.LocationNotSupportedException;
 import se.sofievd.backend.weather.WeatherCalculationUtils;
 import se.sofievd.backend.weather.WeatherSymbol;
+import se.sofievd.backend.weather.model.TimeSlot;
 import se.sofievd.backend.weather.model.Weather;
+import se.sofievd.backend.weather.model.WeatherTimeSlot;
 import se.sofievd.backend.weather.openmeteo.OpenMeteoClient;
-import se.sofievd.backend.weather.openmeteo.model.HourlyWeather;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoCurrent;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoData;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
+import se.sofievd.backend.weather.smhi.SmhiAreaService;
 import se.sofievd.backend.weather.smhi.SmhiClient;
-import se.sofievd.backend.common.exception.LocationNotSupportedException;
 import se.sofievd.backend.weather.smhi.model.SmhiData;
 import se.sofievd.backend.weather.smhi.model.SmhiWeather;
 import se.sofievd.backend.weather.smhi.model.TimeSerie;
-import se.sofievd.backend.weather.smhi.SmhiAreaService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WeatherService {
@@ -39,8 +43,12 @@ public class WeatherService {
         this.openMeteoClient = openMeteoClient;
     }
 
-    public Weather getWeather(Double longitude, Double latitude) {
-        if(!areaService.isInsideArea(longitude, latitude)){
+//    public Weather getWeather(Double longitude, Double latitude) {
+//
+//    }
+
+    public Weather getSmhiWeather(Double longitude, Double latitude) {
+        if (!areaService.isInsideArea(longitude, latitude)) {
             throw new LocationNotSupportedException(
                     "Location is outside the SMHI forecast area"
             );
@@ -50,28 +58,35 @@ public class WeatherService {
         return getNowWeather(smhiWeather);
     }
 
-    public List<HourlyWeather> getOpenMeteoWeather(Double longitude, Double latitude){
+    public List<WeatherTimeSlot> getAllDayWeather(Double longitude, Double latitude) {
         OpenMeteoWeather openMeteoWeather = openMeteoClient.getForecast(longitude, latitude);
         //log.info("weatherdata: {}",openMeteoWeather);
 
         OpenMeteoData data = openMeteoWeather.getHourly();
-        List<HourlyWeather> weatherList = new ArrayList<>();
+        List<Weather> weatherList = new ArrayList<>();
 
-        for(int i = 0; i < data.getTime().size(); i++) {
-            HourlyWeather weather = new HourlyWeather();
-            weather.setTime(data.getTime().get(i));
-            weather.setTemperature(data.getTemperature().get(i));
-            weather.setPrecipitation(data.getPrecipitation().get(i));
-            weather.setApparentTemperature(data.getApparentTemperature().get(i));
-            weather.setWindSpeed(data.getWindSpeed().get(i));
-            weather.setRelativeHumidity(data.getRelativeHumidity().get(i));
-            weather.setWeatherCode(data.getWeatherCode().get(i));
+        for (int i = 0; i < data.getTime().size(); i++) {
+            Weather weather = createWeather(data, i);
             weatherList.add(weather);
         }
 
-        return weatherList;
+        return getWeatherTimeSlots(weatherList);
     }
 
+
+    private Weather createWeather(OpenMeteoData data, int i) {
+        Weather weather = new Weather();
+        weather.setTime(data.getTime().get(i));
+        weather.setAirTemperature(data.getTemperature().get(i));
+        weather.setPrecipitation(data.getPrecipitation().get(i));
+        weather.setFeelsLikeTemperature(data.getApparentTemperature().get(i));
+        weather.setWindSpeed(data.getWindSpeed().get(i));
+        weather.setHumidity(data.getRelativeHumidity().get(i));
+        weather.setCondition(data.getWeatherCode().get(i));
+        return weather;
+    }
+
+    // renamed to getCurrentWeather
     public Weather getGlobalWeather(Double longitude, Double latitude) {
         OpenMeteoCurrent current = openMeteoClient
                 .getForecast(longitude, latitude)
@@ -90,6 +105,85 @@ public class WeatherService {
                 LocalDateTime.now()
         );
     }
+
+    public List<WeatherTimeSlot> getWeatherTimeSlots(List<Weather> weatherList) {
+        List<WeatherTimeSlot> weatherTimeSlots = new ArrayList<>();
+        Map<TimeSlot, List<Weather>> weatherByTimeSlot = new HashMap<>();
+
+        for(Weather weather: weatherList){
+            LocalTime time = LocalTime.of(weather.getTime().getHour(), weather.getTime().getMinute());
+            TimeSlot timeSlot = TimeSlot.from(time);
+            weatherByTimeSlot
+                    .computeIfAbsent(timeSlot, list -> new ArrayList<>())
+                    .add(weather);
+        }
+
+        for(TimeSlot timeSlot: TimeSlot.values()){
+            List<Weather> weatherForTimeSlot = weatherByTimeSlot.get(timeSlot);
+
+            if(weatherForTimeSlot == null || weatherForTimeSlot.isEmpty()){
+                throw new IllegalArgumentException("No weather data for time slot: " + timeSlot);
+            }
+            weatherTimeSlots.add(createWeatherTimeSlot(weatherForTimeSlot, timeSlot));
+        }
+
+        return weatherTimeSlots;
+    }
+
+    private WeatherTimeSlot createWeatherTimeSlot(List<Weather> weatherForTimeSlot, TimeSlot timeSlot) {
+        if (weatherForTimeSlot.isEmpty()) {
+            throw new IllegalArgumentException("weatherForTimeSlot cannot be empty");
+        }
+
+        WeatherTimeSlot weatherTimeSlot = new WeatherTimeSlot();
+        weatherTimeSlot.setTimeSlot(timeSlot);
+
+        Map<Integer, Integer> counts = new HashMap<>();
+
+        double airTemperatureSum = 0;
+        Integer humiditySum = 0;
+        double maxWindSpeed = 0;
+        double minFeelsLikeTemperature = Double.POSITIVE_INFINITY;
+        double precipitationSum = 0;
+
+        Integer mostFrequentCondition = weatherForTimeSlot.get(0).getCondition();
+        int highestCount = 0;
+
+        for (Weather w : weatherForTimeSlot) {
+            airTemperatureSum += w.getAirTemperature();
+            humiditySum += w.getHumidity();
+            precipitationSum += w.getPrecipitation();
+
+            maxWindSpeed = Math.max(maxWindSpeed, w.getWindSpeed());
+            minFeelsLikeTemperature = Math.min(minFeelsLikeTemperature, w.getFeelsLikeTemperature());
+
+            counts.put(w.getCondition(), counts.getOrDefault(w.getCondition(), 0) + 1);
+        }
+
+        for(Map.Entry<Integer,Integer> entry: counts.entrySet()){
+            if(entry.getValue() > highestCount){
+                mostFrequentCondition = entry.getKey();
+                highestCount = entry.getValue();
+            }
+        }
+
+        double averageAirTemperature = airTemperatureSum / weatherForTimeSlot.size();
+        Integer averageHumidity =   (int) Math.round((double) humiditySum / weatherForTimeSlot.size());
+        WeatherSymbol symbol = WeatherSymbol.fromWmoCode(mostFrequentCondition);
+
+        weatherTimeSlot.setAirTemperature(averageAirTemperature);
+        weatherTimeSlot.setFeelsLikeTemperature(minFeelsLikeTemperature);
+        weatherTimeSlot.setHumidity(averageHumidity);
+        weatherTimeSlot.setWindSpeed(maxWindSpeed);
+        weatherTimeSlot.setCondition(mostFrequentCondition);
+        weatherTimeSlot.setPrecipitation(precipitationSum);
+        weatherTimeSlot.setConditionDescription(symbol);
+        weatherTimeSlot.setPrecipitationDescription(WeatherCalculationUtils.getPrecipitationDescription(precipitationSum));
+
+        return weatherTimeSlot;
+    }
+
+
 
     private List<TimeSerie> getTodayTimes(List<TimeSerie> timeSerieList) {
         LocalDate today = LocalDate.now(SWEDEN_ZONE);
@@ -123,7 +217,7 @@ public class WeatherService {
                 precipitation,
                 precipitationDescription,
                 LocalDateTime.now()
-                );
+        );
     }
 
 
