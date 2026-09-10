@@ -3,5 +3,6 @@ databaseChangeLog:
       id: "008"
       author: "Tehreem"
       changes:
-        - sql:
-            sql: DELETE FROM clothes WHERE id = 74 AND item = 'socks';
+        - delete:
+            tableName: clothes
+            where: id = 74 AND item = 'socks'
