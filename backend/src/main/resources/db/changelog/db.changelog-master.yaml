@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/006-add-clothing-image-urls.yaml
   - include:
       file: db/changelog/007-update-clothing-data.yaml
+  - include:
+      file: db/changelog/008-delete-socks-id-74.yaml
