@@ -13,7 +13,7 @@ public interface ClothingRepository extends JpaRepository<Clothing, Integer> {
 
     @Query("""
     SELECT c FROM Clothing c
-    WHERE c.category = :category
+    WHERE LOWER(c.category) = LOWER(:category)
     AND c.cloValue BETWEEN :minClo AND :maxClo
 """)
     List<Clothing> findByCategoryAndCloValueBetween(@Param("category") String category,
