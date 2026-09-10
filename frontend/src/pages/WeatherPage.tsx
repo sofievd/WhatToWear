@@ -11,6 +11,7 @@ import {
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
+import type { OutfitRecommendation } from "../features/weather/types/types";
 import {
   PreferencesBar,
   type Preferences,
@@ -29,6 +30,8 @@ export function WeatherPage() {
     null,
   );
   const [recommendationRequest, setRecommendationRequest] = useState(0);
+  const [recommendation, setRecommendation] =
+    useState<OutfitRecommendation | null>(null);
 
   const {
     data: suggestions = [],
@@ -76,6 +79,7 @@ export function WeatherPage() {
     setSelectedCity(city);
     setSearchValue(city.name);
     setSubmittedCity(city);
+    setRecommendation(null);
   }
 
   function handleSearch() {
@@ -88,6 +92,7 @@ export function WeatherPage() {
     setSelectedCity(cityToSubmit);
     setSearchValue(cityToSubmit.name);
     setSubmittedCity(cityToSubmit);
+    setRecommendation(null);
   }
 
   return (
@@ -127,7 +132,10 @@ export function WeatherPage() {
 
           <button
             type="button"
-            onClick={() => setRecommendationRequest((current) => current + 1)}
+            onClick={() => {
+              setRecommendation(null);
+              setRecommendationRequest((current) => current + 1);
+            }}
             className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2"
           >
             Get recommendation
@@ -143,9 +151,17 @@ export function WeatherPage() {
             </h1>
           </section>
 
-          <OutfitGrid requestKey={recommendationRequest} />
+          <OutfitGrid
+            requestKey={recommendationRequest}
+            onRecommendationChange={setRecommendation}
+          />
 
-          <WhyThisOutfit />
+          <WhyThisOutfit
+            recommendation={recommendation}
+            latitude={submittedCity?.latitude ?? null}
+            longitude={submittedCity?.longitude ?? null}
+            preferences={accountPreferences}
+          />
         </div>
       </div>
     </main>

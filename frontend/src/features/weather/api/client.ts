@@ -13,7 +13,8 @@ export async function apiClient<T>(
     },
   });
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`);
+    const message = await response.text();
+    throw new Error(message || `API request failed: ${response.status}`);
   }
   if (response.status === 204) {
     return undefined as T;
