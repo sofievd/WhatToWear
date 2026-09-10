@@ -17,6 +17,9 @@ public class Clothing {
     @Column(name = "clo-value")
     private Double cloValue;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     public Clothing() {
     }
 
@@ -49,6 +52,14 @@ public class Clothing {
 
     public void setCloValue(Double cloValue) {
         this.cloValue = cloValue;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
