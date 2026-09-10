@@ -17,6 +17,37 @@ import {
   type Preferences,
 } from "../features/weather/components/PreferancesBar";
 
+const RECENT_CITIES_KEY = "wearwise-recent-cities";
+const MAX_RECENT_CITIES = 5;
+
+function getRecentCities(): CitySuggestion[] {
+  const stored = localStorage.getItem(RECENT_CITIES_KEY);
+
+  if (!stored) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentCity(city: CitySuggestion) {
+  const recentCities = getRecentCities();
+
+  const updatedCities = [
+    city,
+    ...recentCities.filter(
+      (item) =>
+        item.latitude !== city.latitude || item.longitude !== city.longitude,
+    ),
+  ].slice(0, MAX_RECENT_CITIES);
+
+  localStorage.setItem(RECENT_CITIES_KEY, JSON.stringify(updatedCities));
+}
+
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
   const [accountPreferences, setAccountPreferences] = useState<
@@ -32,6 +63,8 @@ export function WeatherPage() {
   const [recommendationRequest, setRecommendationRequest] = useState(0);
   const [recommendation, setRecommendation] =
     useState<OutfitRecommendation | null>(null);
+  const [recentCities, setRecentCities] =
+    useState<CitySuggestion[]>(getRecentCities());
 
   const {
     data: suggestions = [],
@@ -76,6 +109,9 @@ export function WeatherPage() {
   }
 
   function handleCitySelect(city: CitySuggestion) {
+    saveRecentCity(city);
+    setRecentCities(getRecentCities());
+
     setSelectedCity(city);
     setSearchValue(city.name);
     setSubmittedCity(city);
@@ -88,6 +124,9 @@ export function WeatherPage() {
     if (!cityToSubmit) {
       return;
     }
+
+    saveRecentCity(cityToSubmit);
+    setRecentCities(getRecentCities());
 
     setSelectedCity(cityToSubmit);
     setSearchValue(cityToSubmit.name);
@@ -105,6 +144,7 @@ export function WeatherPage() {
             value={searchValue}
             onChange={handleCityChange}
             suggestions={selectedCity ? [] : suggestions}
+            recentCities={recentCities}
             hasSelectedCity={selectedCity !== null}
             onSelectSuggestion={handleCitySelect}
             onSearch={handleSearch}
