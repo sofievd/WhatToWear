@@ -39,7 +39,6 @@ public class OutfitExplanationService {
         keep the explanation simple.
 
         Mention preferences only when they meaningfully affect comfort.
-        Do not mention style preferences.
 
         Be concise, natural, and slightly friendly. A small emoji is okay.
 
