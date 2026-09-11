@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db/changelog/007-update-clothing-data.yaml
   - include:
       file: db/changelog/008-delete-socks-id-74.yaml
+  - include:
+      file: db/changelog/009-delete-all-underwears.yaml
