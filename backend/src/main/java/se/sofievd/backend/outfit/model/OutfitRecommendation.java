@@ -1,7 +1,7 @@
 package se.sofievd.backend.outfit.model;
 
 public class OutfitRecommendation {
-    private final Double targetCloValue;
+    private  Double targetCloValue;
     private Clothing baseLayer;
     private Clothing midLayer;
     private Clothing outerLayer;
@@ -11,6 +11,9 @@ public class OutfitRecommendation {
 
     public OutfitRecommendation(Double targetCloValue) {
         this.targetCloValue = targetCloValue;
+    }
+
+    public OutfitRecommendation() {
     }
 
     public Double getTargetCloValue() {
