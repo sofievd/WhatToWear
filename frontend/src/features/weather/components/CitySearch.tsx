@@ -1,10 +1,11 @@
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import type { CitySuggestion } from "../types/types";
 
 interface CitySearchProps {
   value: string;
   suggestions: CitySuggestion[];
-  hasSelectedCity: boolean;
+  recentCities: CitySuggestion[];
   isLoading: boolean;
   isError: boolean;
   onChange: (value: string) => void;
@@ -15,66 +16,118 @@ interface CitySearchProps {
 export function CitySearch({
   value,
   suggestions,
-  hasSelectedCity,
+  recentCities,
   isLoading,
   isError,
   onChange,
   onSelectSuggestion,
   onSearch,
 }: CitySearchProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsFocused(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const showDropdown = isFocused;
+
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSearch();
-      }}
-      className="relative"
-    >
-      <Search
-        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-        size={18}
-      />
+    <div ref={searchRef} className="relative">
+      <div className="flex items-center rounded-2xl border border-gray-200 bg-white px-4 shadow-sm">
+        <Search size={19} className="text-gray-400" />
 
-      <input
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Search city..."
-        aria-label="Search for a city"
-        autoComplete="off"
-        className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 outline-none"
-      />
+        <input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onSearch();
+              setIsFocused(false);
+            }
+          }}
+          placeholder="Search for a city"
+          className="w-full bg-transparent px-3 py-4 text-sm text-gray-800 outline-none placeholder:text-gray-400"
+        />
+      </div>
 
-      {isLoading && <p className="mt-2 text-sm text-gray-500">Searching...</p>}
+      {showDropdown && (
+        <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg">
+          {/* Recent searches — only when nothing has been typed */}
+          {value.trim() === "" && recentCities.length > 0 && (
+            <>
+              <div className="px-4 py-3">
+                <p className="text-xs font-bold uppercase tracking-wide text-gray-400">
+                  Recent searches
+                </p>
+              </div>
 
-      {isError && (
-        <p className="mt-2 text-sm text-red-500">Couldn't load cities.</p>
+              <div className="border-t border-gray-100">
+                {recentCities.map((city) => (
+                  <button
+                    key={`${city.name}-${city.latitude}-${city.longitude}`}
+                    type="button"
+                    onClick={() => {
+                      onSelectSuggestion(city);
+                      setIsFocused(false);
+                    }}
+                    className="w-full px-4 py-3 text-left transition-colors hover:bg-gray-50"
+                  >
+                    <p className="font-medium text-gray-800">{city.name}</p>
+                    <p className="text-sm text-gray-500">{city.country}</p>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Normal search suggestions */}
+          {value.trim() !== "" && suggestions.length > 0 && (
+            <div>
+              {suggestions.map((city) => (
+                <button
+                  key={`${city.name}-${city.latitude}-${city.longitude}`}
+                  type="button"
+                  onClick={() => {
+                    onSelectSuggestion(city);
+                    setIsFocused(false);
+                  }}
+                  className="w-full px-4 py-3 text-left transition-colors hover:bg-gray-50"
+                >
+                  <p className="font-medium text-gray-800">{city.name}</p>
+                  <p className="text-sm text-gray-500">{city.country}</p>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {isLoading && value.trim() !== "" && (
+            <p className="px-4 py-3 text-sm text-gray-400">
+              Searching...
+            </p>
+          )}
+
+          {isError && (
+            <p className="px-4 py-3 text-sm text-red-500">
+              Could not load cities.
+            </p>
+          )}
+        </div>
       )}
-
-      {!isLoading && !isError && suggestions.length > 0 && (
-        <ul className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
-          {suggestions.map((city) => (
-            <li key={`${city.name}-${city.latitude}-${city.longitude}`}>
-              <button
-                type="button"
-                onClick={() => onSelectSuggestion(city)}
-                className="flex w-full flex-col px-4 py-3 text-left hover:bg-gray-50"
-              >
-                <span className="font-medium">{city.name}</span>
-                <span className="text-sm text-gray-500">{city.country}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {!isLoading &&
-        !isError &&
-        !hasSelectedCity &&
-        value.trim().length >= 2 &&
-        suggestions.length === 0 && (
-          <p className="mt-2 text-sm text-gray-500">No cities found.</p>
-        )}
-    </form>
+    </div>
   );
 }

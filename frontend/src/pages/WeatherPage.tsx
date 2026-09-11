@@ -11,10 +11,42 @@ import {
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
 import type { CitySuggestion } from "../features/weather/types/types";
+import type { OutfitRecommendation } from "../features/weather/types/types";
 import {
   PreferencesBar,
   type Preferences,
 } from "../features/weather/components/PreferancesBar";
+
+const RECENT_CITIES_KEY = "wearwise-recent-cities";
+const MAX_RECENT_CITIES = 5;
+
+function getRecentCities(): CitySuggestion[] {
+  const stored = localStorage.getItem(RECENT_CITIES_KEY);
+
+  if (!stored) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentCity(city: CitySuggestion) {
+  const recentCities = getRecentCities();
+
+  const updatedCities = [
+    city,
+    ...recentCities.filter(
+      (item) =>
+        item.latitude !== city.latitude || item.longitude !== city.longitude,
+    ),
+  ].slice(0, MAX_RECENT_CITIES);
+
+  localStorage.setItem(RECENT_CITIES_KEY, JSON.stringify(updatedCities));
+}
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
@@ -29,6 +61,10 @@ export function WeatherPage() {
     null,
   );
   const [recommendationRequest, setRecommendationRequest] = useState(0);
+  const [recommendation, setRecommendation] =
+    useState<OutfitRecommendation | null>(null);
+  const [recentCities, setRecentCities] =
+    useState<CitySuggestion[]>(getRecentCities());
 
   const {
     data: suggestions = [],
@@ -73,9 +109,13 @@ export function WeatherPage() {
   }
 
   function handleCitySelect(city: CitySuggestion) {
+    saveRecentCity(city);
+    setRecentCities(getRecentCities());
+
     setSelectedCity(city);
     setSearchValue(city.name);
     setSubmittedCity(city);
+    setRecommendation(null);
   }
 
   function handleSearch() {
@@ -85,9 +125,13 @@ export function WeatherPage() {
       return;
     }
 
+    saveRecentCity(cityToSubmit);
+    setRecentCities(getRecentCities());
+
     setSelectedCity(cityToSubmit);
     setSearchValue(cityToSubmit.name);
     setSubmittedCity(cityToSubmit);
+    setRecommendation(null);
   }
 
   return (
@@ -100,6 +144,7 @@ export function WeatherPage() {
             value={searchValue}
             onChange={handleCityChange}
             suggestions={selectedCity ? [] : suggestions}
+            recentCities={recentCities}
             hasSelectedCity={selectedCity !== null}
             onSelectSuggestion={handleCitySelect}
             onSearch={handleSearch}
@@ -127,7 +172,10 @@ export function WeatherPage() {
 
           <button
             type="button"
-            onClick={() => setRecommendationRequest((current) => current + 1)}
+            onClick={() => {
+              setRecommendation(null);
+              setRecommendationRequest((current) => current + 1);
+            }}
             className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2"
           >
             Get recommendation
@@ -143,9 +191,17 @@ export function WeatherPage() {
             </h1>
           </section>
 
-          <OutfitGrid requestKey={recommendationRequest} />
+          <OutfitGrid
+            requestKey={recommendationRequest}
+            onRecommendationChange={setRecommendation}
+          />
 
-          <WhyThisOutfit />
+          <WhyThisOutfit
+            recommendation={recommendation}
+            latitude={submittedCity?.latitude ?? null}
+            longitude={submittedCity?.longitude ?? null}
+            preferences={accountPreferences}
+          />
         </div>
       </div>
     </main>

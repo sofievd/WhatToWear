@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: "007"
       author: "Tehreem"
-      validCheckSum: 9:4d1fa4bc5655099dcaae4768631c8490
       changes:
         - update:
             tableName: clothes

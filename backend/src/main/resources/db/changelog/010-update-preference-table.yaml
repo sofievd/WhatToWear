@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: "010"
+      author: "Tehreem"
+      changes:
+         - dropColumn:
+             tableName: user_preferences
+             columnName: style

@@ -1,6 +1,7 @@
 import type {
   ClothingItem,
   OutfitRecommendation,
+  OutfitExplanation,
   WeatherData,
 } from "../types/types";
 import { apiClient } from "./client";
@@ -30,6 +31,18 @@ export function getClothing(): Promise<ClothingItem[]> {
 
 export function getRecommendation(): Promise<OutfitRecommendation> {
   return apiClient<OutfitRecommendation>("/api/recommendation");
+}
+
+export function getOutfitExplanation(request: {
+  latitude: number;
+  longitude: number;
+  recommendation: OutfitRecommendation;
+  preferences: Preferences;
+}): Promise<OutfitExplanation> {
+  return apiClient<OutfitExplanation>("/api/recommendation/explanation", {
+    method: "POST",
+    body: JSON.stringify(request),
+  });
 }
 
 export function savePreferences(

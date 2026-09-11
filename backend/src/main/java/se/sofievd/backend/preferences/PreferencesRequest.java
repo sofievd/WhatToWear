@@ -9,9 +9,6 @@ public record PreferencesRequest(
         String activity,
         @NotBlank
         @Pattern(regexp = "cold|neutral|hot")
-        String thermalSensitivity,
-        @NotBlank
-        @Pattern(regexp = "neutral|feminine|masculine")
-        String style
+        String thermalSensitivity
 ) {
 }

@@ -1,9 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { getRecommendation } from "../api/weatherService";
 import { OutfitCard } from "./OutfitCard";
-import type { ClothingItem } from "../types/types";
+import type { ClothingItem, OutfitRecommendation } from "../types/types";
 
-export function OutfitGrid({ requestKey }: { requestKey: number }) {
+export function OutfitGrid({
+  requestKey,
+  onRecommendationChange,
+}: {
+  requestKey: number;
+  onRecommendationChange?: (
+    recommendation: OutfitRecommendation | null,
+  ) => void;
+}) {
   const {
     data: recommendation,
     isLoading,
@@ -13,6 +22,10 @@ export function OutfitGrid({ requestKey }: { requestKey: number }) {
     queryFn: getRecommendation,
     enabled: requestKey > 0,
   });
+
+  useEffect(() => {
+    onRecommendationChange?.(recommendation ?? null);
+  }, [onRecommendationChange, recommendation]);
 
   const clothing = recommendation
     ? [

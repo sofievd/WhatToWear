@@ -31,3 +31,7 @@ export interface OutfitRecommendation {
   footwear: ClothingItem | null;
   accessory: ClothingItem | null;
 }
+
+export interface OutfitExplanation {
+  explanation: string;
+}
