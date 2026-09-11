@@ -19,4 +19,6 @@ public interface ClothingRepository extends JpaRepository<Clothing, Integer> {
     List<Clothing> findByCategoryAndCloValueBetween(@Param("category") String category,
                                                     @Param("minClo") Double minClo,
                                                     @Param("maxClo") Double maxClo);
+
+    Clothing findByName(String name);
 }
