@@ -1,4 +1,9 @@
 spring:
+  config:
+    import:
+      - optional:file:./.env[.properties]
+      - optional:file:./backend/.env[.properties]
+
   application:
     name: backend
 
@@ -16,3 +21,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+openrouter:
+  api-key: ${OPENROUTER_API_KEY:}

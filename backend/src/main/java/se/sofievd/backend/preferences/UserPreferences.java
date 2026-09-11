@@ -39,7 +39,6 @@ public class UserPreferences {
     public void updateFrom(PreferencesRequest request) {
         this.activity = request.activity();
         this.thermalSensitivity = request.thermalSensitivity();
-        this.style = request.style();
     }
 
     @PrePersist
@@ -49,6 +48,6 @@ public class UserPreferences {
     }
 
     public PreferencesRequest toRequest() {
-        return new PreferencesRequest(activity, thermalSensitivity, style);
+        return new PreferencesRequest(activity, thermalSensitivity);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,6 +19,7 @@ public class SecurityConfig {
             ObjectProvider<JwtDecoder> jwtDecoder
     ) throws Exception {
         http.csrf(csrf -> csrf.disable());
+        http.cors(Customizer.withDefaults());
 
         if (jwtDecoder.getIfAvailable() == null) {
             http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
@@ -33,8 +35,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    @ConditionalOnExpression("'${CLERK_ISSUER_URL:}' != ''")
-    JwtDecoder jwtDecoder(@Value("${CLERK_ISSUER_URL:}") String issuerUrl) {
+    @ConditionalOnExpression("'${CLERK_JWT_ISSUER_URI:${CLERK_ISSUER_URL:}}' != ''")
+    JwtDecoder jwtDecoder(
+            @Value("${CLERK_JWT_ISSUER_URI:${CLERK_ISSUER_URL:}}") String issuerUrl
+    ) {
         return JwtDecoders.fromIssuerLocation(issuerUrl);
     }
 }

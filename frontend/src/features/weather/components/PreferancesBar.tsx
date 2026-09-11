@@ -11,7 +11,6 @@ import {
 export type Preferences = {
   activity: "sitting" | "walking" | "biking" | "jogging" | "running";
   thermalSensitivity: "cold" | "neutral" | "hot";
-  style: "neutral" | "feminine" | "masculine";
 };
 
 type PreferencesBarProps = {
@@ -27,7 +26,6 @@ type Toast = {
 const defaultPreferences: Preferences = {
   activity: "walking",
   thermalSensitivity: "neutral",
-  style: "neutral",
 };
 
 const activityOptions: Array<{
@@ -48,12 +46,6 @@ const thermalOptions: Array<{
   { label: "Runs Cold", value: "cold" },
   { label: "Neutral", value: "neutral" },
   { label: "Runs Hot", value: "hot" },
-];
-
-const styleOptions: Array<{ label: string; value: Preferences["style"] }> = [
-  { label: "Gender Neutral", value: "neutral" },
-  { label: "More Feminine", value: "feminine" },
-  { label: "More Masculine", value: "masculine" },
 ];
 
 export function PreferencesBar({
@@ -222,22 +214,6 @@ export function PreferencesBar({
             </div>
           </PreferenceGroup>
 
-          <PreferenceGroup
-            icon={<Sparkles size={19} />}
-            title="Style preference"
-          >
-            <div className="flex flex-wrap gap-2">
-              {styleOptions.map((option) => (
-                <PreferenceOption
-                  key={option.value}
-                  label={option.label}
-                  selected={draftPreferences.style === option.value}
-                  onClick={() => updatePreference("style", option.value)}
-                />
-              ))}
-            </div>
-          </PreferenceGroup>
-
           <button
             type="button"
             onClick={handleSave}
@@ -278,8 +254,7 @@ export function PreferencesBar({
 function arePreferencesEqual(first: Preferences, second: Preferences) {
   return (
     first.activity === second.activity &&
-    first.thermalSensitivity === second.thermalSensitivity &&
-    first.style === second.style
+    first.thermalSensitivity === second.thermalSensitivity
   );
 }
 

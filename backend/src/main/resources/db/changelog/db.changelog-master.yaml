@@ -7,3 +7,15 @@ databaseChangeLog:
       file: db/changelog/003-create-user-preferences-table.yaml
   - include:
       file: db/changelog/004-add-clothing-image-url.yaml
+  - include:
+      file: db/changelog/005-keep-short-clothing-data.yaml
+  - include:
+      file: db/changelog/006-add-clothing-image-urls.yaml
+  - include:
+      file: db/changelog/007-update-clothing-data.yaml
+  - include:
+      file: db/changelog/008-delete-socks-id-74.yaml
+  - include:
+      file: db/changelog/009-delete-all-underwears.yaml
+  - include:
+      file: db/changelog/010-update-preference-table.yaml
