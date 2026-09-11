@@ -106,7 +106,7 @@ public class WeatherService {
         );
     }
 
-    public List<WeatherTimeSlot> getWeatherTimeSlots(List<Weather> weatherList) {
+    private List<WeatherTimeSlot> getWeatherTimeSlots(List<Weather> weatherList) {
         List<WeatherTimeSlot> weatherTimeSlots = new ArrayList<>();
         Map<TimeSlot, List<Weather>> weatherByTimeSlot = new HashMap<>();
 
@@ -144,6 +144,7 @@ public class WeatherService {
         Integer humiditySum = 0;
         double maxWindSpeed = 0;
         double minFeelsLikeTemperature = Double.POSITIVE_INFINITY;
+        double maxFeelsLikeTemperature = 0;
         double precipitationSum = 0;
 
         Integer mostFrequentCondition = weatherForTimeSlot.get(0).getCondition();
@@ -155,6 +156,7 @@ public class WeatherService {
             precipitationSum += w.getPrecipitation();
 
             maxWindSpeed = Math.max(maxWindSpeed, w.getWindSpeed());
+            maxFeelsLikeTemperature = Math.max(maxFeelsLikeTemperature, w.getFeelsLikeTemperature());
             minFeelsLikeTemperature = Math.min(minFeelsLikeTemperature, w.getFeelsLikeTemperature());
 
             counts.put(w.getCondition(), counts.getOrDefault(w.getCondition(), 0) + 1);
@@ -172,7 +174,8 @@ public class WeatherService {
         WeatherSymbol symbol = WeatherSymbol.fromWmoCode(mostFrequentCondition);
 
         weatherTimeSlot.setAirTemperature(averageAirTemperature);
-        weatherTimeSlot.setFeelsLikeTemperature(minFeelsLikeTemperature);
+        weatherTimeSlot.setMinFeelsLikeTemperature(minFeelsLikeTemperature);
+        weatherTimeSlot.setMaxFeelsLikeTemperature(maxFeelsLikeTemperature);
         weatherTimeSlot.setHumidity(averageHumidity);
         weatherTimeSlot.setWindSpeed(maxWindSpeed);
         weatherTimeSlot.setCondition(mostFrequentCondition);
