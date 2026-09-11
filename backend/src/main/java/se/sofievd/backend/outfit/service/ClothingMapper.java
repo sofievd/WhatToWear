@@ -5,11 +5,13 @@ import se.sofievd.backend.outfit.model.Clothing;
 
 public class ClothingMapper {
 
-    public static ClothingDto toDto(Clothing clothing){
-        return new ClothingDto(clothing.getName(),
+    public static ClothingDto toDto(Clothing clothing) {
+        return new ClothingDto(
+                clothing.getId(),
+                clothing.getName(),
                 clothing.getCategory(),
-            clothing.getCloValue(),
-            clothing.getImageUrl());
+                clothing.getCloValue(),
+                clothing.getImageUrl());
 
     }
 }
