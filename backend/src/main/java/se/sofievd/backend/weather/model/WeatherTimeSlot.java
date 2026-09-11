@@ -8,7 +8,8 @@ import java.time.LocalTime;
 public class WeatherTimeSlot {
     private TimeSlot timeSlot;
     private Double airTemperature;
-    private Double feelsLikeTemperature;
+    private Double minFeelsLikeTemperature;
+    private Double maxFeelsLikeTemperature;
     private Double windSpeed;
     private Integer humidity;
     private Integer condition;
@@ -32,12 +33,20 @@ public class WeatherTimeSlot {
         this.airTemperature = airTemperature;
     }
 
-    public Double getFeelsLikeTemperature() {
-        return feelsLikeTemperature;
+    public Double getMinFeelsLikeTemperature() {
+        return minFeelsLikeTemperature;
     }
 
-    public void setFeelsLikeTemperature(Double feelsLikeTemperature) {
-        this.feelsLikeTemperature = feelsLikeTemperature;
+    public void setMinFeelsLikeTemperature(Double minFeelsLikeTemperature) {
+        this.minFeelsLikeTemperature = minFeelsLikeTemperature;
+    }
+
+    public Double getMaxFeelsLikeTemperature() {
+        return maxFeelsLikeTemperature;
+    }
+
+    public void setMaxFeelsLikeTemperature(Double maxFeelsLikeTemperature) {
+        this.maxFeelsLikeTemperature = maxFeelsLikeTemperature;
     }
 
     public Double getWindSpeed() {
