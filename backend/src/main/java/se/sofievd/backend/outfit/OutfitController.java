@@ -2,11 +2,12 @@ package se.sofievd.backend.outfit;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import se.sofievd.backend.outfit.model.ActivityLevel;
+import se.sofievd.backend.outfit.model.enums.ActivityLevel;
 import se.sofievd.backend.outfit.model.Clothing;
 import se.sofievd.backend.outfit.model.Recommendation;
-import se.sofievd.backend.outfit.model.ToleranceLevel;
+import se.sofievd.backend.outfit.model.enums.ToleranceLevel;
 import se.sofievd.backend.outfit.service.ClothingMapper;
 import se.sofievd.backend.outfit.service.ClothingService;
 import se.sofievd.backend.outfit.service.RecommendationService;
@@ -32,8 +33,23 @@ public class OutfitController {
 
 
     @GetMapping("/api/recommendation")
-    public ResponseEntity<Recommendation> getRecommendation() {
-        Recommendation recommendation = recommendationService.generateRecommendation(18.063240, 58.334591, ToleranceLevel.NEUTRAL, ActivityLevel.WALKING);
+    public ResponseEntity<Recommendation> getRecommendation(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam String toleranceLevel,
+            @RequestParam String activityLevel
+    ) {
+
+
+        ToleranceLevel tolerance = ToleranceLevel.valueOf(
+                toleranceLevel.toUpperCase()
+        );
+
+        ActivityLevel activity = ActivityLevel.valueOf(
+                activityLevel.toUpperCase()
+        );
+
+        Recommendation recommendation = recommendationService.generateRecommendation(longitude, latitude, tolerance, activity);
         return ResponseEntity.ok().body(recommendation);
     }
 }
