@@ -15,7 +15,7 @@ import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
 public class OpenMeteoClient {
 
     private static final String ENTRY_POINT = "https://api.open-meteo.com";
-    private static final String PARAMETERS = "temperature_2m,apparent_temperature,wind_speed_10m,relative_humidity_2m,weather_code,precipitation";
+    private static final String PARAMETERS = "temperature_2m,apparent_temperature,wind_speed_10m,relative_humidity_2m,weather_code,precipitation,uv_index";
     private static final String FORECAST_DAYS= "1";
     private static final Logger log = LoggerFactory.getLogger(OpenMeteoClient.class);
     private final RestClient restClient;
