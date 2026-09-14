@@ -7,8 +7,9 @@ public class Outfit {
     Clothing bottom;
     Clothing mid;
     Clothing outer;
-    List<Clothing> acessories;
+    List<Clothing> accessories;
     Clothing footwear;
+    Clothing socks;
 
     public Outfit() {
     }
@@ -45,12 +46,12 @@ public class Outfit {
         this.outer = outer;
     }
 
-    public List<Clothing> getAcessories() {
-        return acessories;
+    public List<Clothing> getAccessories() {
+        return accessories;
     }
 
-    public void setAcessories(List<Clothing> acessories) {
-        this.acessories = acessories;
+    public void setAccessories(List<Clothing> accessories) {
+        this.accessories = accessories;
     }
 
     public Clothing getFootwear() {
@@ -59,5 +60,13 @@ public class Outfit {
 
     public void setFootwear(Clothing footwear) {
         this.footwear = footwear;
+    }
+
+    public Clothing getSocks() {
+        return socks;
+    }
+
+    public void setSocks(Clothing socks) {
+        this.socks = socks;
     }
 }
