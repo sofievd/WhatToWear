@@ -1,4 +1,4 @@
-package se.sofievd.backend.outfit.model;
+package se.sofievd.backend.outfit.model.enums;
 
 public enum ActivityLevel {
 
@@ -27,4 +27,5 @@ public enum ActivityLevel {
     public double getMetabolicRate() {
         return metValue * 58.2;
     }
+
 }

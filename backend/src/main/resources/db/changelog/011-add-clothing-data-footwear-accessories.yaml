@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: "011"
+      author: "Sofie Van Dingenen"
+      changes:
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Footwear" }
+              - column: { name: item, value: "sneakers" }
+              - column: { name: clo-value, valueNumeric: "0.05" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/sneakers.jpeg"}
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Footwear" }
+              - column: { name: item, value: "sandals" }
+              - column: { name: clo-value, valueNumeric: "0.03" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/sandals.jpeg"}
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Footwear" }
+              - column: { name: item, value: "rainboots" }
+              - column: { name: clo-value, valueNumeric: "0.08" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/rain-boots.jpeg" }
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "sunglasses" }
+              - column: { name: clo-value, valueNumeric: "0.03" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/sunglasses.jpeg" }
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Accessories" }
+              - column: { name: item, value: "cap" }
+              - column: { name: clo-value, valueNumeric: "0.03" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/hat-cap.jpeg" }
+        - insert:
+            tableName: clothes
+            columns:
+              - column: { name: category, value: "Jackets" }
+              - column: { name: item, value: "rain jacket" }
+              - column: { name: clo-value, valueNumeric: "0.03" }
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/rain-jacket.jpeg/storage/v1/object/public/Outfit-Images/hat-cap.jpeg" }
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/rain-boots.jpeg"}
+              - column: {name: item, value: "beanie"}
+            where: id = 77

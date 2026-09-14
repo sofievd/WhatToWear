@@ -1,6 +1,11 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.service;
+
+import se.sofievd.backend.weather.model.WeatherResponseDto;
+import se.sofievd.backend.weather.model.Weather;
 
 public class WeatherMapper {
+    private WeatherMapper() {
+    }
 
     public static WeatherResponseDto toWeatherResponseDto(Weather weather){
         return new WeatherResponseDto(weather.getAirTemperature(),

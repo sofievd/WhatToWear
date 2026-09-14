@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: "013"
+      author: "Sofie Van Dingenen"
+      changes:
+        - update:
+            tableName: clothes
+            columns:
+              - column:
+                  name: waterproof
+                  valueBoolean: true
+            where: "item IN ('rainboots', 'rain jacket')"
+        - update:
+            tableName: clothes
+            columns:
+              - column:
+                  name: clo-value
+                  valueNumeric: "0.03"
+            where: "item LIKE 'socks'"

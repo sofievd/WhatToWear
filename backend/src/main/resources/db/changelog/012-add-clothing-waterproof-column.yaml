@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: "012"
+      author: "Sofie Van Dingenen"
+      changes:
+        - addColumn:
+            tableName: clothes
+            columns:
+              - column:
+                  name: waterproof
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false

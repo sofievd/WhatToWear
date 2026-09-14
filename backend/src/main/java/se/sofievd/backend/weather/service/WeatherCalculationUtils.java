@@ -1,4 +1,4 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.service;
 
 public class WeatherCalculationUtils {
 

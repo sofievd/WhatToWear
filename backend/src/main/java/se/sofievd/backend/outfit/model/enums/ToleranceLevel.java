@@ -1,4 +1,4 @@
-package se.sofievd.backend.outfit.model;
+package se.sofievd.backend.outfit.model.enums;
 
 public enum ToleranceLevel {
 

@@ -30,11 +30,9 @@ public class ClothingService {
     public Clothing findBestItemFromDb(String category, double targetClo) {
         double minClo = Math.max(0.0, targetClo - 0.20);
         double maxClo = targetClo + 0.20;
-        log.info("minClo: {}, maxClo: {}", minClo, maxClo);
 
         List<Clothing> matches = clothingRepository.findByCategoryAndCloValueBetween(category, minClo, maxClo);
 
-        log.info("the matches: {}", matches);
         if (matches.isEmpty()) {
             // Fallback: haal items op van deze categorie en pak de eerste beschikbare
             List<Clothing> allCategoryItems = clothingRepository.findByCategoryAndCloValueBetween(category, 0.0, 5.0);
@@ -65,6 +63,10 @@ public class ClothingService {
         }
 
         return null;
+    }
+
+    public Clothing findByName(String name){
+        return  clothingRepository.findByName(name);
     }
 
 }
