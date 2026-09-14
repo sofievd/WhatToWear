@@ -15,7 +15,7 @@ export function AuthControls() {
   }
 
   return (
-    <div className="absolute right-0 top-0 flex items-center gap-1.5">
+    <div className="flex items-center gap-1.5">
       <SignedOut>
         <SignInButton mode="modal">
           <button
@@ -25,6 +25,7 @@ export function AuthControls() {
             Log in
           </button>
         </SignInButton>
+
         <SignUpButton mode="modal">
           <button
             type="button"

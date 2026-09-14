@@ -52,50 +52,55 @@ export function WeatherCard({ weather, city }: WeatherCardProps) {
     label: "Unknown weather",
     icon: Cloud,
   };
+
   const WeatherIcon = weatherSymbol.icon;
 
   return (
     <section
-      className="weather-display"
+      className="rounded-2xl border border-[#E9E5DE] bg-white px-4 py-3 shadow-sm"
       aria-label={`Current weather in ${city}`}
     >
-      <div className="weather-heading">
-        <div>
-          <p className="weather-eyebrow">Current weather</p>
-          <h2 className="weather-city">{city}</h2>
-        </div>
-        <div className="weather-icon" aria-hidden="true">
-          <WeatherIcon size={28} />
-        </div>
-      </div>
+      <div className="flex items-center justify-between gap-3">
+        {/* City + weather */}
+        <div className="min-w-0">
+          <div className="flex items-baseline gap-2">
+            <h2 className="truncate text-base font-bold text-[#17294D]">
+              {city}
+            </h2>
 
-      <div className="temp-main">
-        <h2 className="temp-value">{weather.temperature}°C</h2>
-        <p className="temp-feels">Feels like {(weather.feelsLike).toFixed(1)}°C</p>
-      </div>
-
-      <div className="weather-details">
-        <div className="detail-item">
-          <span className="detail-label">Condition</span>
-          <span className="detail-value">
-            {weather.conditionDescription || weatherSymbol.label}
-          </span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Wind </span>
-          <span className="detail-value whitespace-nowrap">
-            {(weather.windSpeed).toFixed(1)} km/h
-          </span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Precipitation </span>
-          <span className="detail-value">
-            {weather.precipitation} mm
-            <span className="text-italic">
-              {weather.precipitationDescription}
+            <span className="text-xl font-bold text-[#17294D]">
+              {weather.temperature}°C
             </span>
-          </span>
+          </div>
+
+          <p className="mt-0.5 truncate text-xs text-[#6F7480]">
+            {weather.conditionDescription || weatherSymbol.label} · Feels like{" "}
+            {weather.feelsLike.toFixed(1)}°C
+          </p>
         </div>
+
+        {/* Weather icon */}
+        <div
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FCF4EE] text-[#E77D72]"
+          aria-hidden="true"
+        >
+          <WeatherIcon size={22} />
+        </div>
+      </div>
+
+      {/* Small supporting details */}
+      <div className="mt-2 flex gap-4 border-t border-[#F0ECE6] pt-2 text-[11px] text-[#6F7480]">
+        <span>
+          Wind{" "}
+          <strong className="text-[#17294D]">
+            {weather.windSpeed.toFixed(1)} km/h
+          </strong>
+        </span>
+
+        <span>
+          Rain{" "}
+          <strong className="text-[#17294D]">{weather.precipitation} mm</strong>
+        </span>
       </div>
     </section>
   );

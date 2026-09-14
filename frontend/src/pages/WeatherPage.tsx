@@ -135,12 +135,12 @@ export function WeatherPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-4">
+<main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-2">
       <div className="mx-auto w-full max-w-[390px]">
         <AppHeader />
 
-        <div className="space-y-6">
-          <CitySearch
+<div className="space-y-5">
+            <CitySearch
             value={searchValue}
             onChange={handleCityChange}
             suggestions={selectedCity ? [] : suggestions}
@@ -176,19 +176,24 @@ export function WeatherPage() {
               setRecommendation(null);
               setRecommendationRequest((current) => current + 1);
             }}
+            disabled={!submittedCity}
             className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2"
           >
-            Get recommendation
+            Get my outfit
           </button>
 
-          <section className="pt-2">
+          <section className="pt-1">
             <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#E77D72]">
-              Today's selection
+              Your style, today
             </p>
 
-            <h1 className="mt-1 font-serif text-[32px] leading-tight text-[#17294D]">
-              Your Recommended Outfit
+            <h1 className="mt-1 font-serif text-[30px] leading-tight text-[#17294D]">
+              What should you wear?
             </h1>
+
+            <p className="mt-1 text-sm leading-relaxed text-[#6F7480]">
+              Based on today's weather and your preferences.
+            </p>
           </section>
 
           <OutfitGrid
