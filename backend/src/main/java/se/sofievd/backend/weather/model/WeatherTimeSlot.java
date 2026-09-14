@@ -16,6 +16,8 @@ public class WeatherTimeSlot {
     private WeatherSymbol conditionDescription;
     private Double precipitation;
     private String precipitationDescription;
+    private Double maxUvIndex;
+    private boolean sunny;
 
     public TimeSlot getTimeSlot() {
         return timeSlot;
@@ -95,5 +97,21 @@ public class WeatherTimeSlot {
 
     public void setPrecipitationDescription(String precipitationDescription) {
         this.precipitationDescription = precipitationDescription;
+    }
+
+    public Double getMaxUvIndex() {
+        return maxUvIndex;
+    }
+
+    public void setMaxUvIndex(Double maxUvIndex) {
+        this.maxUvIndex = maxUvIndex;
+    }
+
+    public boolean isSunny() {
+        return sunny;
+    }
+
+    public void setSunny(boolean sunny) {
+        this.sunny = sunny;
     }
 }
