@@ -1,4 +1,4 @@
-package se.sofievd.backend.weather.model;
+package se.sofievd.backend.outfit.model.weather;
 
 public record CurrentWeatherState(
         double cloTarget,
