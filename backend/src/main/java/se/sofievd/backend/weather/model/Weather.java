@@ -1,4 +1,6 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.model;
+
+import se.sofievd.backend.weather.model.enums.WeatherSymbol;
 
 import java.time.LocalDateTime;
 
@@ -9,9 +11,10 @@ public class Weather {
     private Integer humidity;
     private Integer condition;
     private WeatherSymbol conditionDescription;
-    private LocalDateTime date;
+    private LocalDateTime time;
     private Double precipitation;
     private String precipitationDescription;
+    private Double uvIndex;
 
     public Weather() {
     }
@@ -24,7 +27,7 @@ public class Weather {
                    WeatherSymbol conditionDescription,
                    Double precipitation,
                    String precipitationDescription,
-                   LocalDateTime date) {
+                   LocalDateTime time) {
         this.airTemperature = airTemperature;
         this.feelsLikeTemperature = feelsLikeTemperature;
         this.windSpeed = windSpeed;
@@ -33,7 +36,7 @@ public class Weather {
         this.conditionDescription = conditionDescription;
         this.precipitation = precipitation;
         this.precipitationDescription = precipitationDescription;
-        this.date = date;
+        this.time = time;
     }
 
     public Double getAirTemperature() {
@@ -60,12 +63,12 @@ public class Weather {
         this.humidity = humidity;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getTime() {
+        return time;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
     public Double getFeelsLikeTemperature() {
@@ -106,5 +109,13 @@ public class Weather {
 
     public void setPrecipitationDescription(String precipitationDescription) {
         this.precipitationDescription = precipitationDescription;
+    }
+
+    public Double getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(Double uvIndex) {
+        this.uvIndex = uvIndex;
     }
 }

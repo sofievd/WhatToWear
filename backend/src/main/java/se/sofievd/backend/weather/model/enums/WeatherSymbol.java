@@ -1,4 +1,4 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -8,8 +8,8 @@ import java.util.Arrays;
 public enum WeatherSymbol {
 
     CLEAR_SKY(1, "Clear sky"),
-    NEARLY_CLEAR_SKY(2, "Nearly clear sky" ),
-    VARIABLE_CLOUDINESS(3, "Variable cloudiness" ),
+    NEARLY_CLEAR_SKY(2, "Nearly clear sky"),
+    VARIABLE_CLOUDINESS(3, "Variable cloudiness"),
     HALFCLEAR_SKY(4, "Halfclear sky"),
     CLOUDY_SKY(5, "Cloudy sky"),
     OVERCAST(6, "Overcast"),
@@ -68,9 +68,15 @@ public enum WeatherSymbol {
             case 2 -> VARIABLE_CLOUDINESS;
             case 3 -> OVERCAST;
             case 45, 48 -> FOG;
-            case 51, 53, 55, 56, 57 -> LIGHT_RAIN;
-            case 61, 63, 66, 80, 81 -> MODERATE_RAIN;
-            case 65, 67, 82 -> HEAVY_RAIN;
+            case 51, 53, 55, 61 -> LIGHT_RAIN;
+            case 63 -> MODERATE_RAIN;
+            case 65 -> HEAVY_RAIN;
+            case 66, 56 -> LIGHT_SLEET;
+            case 57 -> MODERATE_SLEET;
+            case 67 -> HEAVY_SLEET;
+            case 80 -> LIGHT_RAIN_SHOWERS;
+            case 81 -> MODERATE_RAIN_SHOWERS;
+            case 82 -> HEAVY_RAIN_SHOWERS;
             case 71, 77, 85 -> LIGHT_SNOWFALL;
             case 73, 86 -> MODERATE_SNOWFALL;
             case 75 -> HEAVY_SNOWFALL;

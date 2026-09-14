@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: "008"
+      author: "Tehreem"
+      changes:
+        - delete:
+            tableName: clothes
+            where: id = 74 AND item = 'socks'

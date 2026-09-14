@@ -1,4 +1,4 @@
-package se.sofievd.backend.weather;
+package se.sofievd.backend.weather.model;
 
 public record WeatherResponseDto(Double temperature,
                                  Double feelsLike,

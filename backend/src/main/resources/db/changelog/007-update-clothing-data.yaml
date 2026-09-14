@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: "007"
+      author: "Tehreem"
+      changes:
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: item, value: "underwear" }
+            where: id = 51
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: item, value: "long underwear" }
+            where: id = 52
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: item, value: "undershirt" }
+            where: id = 53
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/short-sleeve-shirt.jpeg" }
+            where: id = 54
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/long-sleeve-shirt.jpeg" }
+            where: id = 55
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/flannel-shirt.jpeg" }
+            where: id = 56
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/shorts.jpeg" }
+            where: id = 57
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/trousers.jpeg" }
+            where: id = 58
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/flannel-trouser.jpeg" }
+            where: id = 59
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/thin-sweater.jpeg" }
+            where: id = 60
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/thick-sweater.jpeg" }
+            where: id = 61
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/light-dress.jpeg" }
+            where: id = 62
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/heavy-dress.jpeg" }
+            where: id = 63
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/light-jacket.jpeg" }
+            where: id = 64
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/jacket.jpeg" }
+            where: id = 65
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/coat.jpeg" }
+            where: id = 66
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/down-jacket.jpeg" }
+            where: id = 67
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/parka.jpeg" }
+            where: id = 68
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/insulated-pants.jpeg" }
+            where: id = 69
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/socks.jpeg" }
+            where: id = 70
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/dress-shoes.jpeg" }
+            where: id = 71
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/heels.jpeg" }
+            where: id = 72
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/boots.jpeg" }
+            where: id = 73
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/gloves.jpeg" }
+            where: id = 75
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/scarf.jpeg" }
+            where: id = 76
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/hat-cap.jpeg" }
+            where: id = 77
