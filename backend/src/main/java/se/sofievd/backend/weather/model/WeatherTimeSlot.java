@@ -1,9 +1,7 @@
 package se.sofievd.backend.weather.model;
 
-import se.sofievd.backend.weather.WeatherSymbol;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import se.sofievd.backend.weather.model.enums.TimeSlot;
+import se.sofievd.backend.weather.model.enums.WeatherSymbol;
 
 public class WeatherTimeSlot {
     private TimeSlot timeSlot;

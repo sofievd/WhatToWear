@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import se.sofievd.backend.weather.WeatherResponseDto;
+import se.sofievd.backend.weather.model.WeatherResponseDto;
 import se.sofievd.backend.weather.model.Weather;
 import se.sofievd.backend.weather.model.WeatherTimeSlot;
 import se.sofievd.backend.weather.service.WeatherMapper;
@@ -32,8 +32,11 @@ public class WeatherController {
 
 
     @GetMapping("/api/weather/meteo")
-    public ResponseEntity<List<WeatherTimeSlot>> getMeteoWeather() {
-        List<WeatherTimeSlot> response = weatherService.getAllDayWeather(59.334591, 18.063240);
+    public ResponseEntity<List<WeatherTimeSlot>> getMeteoWeather(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude
+    ) {
+        List<WeatherTimeSlot> response = weatherService.getAllDayWeather(longitude, latitude);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -1,7 +1,8 @@
 package se.sofievd.backend.weather.model;
 
-import se.sofievd.backend.weather.WeatherCalculationUtils;
-import se.sofievd.backend.weather.WeatherSymbol;
+import se.sofievd.backend.weather.model.enums.TimeSlot;
+import se.sofievd.backend.weather.model.enums.WeatherSymbol;
+import se.sofievd.backend.weather.service.WeatherCalculationUtils;
 
 import java.util.HashMap;
 import java.util.Map;

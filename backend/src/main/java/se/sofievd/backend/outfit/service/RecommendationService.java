@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.sofievd.backend.outfit.model.*;
-import se.sofievd.backend.weather.model.CurrentWeatherState;
-import se.sofievd.backend.weather.model.DailyWeatherMetrics;
+import se.sofievd.backend.outfit.model.enums.ActivityLevel;
+import se.sofievd.backend.outfit.model.Recommendation;
+import se.sofievd.backend.outfit.model.enums.ToleranceLevel;
+import se.sofievd.backend.outfit.model.weather.CurrentWeatherState;
+import se.sofievd.backend.outfit.model.weather.DailyWeatherMetrics;
 import se.sofievd.backend.weather.model.WeatherTimeSlot;
 import se.sofievd.backend.weather.service.WeatherService;
 
@@ -132,8 +135,7 @@ public class RecommendationService {
         Clothing socks = getSocks(footwear);
         Clothing bottom = getBottom(metrics.maxTemp());
 
-        double socksClo = (socks != null) ? socks.getCloValue() : 0.0;
-        double remainingClo = Math.max(0.0, metrics.minClo() - bottom.getCloValue() - socksClo);
+        double remainingClo = Math.max(0.0, metrics.minClo() - bottom.getCloValue());
         Clothing base = getBaseLayer(remainingClo);
 
         double baseOutfitClo = bottom.getCloValue() + base.getCloValue();
@@ -142,7 +144,7 @@ public class RecommendationService {
         Clothing midLayer = null;
         Clothing outerLayer = null;
 
-        if (neededExtraClo > 0.04) {
+        if (neededExtraClo > 0.05) {
             midLayer = getMidLayer(neededExtraClo);
             neededExtraClo -= (midLayer != null ? midLayer.getCloValue() : 0.0);
         }
