@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import se.sofievd.backend.outfit.model.dto.ClothingDto;
+import se.sofievd.backend.outfit.model.dto.RecommendationResponse;
 import se.sofievd.backend.outfit.model.enums.ActivityLevel;
 import se.sofievd.backend.outfit.model.Clothing;
 import se.sofievd.backend.outfit.model.Recommendation;
@@ -33,7 +35,7 @@ public class OutfitController {
 
 
     @GetMapping("/api/recommendation")
-    public ResponseEntity<Recommendation> getRecommendation(
+    public ResponseEntity<RecommendationResponse> getRecommendation(
             @RequestParam Double latitude,
             @RequestParam Double longitude,
             @RequestParam String toleranceLevel,
@@ -50,6 +52,6 @@ public class OutfitController {
         );
 
         Recommendation recommendation = recommendationService.generateRecommendation(longitude, latitude, tolerance, activity);
-        return ResponseEntity.ok().body(recommendation);
+        return ResponseEntity.ok().body(ClothingMapper.toRecommendationResponse(recommendation));
     }
 }

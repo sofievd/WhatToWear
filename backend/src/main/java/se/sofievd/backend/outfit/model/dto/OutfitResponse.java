@@ -6,9 +6,9 @@ import java.util.List;
 
 public record OutfitResponse(Clothing base,
                              Clothing bottom,
+                             Clothing footwear,
+                             Clothing socks,
                              Clothing mid,
                              Clothing outer,
-                             List<Clothing> accessories,
-                             Clothing footwear,
-                             Clothing socks) {
+                             List<Clothing> accessories) {
 }

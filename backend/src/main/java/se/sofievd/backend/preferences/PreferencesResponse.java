@@ -1,6 +1,6 @@
 package se.sofievd.backend.preferences;
 
-import se.sofievd.backend.outfit.ClothingDto;
+import se.sofievd.backend.outfit.model.dto.ClothingDto;
 
 import java.util.List;
 
