@@ -15,7 +15,8 @@ import java.util.List;
         "relative_humidity_2m",
         "wind_speed_10m",
         "weather_code",
-        "precipitation"
+        "precipitation",
+        "uv_index"
 })
 public class OpenMeteoData {
 
@@ -39,6 +40,9 @@ public class OpenMeteoData {
 
     @JsonProperty("precipitation")
     private List<Double> precipitation;
+
+    @JsonProperty("uv_index")
+    private List<Double> uvIndex;
 
     @JsonProperty("time")
     public List<LocalDateTime> getTime() {
@@ -108,6 +112,16 @@ public class OpenMeteoData {
     @JsonProperty("precipitation")
     public void setPrecipitation(List<Double> precipitation) {
         this.precipitation = precipitation;
+    }
+
+    @JsonProperty("uv_index")
+    public List<Double> getUvIndex() {
+        return uvIndex;
+    }
+
+    @JsonProperty("uv_index")
+    public void setUvIndex(List<Double> uvIndex) {
+        this.uvIndex = uvIndex;
     }
 
     @Override
