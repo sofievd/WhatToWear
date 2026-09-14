@@ -2,6 +2,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/001-create-clothes-table.yaml
   - include:
+      file: db/changelog/002-insert-clothing-data.yaml
+  - include:
       file: db/changelog/002-insert-clothing-data-short.yaml
   - include:
       file: db/changelog/003-create-user-preferences-table.yaml
@@ -19,3 +21,11 @@ databaseChangeLog:
       file: db/changelog/009-delete-all-underwears.yaml
   - include:
       file: db/changelog/010-update-preference-table.yaml
+  - include:
+      file: db/changelog/011-add-clothing-data-footwear-accessories.yaml
+  - include:
+      file: db/changelog/012-add-clothing-waterproof-column.yaml
+  - include:
+      file: db/changelog/013-update-clothes-waterproof-value.yaml
+  - include:
+      file: db/changelog/014-update-img-url-and-spelling.yaml

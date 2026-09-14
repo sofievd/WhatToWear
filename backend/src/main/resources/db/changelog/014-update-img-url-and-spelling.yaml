@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: "011"
+      author: "Sofie Van Dingenen"
+      changes:
+        - update:
+            tableName: clothes
+            columns:
+              - column:
+                  name: item
+                  value: "sandals"
+
+            where: "item LIKE 'Sandals'"
+        - update:
+            tableName: clothes
+            columns:
+              - column: { name: image_url, value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/beanie.jpeg" }
+            where: id = 77
