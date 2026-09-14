@@ -31,6 +31,7 @@ import java.util.Map;
 @Service
 public class WeatherService {
 
+
     private static final Logger log = LoggerFactory.getLogger(WeatherService.class);
     private final SmhiClient smhiClient;
     private final SmhiAreaService areaService;
@@ -43,26 +44,21 @@ public class WeatherService {
         this.openMeteoClient = openMeteoClient;
     }
 
-//    public Weather getWeather(Double longitude, Double latitude) {
+//    public Weather getSmhiWeather(Double longitude, Double latitude) {
+//        if (!areaService.isInsideArea(longitude, latitude)) {
+//            throw new LocationNotSupportedException(
+//                    "Location is outside the SMHI forecast area"
+//            );
+//        }
 //
+//        SmhiWeather smhiWeather = smhiClient.getForecast(longitude, latitude);
+//        return getNowWeather(smhiWeather);
 //    }
-
-    public Weather getSmhiWeather(Double longitude, Double latitude) {
-        if (!areaService.isInsideArea(longitude, latitude)) {
-            throw new LocationNotSupportedException(
-                    "Location is outside the SMHI forecast area"
-            );
-        }
-
-        SmhiWeather smhiWeather = smhiClient.getForecast(longitude, latitude);
-        return getNowWeather(smhiWeather);
-    }
 
     public List<WeatherTimeSlot> getAllDayWeather(Double longitude, Double latitude) {
         OpenMeteoWeather openMeteoWeather = openMeteoClient.getForecast(longitude, latitude);
-        //log.info("weatherdata: {}",openMeteoWeather);
-
         OpenMeteoData data = openMeteoWeather.getHourly();
+
         List<Weather> weatherList = new ArrayList<>();
 
         for (int i = 0; i < data.getTime().size(); i++) {
@@ -71,19 +67,6 @@ public class WeatherService {
         }
 
         return getWeatherTimeSlots(weatherList);
-    }
-
-
-    private Weather createWeather(OpenMeteoData data, int i) {
-        Weather weather = new Weather();
-        weather.setTime(data.getTime().get(i));
-        weather.setAirTemperature(data.getTemperature().get(i));
-        weather.setPrecipitation(data.getPrecipitation().get(i));
-        weather.setFeelsLikeTemperature(data.getApparentTemperature().get(i));
-        weather.setWindSpeed(data.getWindSpeed().get(i));
-        weather.setHumidity(data.getRelativeHumidity().get(i));
-        weather.setCondition(data.getWeatherCode().get(i));
-        return weather;
     }
 
     // renamed to getCurrentWeather
@@ -106,12 +89,27 @@ public class WeatherService {
         );
     }
 
+    private Weather createWeather(OpenMeteoData data, int i) {
+        Weather weather = new Weather();
+        weather.setTime(data.getTime().get(i));
+        weather.setAirTemperature(data.getTemperature().get(i));
+        weather.setPrecipitation(data.getPrecipitation().get(i));
+        weather.setFeelsLikeTemperature(data.getApparentTemperature().get(i));
+        weather.setWindSpeed(data.getWindSpeed().get(i));
+        weather.setHumidity(data.getRelativeHumidity().get(i));
+        weather.setCondition(data.getWeatherCode().get(i));
+        weather.setUvIndex(data.getUvIndex().get(i));
+
+        return weather;
+    }
+
     private List<WeatherTimeSlot> getWeatherTimeSlots(List<Weather> weatherList) {
         List<WeatherTimeSlot> weatherTimeSlots = new ArrayList<>();
         Map<TimeSlot, List<Weather>> weatherByTimeSlot = new HashMap<>();
 
         for(Weather weather: weatherList){
-            LocalTime time = LocalTime.of(weather.getTime().getHour(), weather.getTime().getMinute());
+            LocalTime time = weather.getTime().toLocalTime();
+//            LocalTime time = LocalTime.of(weather.getTime().getHour(), weather.getTime().getMinute());
             TimeSlot timeSlot = TimeSlot.from(time);
             weatherByTimeSlot
                     .computeIfAbsent(timeSlot, list -> new ArrayList<>())
@@ -146,6 +144,8 @@ public class WeatherService {
         double minFeelsLikeTemperature = Double.POSITIVE_INFINITY;
         double maxFeelsLikeTemperature = 0;
         double precipitationSum = 0;
+        double maxUvIndex = 0;
+        boolean isSunny = false;
 
         Integer mostFrequentCondition = weatherForTimeSlot.get(0).getCondition();
         int highestCount = 0;
@@ -158,6 +158,7 @@ public class WeatherService {
             maxWindSpeed = Math.max(maxWindSpeed, w.getWindSpeed());
             maxFeelsLikeTemperature = Math.max(maxFeelsLikeTemperature, w.getFeelsLikeTemperature());
             minFeelsLikeTemperature = Math.min(minFeelsLikeTemperature, w.getFeelsLikeTemperature());
+            maxUvIndex = Math.max(maxUvIndex, w.getUvIndex());
 
             counts.put(w.getCondition(), counts.getOrDefault(w.getCondition(), 0) + 1);
         }
@@ -173,6 +174,10 @@ public class WeatherService {
         Integer averageHumidity =   (int) Math.round((double) humiditySum / weatherForTimeSlot.size());
         WeatherSymbol symbol = WeatherSymbol.fromWmoCode(mostFrequentCondition);
 
+        if(symbol.getCode() == 0 || symbol.getCode() == 1){
+            isSunny = true;
+        }
+
         weatherTimeSlot.setAirTemperature(averageAirTemperature);
         weatherTimeSlot.setMinFeelsLikeTemperature(minFeelsLikeTemperature);
         weatherTimeSlot.setMaxFeelsLikeTemperature(maxFeelsLikeTemperature);
@@ -182,46 +187,45 @@ public class WeatherService {
         weatherTimeSlot.setPrecipitation(precipitationSum);
         weatherTimeSlot.setConditionDescription(symbol);
         weatherTimeSlot.setPrecipitationDescription(WeatherCalculationUtils.getPrecipitationDescription(precipitationSum));
+        weatherTimeSlot.setSunny(isSunny);
+        weatherTimeSlot.setMaxUvIndex(maxUvIndex);
 
         return weatherTimeSlot;
     }
 
-
-
-    private List<TimeSerie> getTodayTimes(List<TimeSerie> timeSerieList) {
-        LocalDate today = LocalDate.now(SWEDEN_ZONE);
-
-        return timeSerieList.stream()
-                .filter(t -> t.getIntervalParameterStartTime()
-                        .atZoneSameInstant(SWEDEN_ZONE)
-                        .toLocalDate()
-                        .equals(today))
-                .toList();
-
-    }
-
-    private Weather getNowWeather(SmhiWeather smhiWeather) {
-        TimeSerie timeSerieNow = smhiWeather.getTimeSeries().get(0);
-        SmhiData weatherNow = timeSerieNow.getData();
-        Double temperature = weatherNow.getAirTemperature();
-        Integer humidity = weatherNow.getRelativeHumidity();
-        Double windSpeed = WeatherCalculationUtils.calculateWindSpeed(weatherNow.getWindSpeed());
-        Double precipitation = WeatherCalculationUtils.calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
-        Double feelLikeTemperature = WeatherCalculationUtils.calculateFeelLikeTemperature(temperature, humidity, windSpeed);
-        Integer symbolCode = weatherNow.getSymbolCode();
-        WeatherSymbol weatherSymbol = WeatherSymbol.fromCode(symbolCode);
-        String precipitationDescription = WeatherCalculationUtils.getPrecipitationDescription(precipitation);
-        return new Weather(temperature,
-                feelLikeTemperature,
-                windSpeed,
-                humidity,
-                symbolCode,
-                weatherSymbol,
-                precipitation,
-                precipitationDescription,
-                LocalDateTime.now()
-        );
-    }
+//    private List<TimeSerie> getTodayTimes(List<TimeSerie> timeSerieList) {
+//        LocalDate today = LocalDate.now(SWEDEN_ZONE);
+//
+//        return timeSerieList.stream()
+//                .filter(t -> t.getIntervalParameterStartTime()
+//                        .atZoneSameInstant(SWEDEN_ZONE)
+//                        .toLocalDate()
+//                        .equals(today))
+//                .toList();
+//    }
+//
+//    private Weather getNowWeather(SmhiWeather smhiWeather) {
+//        TimeSerie timeSerieNow = smhiWeather.getTimeSeries().get(0);
+//        SmhiData weatherNow = timeSerieNow.getData();
+//        Double temperature = weatherNow.getAirTemperature();
+//        Integer humidity = weatherNow.getRelativeHumidity();
+//        Double windSpeed = WeatherCalculationUtils.calculateWindSpeed(weatherNow.getWindSpeed());
+//        Double precipitation = WeatherCalculationUtils.calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
+//        Double feelLikeTemperature = WeatherCalculationUtils.calculateFeelLikeTemperature(temperature, humidity, windSpeed);
+//        Integer symbolCode = weatherNow.getSymbolCode();
+//        WeatherSymbol weatherSymbol = WeatherSymbol.fromCode(symbolCode);
+//        String precipitationDescription = WeatherCalculationUtils.getPrecipitationDescription(precipitation);
+//        return new Weather(temperature,
+//                feelLikeTemperature,
+//                windSpeed,
+//                humidity,
+//                symbolCode,
+//                weatherSymbol,
+//                precipitation,
+//                precipitationDescription,
+//                LocalDateTime.now()
+//        );
+//    }
 
 
 }
