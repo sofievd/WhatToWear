@@ -14,6 +14,7 @@ public class Weather {
     private LocalDateTime time;
     private Double precipitation;
     private String precipitationDescription;
+    private Double uvIndex;
 
     public Weather() {
     }
@@ -108,5 +109,13 @@ public class Weather {
 
     public void setPrecipitationDescription(String precipitationDescription) {
         this.precipitationDescription = precipitationDescription;
+    }
+
+    public Double getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(Double uvIndex) {
+        this.uvIndex = uvIndex;
     }
 }
