@@ -3,13 +3,16 @@ import { AuthControls } from "./AuthControls";
 
 export function AppHeader() {
   return (
-    <header className="relative flex justify-center px-1 pb-3 pt-3">
+    <header className="flex h-14 items-center justify-between px-1">
       <img
         src={WearWiseLogo}
         alt="WearWise"
-        className="h-35 w-auto object-contain"
+        className="h-16 w-auto object-contain"
       />
-      <AuthControls />
+
+      <div className="flex items-center">
+        <AuthControls />
+      </div>
     </header>
   );
 }

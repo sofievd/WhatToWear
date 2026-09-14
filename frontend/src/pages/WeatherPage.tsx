@@ -135,12 +135,12 @@ export function WeatherPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-4">
+<main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-2">
       <div className="mx-auto w-full max-w-[390px]">
         <AppHeader />
 
-        <div className="space-y-6">
-          <CitySearch
+<div className="space-y-5">
+            <CitySearch
             value={searchValue}
             onChange={handleCityChange}
             suggestions={selectedCity ? [] : suggestions}
