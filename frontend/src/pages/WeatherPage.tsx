@@ -50,6 +50,10 @@ function saveRecentCity(city: CitySuggestion) {
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
+  const [preferences, setPreferences] = useState<Preferences>({
+    activity: "walking",
+    thermalSensitivity: "neutral",
+  });
   const [accountPreferences, setAccountPreferences] = useState<
     Preferences | undefined
   >();
@@ -86,6 +90,7 @@ export function WeatherPage() {
         return getPreferences(token).then((savedPreferences) => {
           if (savedPreferences) {
             setAccountPreferences(savedPreferences);
+            setPreferences(savedPreferences);
           }
         });
       })
@@ -93,11 +98,14 @@ export function WeatherPage() {
   }, [getToken, isSignedIn]);
 
   async function handlePreferencesSave(preferences: Preferences) {
+    setPreferences(preferences);
+
     if (!isSignedIn) {
       return;
     }
 
     const token = await getToken();
+
     if (token) {
       await savePreferences(preferences, token);
     }
@@ -135,17 +143,16 @@ export function WeatherPage() {
   }
 
   return (
-<main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-2">
+    <main className="min-h-screen bg-[#FCFBF8] px-4 pb-8 pt-2">
       <div className="mx-auto w-full max-w-[390px]">
         <AppHeader />
 
-<div className="space-y-5">
-            <CitySearch
+        <div className="space-y-5">
+          <CitySearch
             value={searchValue}
             onChange={handleCityChange}
             suggestions={selectedCity ? [] : suggestions}
             recentCities={recentCities}
-            hasSelectedCity={selectedCity !== null}
             onSelectSuggestion={handleCitySelect}
             onSearch={handleSearch}
             isLoading={isLoadingSuggestions}
@@ -198,14 +205,19 @@ export function WeatherPage() {
 
           <OutfitGrid
             requestKey={recommendationRequest}
+            latitude={submittedCity?.latitude ?? null}
+            longitude={submittedCity?.longitude ?? null}
+            preferences={preferences}
             onRecommendationChange={setRecommendation}
           />
 
           <WhyThisOutfit
+            key={recommendationRequest}
             recommendation={recommendation}
+            recommendationRequest={recommendationRequest}
             latitude={submittedCity?.latitude ?? null}
             longitude={submittedCity?.longitude ?? null}
-            preferences={accountPreferences}
+            preferences={preferences}
           />
         </div>
       </div>

@@ -29,8 +29,17 @@ export function getClothing(): Promise<ClothingItem[]> {
   return apiClient<ClothingItem[]>("/api/weather/clothes");
 }
 
-export function getRecommendation(): Promise<OutfitRecommendation> {
-  return apiClient<OutfitRecommendation>("/api/recommendation");
+export function getRecommendation(
+  latitude: number,
+  longitude: number,
+  toleranceLevel: string,
+  activityLevel: string,
+): Promise<OutfitRecommendation> {
+  return apiClient<OutfitRecommendation>(
+    `/api/recommendation?latitude=${latitude}&longitude=${longitude}&toleranceLevel=${encodeURIComponent(
+      toleranceLevel,
+    )}&activityLevel=${encodeURIComponent(activityLevel)}`,
+  );
 }
 
 export function getOutfitExplanation(request: {
