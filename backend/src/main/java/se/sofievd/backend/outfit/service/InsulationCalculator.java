@@ -12,21 +12,21 @@ import java.util.List;
 @Service
 public class InsulationCalculator {
 
-    public Double calculateEffectiveTemperature(Double temperature, Double tolerance){
-        return temperature - tolerance;
+    public double calculateEffectiveTemperature(double temperature, double tolerance){
+        return temperature + tolerance;
     }
 
-    public Double calculateTargetClo(Double effectiveTemperature, Double metValue, Double windSpeed){
+    public double calculateTargetClo(double effectiveTemperature, double metValue, double windSpeed){
 
-        Double windSpeedMS = (windSpeed / 3.6);
+        double windSpeedMS = (windSpeed / 3.6);
         // convert Met in w/m^2
-        Double M = metValue * 58.2;
+        double M = metValue * 58.2;
 
-        Double totalInsulationRequired = (33.0 - effectiveTemperature) / (0.155 * M);
+        double totalInsulationRequired = (33.0 - effectiveTemperature) / (0.155 * M);
 
-        Double airInsulation = 0.7 - Math.min(0.5, 0.1 * windSpeed);
+        double airInsulation = 0.7 - Math.min(0.5, 0.1 * windSpeed);
 
-        Double targetClothingClo = totalInsulationRequired - airInsulation;
+        double targetClothingClo = totalInsulationRequired - airInsulation;
 
         return Math.max(targetClothingClo, 0.15);
 
