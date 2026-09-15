@@ -1,4 +1,4 @@
-package se.sofievd.backend;
+package se.sofievd.backend.common.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
