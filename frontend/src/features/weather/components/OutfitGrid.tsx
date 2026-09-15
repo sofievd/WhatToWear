@@ -2,13 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { getRecommendation } from "../api/weatherService";
 import { OutfitCard } from "./OutfitCard";
-import type { ClothingItem, OutfitRecommendation } from "../types/types";
+import type {
+  ClothingItem,
+  OutfitRecommendation,
+} from "../types/types";
+import type { Preferences } from "./PreferancesBar";
 
 export function OutfitGrid({
   requestKey,
+  latitude,
+  longitude,
+  preferences,
   onRecommendationChange,
 }: {
   requestKey: number;
+  latitude: number | null;
+  longitude: number | null;
+  preferences: Preferences;
   onRecommendationChange?: (
     recommendation: OutfitRecommendation | null,
   ) => void;
@@ -18,24 +28,45 @@ export function OutfitGrid({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["recommendation", requestKey],
-    queryFn: getRecommendation,
-    enabled: requestKey > 0,
+    queryKey: [
+      "recommendation",
+      requestKey,
+      latitude,
+      longitude,
+      preferences.activity,
+      preferences.thermalSensitivity,
+    ],
+    queryFn: () =>
+      getRecommendation(
+        latitude!,
+        longitude!,
+        preferences.thermalSensitivity,
+        preferences.activity,
+      ),
+    enabled:
+      requestKey > 0 &&
+      latitude !== null &&
+      longitude !== null,
   });
 
   useEffect(() => {
     onRecommendationChange?.(recommendation ?? null);
   }, [onRecommendationChange, recommendation]);
 
-  const clothing = recommendation
+  const outfit = recommendation?.wearNow;
+
+  const clothing = outfit
     ? [
-        recommendation.baseLayer,
-        recommendation.midLayer,
-        recommendation.outerLayer,
-        recommendation.bottom,
-        recommendation.footwear,
-        recommendation.accessory,
-      ].filter((item): item is ClothingItem => item !== null)
+        outfit.base,
+        outfit.mid,
+        outfit.outer,
+        outfit.bottom,
+        outfit.footwear,
+        outfit.socks,
+        ...outfit.accessories,
+      ].filter(
+        (item): item is ClothingItem => item !== null,
+      )
     : [];
 
   if (requestKey === 0) {
@@ -48,7 +79,10 @@ export function OutfitGrid({
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-4" aria-label="Loading clothing">
+      <div
+        className="grid grid-cols-2 gap-4"
+        aria-label="Loading clothing"
+      >
         {[0, 1, 2, 3].map((item) => (
           <div
             key={item}

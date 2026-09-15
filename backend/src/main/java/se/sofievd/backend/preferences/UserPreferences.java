@@ -22,8 +22,6 @@ public class UserPreferences {
     @Column(name = "thermal_sensitivity", nullable = false, length = 30)
     private String thermalSensitivity;
 
-    @Column(nullable = false, length = 30)
-    private String style;
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;

@@ -18,18 +18,22 @@ export interface CitySuggestion {
 export interface ClothingItem {
   name: string;
   category: string;
-  cloValue: number;
-  imageUrl: string | null;
+  imageUrl: string;
+}
+
+export interface OutfitResponse {
+  base: ClothingItem | null;
+  bottom: ClothingItem | null;
+  footwear: ClothingItem | null;
+  socks: ClothingItem | null;
+  mid: ClothingItem | null;
+  outer: ClothingItem | null;
+  accessories: ClothingItem[];
 }
 
 export interface OutfitRecommendation {
-  targetCloValue: number;
-  baseLayer: ClothingItem | null;
-  midLayer: ClothingItem | null;
-  outerLayer: ClothingItem | null;
-  bottom: ClothingItem | null;
-  footwear: ClothingItem | null;
-  accessory: ClothingItem | null;
+  wearNow: OutfitResponse;
+  packInBag: ClothingItem[];
 }
 
 export interface OutfitExplanation {

@@ -41,11 +41,14 @@ public class OutfitController {
             @RequestParam String toleranceLevel,
             @RequestParam String activityLevel
     ) {
-
-
-        ToleranceLevel tolerance = ToleranceLevel.valueOf(
-                toleranceLevel.toUpperCase()
-        );
+        ToleranceLevel tolerance = switch (toleranceLevel.toLowerCase()) {
+            case "cold" -> ToleranceLevel.RUNS_COLD;
+            case "neutral" -> ToleranceLevel.NEUTRAL;
+            case "hot" -> ToleranceLevel.RUNS_HOT;
+            default -> throw new IllegalArgumentException(
+                    "Invalid toleranceLevel: " + toleranceLevel
+            );
+        };
 
         ActivityLevel activity = ActivityLevel.valueOf(
                 activityLevel.toUpperCase()

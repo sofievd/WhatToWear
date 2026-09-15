@@ -8,7 +8,6 @@ import type { Preferences } from "./PreferancesBar";
 const defaultPreferences: Preferences = {
   activity: "walking",
   thermalSensitivity: "neutral",
-  style: "neutral",
 };
 
 export function WhyThisOutfit({
@@ -18,13 +17,15 @@ export function WhyThisOutfit({
   preferences,
 }: {
   recommendation: OutfitRecommendation | null;
+  recommendationRequest: number;
   latitude: number | null;
   longitude: number | null;
   preferences?: Preferences;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [explanation, setExplanation] =
-  useState<OutfitExplanation | null>(null);
+  const [explanation, setExplanation] = useState<OutfitExplanation | null>(
+    null,
+  );
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -34,26 +35,29 @@ export function WhyThisOutfit({
         recommendation: recommendation!,
         preferences: preferences ?? loadGuestPreferences(),
       }),
-    onSuccess: setExplanation,
+    onSuccess: (data) => {
+      setExplanation(data);
+    },
   });
 
-
   function handleOpen() {
-  const canExplain =
-    recommendation && latitude !== null && longitude !== null;
+    const canExplain =
+      recommendation !== null && latitude !== null && longitude !== null;
 
-  if (!canExplain) {
-    return;
+    if (!canExplain) {
+      return;
+    }
+
+    const opening = !isOpen;
+
+    setIsOpen(opening);
+
+    // Only request an explanation when the user opens the section.
+    if (opening) {
+      setExplanation(null);
+      mutation.mutate();
+    }
   }
-
-  const opening = !isOpen;
-  setIsOpen(opening);
-
-  if (opening) {
-    setExplanation(null);
-    mutation.mutate();
-  }
-}
 
   return (
     <section className="space-y-3">
@@ -63,20 +67,20 @@ export function WhyThisOutfit({
         disabled={!recommendation || latitude === null || longitude === null}
         aria-expanded={isOpen}
         className="
-        flex
-        h-14
-        w-full
-        items-center
-        justify-between
-        rounded-3xl
-        border
-        border-slate-200
-        bg-white
-        px-5
-        shadow-sm
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-      "
+          flex
+          h-14
+          w-full
+          items-center
+          justify-between
+          rounded-3xl
+          border
+          border-slate-200
+          bg-white
+          px-5
+          shadow-sm
+          disabled:cursor-not-allowed
+          disabled:opacity-50
+        "
       >
         <div className="flex items-center gap-3">
           <CircleHelp size={19} className="text-blue-400" />
@@ -96,6 +100,7 @@ export function WhyThisOutfit({
       {isOpen && (
         <div className="space-y-2 rounded-3xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-600 shadow-sm">
           {mutation.isPending && <p>Preparing your outfit explanation...</p>}
+
           {mutation.isError && (
             <p role="alert">
               {mutation.error instanceof Error &&
@@ -110,6 +115,7 @@ export function WhyThisOutfit({
                     : "We could not explain this outfit right now."}
             </p>
           )}
+
           {explanation && (
             <p className="text-slate-600">{explanation.explanation}</p>
           )}
@@ -121,12 +127,16 @@ export function WhyThisOutfit({
 
 function loadGuestPreferences(): Preferences {
   const storedPreferences = localStorage.getItem("wearwise-preferences");
+
   if (!storedPreferences) {
     return defaultPreferences;
   }
 
   try {
-    return { ...defaultPreferences, ...JSON.parse(storedPreferences) };
+    return {
+      ...defaultPreferences,
+      ...JSON.parse(storedPreferences),
+    };
   } catch {
     return defaultPreferences;
   }
