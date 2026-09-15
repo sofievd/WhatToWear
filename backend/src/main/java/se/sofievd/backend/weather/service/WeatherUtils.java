@@ -1,8 +1,13 @@
 package se.sofievd.backend.weather.service;
 
-public class WeatherCalculationUtils {
+import se.sofievd.backend.weather.model.WeatherTimeSlot;
 
-    private WeatherCalculationUtils(){
+import java.time.LocalTime;
+import java.util.List;
+
+public class WeatherUtils {
+
+    private WeatherUtils(){
 
     }
 
@@ -29,5 +34,18 @@ public class WeatherCalculationUtils {
         if (precipitation < 10) return "Moderate rain";
         if (precipitation < 20) return "Heavy rain";
         return "Very heavy rain";
+    }
+
+    public static WeatherTimeSlot findCurrentTimeSlot(List<WeatherTimeSlot> slots, LocalTime time) {
+        return slots.stream()
+                .filter(slot -> slot.getTimeSlot().contains(time))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static List<WeatherTimeSlot> filterActiveTimeSlots(List<WeatherTimeSlot> timeSlots, LocalTime time) {
+        return timeSlots.stream()
+                .filter(slot -> slot.getTimeSlot().getEndTime().isAfter(time))
+                .toList();
     }
 }
