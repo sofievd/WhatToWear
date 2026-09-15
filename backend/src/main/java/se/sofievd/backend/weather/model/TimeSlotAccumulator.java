@@ -2,7 +2,7 @@ package se.sofievd.backend.weather.model;
 
 import se.sofievd.backend.weather.model.enums.TimeSlot;
 import se.sofievd.backend.weather.model.enums.WeatherSymbol;
-import se.sofievd.backend.weather.service.WeatherCalculationUtils;
+import se.sofievd.backend.weather.service.WeatherUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class TimeSlotAccumulator {
         weatherTimeSlot.setCondition(mostFrequentConndition);
         weatherTimeSlot.setPrecipitation(precipitationSum);
         weatherTimeSlot.setConditionDescription(symbol);
-        weatherTimeSlot.setPrecipitationDescription(WeatherCalculationUtils.getPrecipitationDescription(precipitationSum));
+        weatherTimeSlot.setPrecipitationDescription(WeatherUtils.getPrecipitationDescription(precipitationSum));
         weatherTimeSlot.setSunny(isSunny);
         weatherTimeSlot.setMaxUvIndex(maxUvIndex);
 
