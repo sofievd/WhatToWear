@@ -101,7 +101,7 @@ public class WeatherService {
                 symbol.getCode(),
                 symbol,
                 current.getPrecipitation(),
-                WeatherCalculationUtils.getPrecipitationDescription(current.getPrecipitation()),
+                WeatherUtils.getPrecipitationDescription(current.getPrecipitation()),
                 LocalDateTime.now()
         );
     }
