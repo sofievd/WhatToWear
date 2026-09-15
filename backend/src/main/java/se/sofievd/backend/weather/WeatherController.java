@@ -1,4 +1,4 @@
-package se.sofievd.backend;
+package se.sofievd.backend.weather;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
