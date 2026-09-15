@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import se.sofievd.backend.preferences.model.PreferencesRequest;
 
 import java.time.Instant;
 

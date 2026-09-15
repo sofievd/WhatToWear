@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.sofievd.backend.outfit.service.ClothingMapper;
 import se.sofievd.backend.outfit.service.ClothingService;
+import se.sofievd.backend.preferences.model.PreferencesRequest;
+import se.sofievd.backend.preferences.model.PreferencesResponse;
 
 @RestController
 @RequestMapping("/api/preferences")

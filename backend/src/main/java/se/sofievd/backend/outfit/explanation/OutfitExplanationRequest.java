@@ -1,6 +1,6 @@
 package se.sofievd.backend.outfit.explanation;
 
-import se.sofievd.backend.preferences.PreferencesRequest;
+import se.sofievd.backend.preferences.model.PreferencesRequest;
 
 public record OutfitExplanationRequest(
         Double latitude,
