@@ -39,4 +39,13 @@ public class WeatherController {
         List<WeatherTimeSlot> response = weatherService.getAllDayWeather(longitude, latitude);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/api/weather/smhi")
+    public ResponseEntity<WeatherResponseDto> getSmhiWeather(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude
+    ) {
+        Weather response = weatherService.getSmhiWeather(longitude, latitude);
+        return ResponseEntity.ok().body(WeatherMapper.toWeatherResponseDto(response));
+    }
 }

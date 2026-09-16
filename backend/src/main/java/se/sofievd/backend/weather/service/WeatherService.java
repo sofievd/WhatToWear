@@ -3,6 +3,7 @@ package se.sofievd.backend.weather.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.sofievd.backend.common.exception.LocationNotSupportedException;
 import se.sofievd.backend.weather.model.enums.WeatherSymbol;
 import se.sofievd.backend.weather.model.enums.TimeSlot;
 import se.sofievd.backend.weather.model.TimeSlotAccumulator;
@@ -14,6 +15,9 @@ import se.sofievd.backend.weather.openmeteo.model.OpenMeteoData;
 import se.sofievd.backend.weather.openmeteo.model.OpenMeteoWeather;
 import se.sofievd.backend.weather.smhi.SmhiAreaService;
 import se.sofievd.backend.weather.smhi.SmhiClient;
+import se.sofievd.backend.weather.smhi.model.SmhiData;
+import se.sofievd.backend.weather.smhi.model.SmhiWeather;
+import se.sofievd.backend.weather.smhi.model.TimeSerie;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,16 +40,16 @@ public class WeatherService {
         this.openMeteoClient = openMeteoClient;
     }
 
-//    public Weather getSmhiWeather(Double longitude, Double latitude) {
-//        if (!areaService.isInsideArea(longitude, latitude)) {
-//            throw new LocationNotSupportedException(
-//                    "Location is outside the SMHI forecast area"
-//            );
-//        }
-//
-//        SmhiWeather smhiWeather = smhiClient.getForecast(longitude, latitude);
-//        return getNowWeather(smhiWeather);
-//    }
+    public Weather getSmhiWeather(Double longitude, Double latitude) {
+        if (!areaService.isInsideArea(longitude, latitude)) {
+            throw new LocationNotSupportedException(
+                    "Location is outside the SMHI forecast area"
+            );
+        }
+
+        SmhiWeather smhiWeather = smhiClient.getForecast(longitude, latitude);
+        return getNowWeather(smhiWeather);
+    }
 
     public List<WeatherTimeSlot> getAllDayWeather(Double longitude, Double latitude) {
         OpenMeteoWeather openMeteoWeather = openMeteoClient.getForecast(longitude, latitude);
@@ -221,28 +225,28 @@ public class WeatherService {
 //                .toList();
 //    }
 //
-//    private Weather getNowWeather(SmhiWeather smhiWeather) {
-//        TimeSerie timeSerieNow = smhiWeather.getTimeSeries().get(0);
-//        SmhiData weatherNow = timeSerieNow.getData();
-//        Double temperature = weatherNow.getAirTemperature();
-//        Integer humidity = weatherNow.getRelativeHumidity();
-//        Double windSpeed = WeatherCalculationUtils.calculateWindSpeed(weatherNow.getWindSpeed());
-//        Double precipitation = WeatherCalculationUtils.calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
-//        Double feelLikeTemperature = WeatherCalculationUtils.calculateFeelLikeTemperature(temperature, humidity, windSpeed);
-//        Integer symbolCode = weatherNow.getSymbolCode();
-//        WeatherSymbol weatherSymbol = WeatherSymbol.fromCode(symbolCode);
-//        String precipitationDescription = WeatherCalculationUtils.getPrecipitationDescription(precipitation);
-//        return new Weather(temperature,
-//                feelLikeTemperature,
-//                windSpeed,
-//                humidity,
-//                symbolCode,
-//                weatherSymbol,
-//                precipitation,
-//                precipitationDescription,
-//                LocalDateTime.now()
-//        );
-//    }
+    private Weather getNowWeather(SmhiWeather smhiWeather) {
+        TimeSerie timeSerieNow = smhiWeather.getTimeSeries().get(0);
+        SmhiData weatherNow = timeSerieNow.getData();
+        double temperature = weatherNow.getAirTemperature();
+        Integer humidity = weatherNow.getRelativeHumidity();
+        double windSpeed = WeatherUtils.calculateWindSpeed(weatherNow.getWindSpeed());
+        double precipitation = WeatherUtils.calculateAveragePrecipitation(weatherNow.getMaxPrecipitation(), weatherNow.getMinPrecipitation());
+        double feelLikeTemperature = WeatherUtils.calculateFeelLikeTemperature(temperature, humidity, windSpeed);
+        Integer symbolCode = weatherNow.getSymbolCode();
+        WeatherSymbol weatherSymbol = WeatherSymbol.fromCode(symbolCode);
+        String precipitationDescription = WeatherUtils.getPrecipitationDescription(precipitation);
+        return new Weather(temperature,
+                feelLikeTemperature,
+                windSpeed,
+                humidity,
+                symbolCode,
+                weatherSymbol,
+                precipitation,
+                precipitationDescription,
+                LocalDateTime.now()
+        );
+    }
 
 
 }
