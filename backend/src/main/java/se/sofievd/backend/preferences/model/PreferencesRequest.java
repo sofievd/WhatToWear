@@ -1,4 +1,4 @@
-package se.sofievd.backend.preferences;
+package se.sofievd.backend.preferences.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalTime;
 
 public enum TimeSlot {
-    NIGHT("Night", LocalTime.of(0, 0), LocalTime.of(5, 59)),
-    MORNING("Morning", LocalTime.of(6,0), LocalTime.of(8,59)),
-    MIDDAY("Midday", LocalTime.of(9,0), LocalTime.of(12,59)),
-    AFTERNOON("Afternoon", LocalTime.of(13,0), LocalTime.of(16,59)),
-    EVENING("Evening", LocalTime.of(17,0), LocalTime.of(20,59)),
-    LATE_NIGHT("Late Night", LocalTime.of(21,0),LocalTime.of(23,59));
+    NIGHT("Night", LocalTime.of(0, 0), LocalTime.of(6, 0)),
+    MORNING("Morning", LocalTime.of(6,0), LocalTime.of(9,0)),
+    MIDDAY("Midday", LocalTime.of(9,0), LocalTime.of(13,0)),
+    AFTERNOON("Afternoon", LocalTime.of(13,0), LocalTime.of(17,0)),
+    EVENING("Evening", LocalTime.of(17,0), LocalTime.of(21,0)),
+    LATE_NIGHT("Late Night", LocalTime.of(21,0),LocalTime.of(0,0));
 
     private static final Logger log = LoggerFactory.getLogger(TimeSlot.class);
     private final String displayName;

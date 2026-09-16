@@ -1,4 +1,4 @@
-package se.sofievd.backend.preferences;
+package se.sofievd.backend.preferences.model;
 
 import se.sofievd.backend.outfit.model.dto.ClothingDto;
 

@@ -15,11 +15,9 @@ public class ClothingService {
 
     private static final Logger log = LoggerFactory.getLogger(ClothingService.class);
     private final ClothingRepository clothingRepository;
-    private final SmhiClient client;
 
-    public ClothingService(ClothingRepository clothingRepository, SmhiClient client) {
+    public ClothingService(ClothingRepository clothingRepository) {
         this.clothingRepository = clothingRepository;
-        this.client = client;
     }
 
     public List<Clothing> getAllClothes(){
@@ -34,11 +32,9 @@ public class ClothingService {
         List<Clothing> matches = clothingRepository.findByCategoryAndCloValueBetween(category, minClo, maxClo);
 
         if (matches.isEmpty()) {
-            // Fallback: haal items op van deze categorie en pak de eerste beschikbare
             List<Clothing> allCategoryItems = clothingRepository.findByCategoryAndCloValueBetween(category, 0.0, 5.0);
             return allCategoryItems.isEmpty() ? null : allCategoryItems.get(0);
         }
-
         return matches.get(0);
     }
 
@@ -54,7 +50,6 @@ public class ClothingService {
             }
         }
 
-        // Fallback: Als er geen item in de Clo-marge zit, haal het eerste beschikbare item uit de eerste categorie
         for (String category : categories) {
             List<Clothing> anyItems = clothingRepository.findByCategoryAndCloValueBetween(category, 0.0, 5.0);
             if (!anyItems.isEmpty()) {
