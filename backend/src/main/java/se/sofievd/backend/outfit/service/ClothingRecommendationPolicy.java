@@ -48,10 +48,12 @@ public class ClothingRecommendationPolicy {
 
     public Clothing getFootwear(double maxTemp, double minTemp, double precipitation) {
         if (precipitation > 0) {
-            if (minTemp < 6) {
+            if (minTemp <= 5) {
                 return clothingService.findByName("boots");
+            }else if (maxTemp > 5 && maxTemp < 20){
+                return clothingService.findByName("rainboots");
             }
-            return clothingService.findByName("rainboots");
+            return clothingService.findByName("sneakers");
         }
         if (maxTemp > 22 && minTemp >= 16) {
             return clothingService.findByName("sandals");
