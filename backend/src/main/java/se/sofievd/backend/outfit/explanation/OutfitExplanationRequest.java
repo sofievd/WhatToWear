@@ -2,21 +2,33 @@ package se.sofievd.backend.outfit.explanation;
 
 import se.sofievd.backend.preferences.model.PreferencesRequest;
 
+import java.util.List;
+
 public record OutfitExplanationRequest(
         Double latitude,
         Double longitude,
         OutfitPayload recommendation,
         PreferencesRequest preferences
 ) {
+
     public record OutfitPayload(
-            Double targetCloValue,
-            ClothingPayload baseLayer,
-            ClothingPayload midLayer,
-            ClothingPayload outerLayer,
-            ClothingPayload bottom,
-            ClothingPayload footwear,
-            ClothingPayload accessory
+            WearNowPayload wearNow,
+            List<ClothingPayload> packInBag
     ) {}
 
-    public record ClothingPayload(String name, String category, Double cloValue) {}
+    public record WearNowPayload(
+            ClothingPayload base,
+            ClothingPayload mid,
+            ClothingPayload outer,
+            ClothingPayload bottom,
+            ClothingPayload footwear,
+            ClothingPayload socks,
+            List<ClothingPayload> accessories
+    ) {}
+
+    public record ClothingPayload(
+            String name,
+            String category,
+            Double cloValue
+    ) {}
 }

@@ -29,21 +29,31 @@ public class OutfitExplanationService {
     private static final String MODEL = "openai/gpt-4o";
 
     private static final String SYSTEM_PROMPT = """
-        Give one very short, natural explanation of why the recommended outfit fits today.
-
-        Do not list the clothing items or repeat exact weather numbers.
-        Keep it to one sentence, or two very short sentences only when useful.
-
-        Only mention changes during the day when they matter, such as rain arriving later,
-        a significant temperature change, or stronger wind. If the weather is straightforward,
-        keep the explanation simple.
-
-        Mention preferences only when they meaningfully affect comfort.
-
-        Be concise, natural, and slightly friendly. A small emoji is okay.
-
-        Return JSON only with exactly this string field:
-        explanation.
+                        Give one very short, natural explanation of why the recommended outfit and packed items fit today's weather and the user's preferences.
+            
+                        The recommendation has two parts:
+            
+                        1. "wearNow" — clothing the user should wear now.
+                        2. "packInBag" — additional items the user should take with them but does not necessarily need to wear immediately.
+            
+                        Do not simply list the clothing items.
+            
+                        If packInBag contains items, briefly explain why they are useful, especially when the weather may change later in the day, rain may arrive, temperatures may drop, or wind may increase.
+            
+                        Only mention packed items when there is a meaningful weather-related reason for them.
+            
+                        Do not repeat exact weather numbers.
+            
+                        Only mention changes during the day when they matter, such as rain arriving later, a significant temperature change, or stronger wind.
+            
+                        Mention preferences only when they meaningfully affect comfort.
+            
+                        Keep it to one sentence, or two very short sentences when useful.
+            
+                        Be concise, natural, and slightly friendly. A small emoji is okay.
+            
+                        Return JSON only with exactly this string field:
+                        explanation.
         """;
     private final OpenMeteoClient openMeteoClient;
     private final RestClient restClient;
