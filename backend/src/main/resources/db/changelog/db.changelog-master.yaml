@@ -29,3 +29,5 @@ databaseChangeLog:
       file: db/changelog/013-update-clothes-waterproof-value.yaml
   - include:
       file: db/changelog/014-update-img-url-and-spelling.yaml
+  - include:
+      file: db/changelog/015-update-rain-jacked-url.yaml
