@@ -10,8 +10,10 @@ import {
 } from "../features/weather/api/weatherService";
 import { WeatherSection } from "../features/weather/components/WeatherSection";
 import { useCitySuggestions } from "../features/weather/hooks/useCitySuggestions";
-import type { CitySuggestion } from "../features/weather/types/types";
-import type { OutfitRecommendation } from "../features/weather/types/types";
+import type {
+  CitySuggestion,
+  OutfitRecommendation,
+} from "../features/weather/types/types";
 import {
   PreferencesBar,
   type Preferences,
@@ -41,7 +43,8 @@ function saveRecentCity(city: CitySuggestion) {
     city,
     ...recentCities.filter(
       (item) =>
-        item.latitude !== city.latitude || item.longitude !== city.longitude,
+        item.latitude !== city.latitude ||
+        item.longitude !== city.longitude,
     ),
   ].slice(0, MAX_RECENT_CITIES);
 
@@ -50,23 +53,31 @@ function saveRecentCity(city: CitySuggestion) {
 
 export function WeatherPage() {
   const { isSignedIn, getToken } = useAppAuth();
+
   const [preferences, setPreferences] = useState<Preferences>({
     activity: "walking",
     thermalSensitivity: "neutral",
   });
-  const [accountPreferences, setAccountPreferences] = useState<
-    Preferences | undefined
-  >();
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedCity, setSelectedCity] = useState<CitySuggestion | null>(null);
 
-  // The city that was actually submitted with the Search button.
-  const [submittedCity, setSubmittedCity] = useState<CitySuggestion | null>(
-    null,
-  );
+  const [accountPreferences, setAccountPreferences] =
+    useState<Preferences | undefined>();
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const [selectedCity, setSelectedCity] =
+    useState<CitySuggestion | null>(null);
+
+  // City used for displaying weather.
+  const [submittedCity, setSubmittedCity] =
+    useState<CitySuggestion | null>(null);
+
+  // IMPORTANT:
+  // This only changes when the user clicks "Get my outfit".
   const [recommendationRequest, setRecommendationRequest] = useState(0);
+
   const [recommendation, setRecommendation] =
     useState<OutfitRecommendation | null>(null);
+
   const [recentCities, setRecentCities] =
     useState<CitySuggestion[]>(getRecentCities());
 
@@ -113,6 +124,9 @@ export function WeatherPage() {
 
   function handleCityChange(value: string) {
     setSearchValue(value);
+
+    // The user is typing a new city.
+    // Do not request an outfit.
     setSelectedCity(null);
   }
 
@@ -122,8 +136,17 @@ export function WeatherPage() {
 
     setSelectedCity(city);
     setSearchValue(city.name);
+
+    // Update weather city immediately.
     setSubmittedCity(city);
+
+    // IMPORTANT:
+    // Reset the outfit when changing city.
     setRecommendation(null);
+
+    // IMPORTANT:
+    // Reset the request key so OutfitGrid cannot fetch.
+    setRecommendationRequest(0);
   }
 
   function handleSearch() {
@@ -138,8 +161,25 @@ export function WeatherPage() {
 
     setSelectedCity(cityToSubmit);
     setSearchValue(cityToSubmit.name);
+
+    // Show weather for this city.
     setSubmittedCity(cityToSubmit);
+
+    // Reset outfit state.
     setRecommendation(null);
+    setRecommendationRequest(0);
+  }
+
+  function handleGetOutfit() {
+    if (!submittedCity) {
+      return;
+    }
+
+    // Clear old recommendation first.
+    setRecommendation(null);
+
+    // THIS is the only place where the recommendation request starts.
+    setRecommendationRequest((current) => current + 1);
   }
 
   return (
@@ -159,6 +199,7 @@ export function WeatherPage() {
             isError={isSuggestionsError}
           />
 
+          {/* WEATHER IS SHOWN AS SOON AS A CITY IS SELECTED */}
           <WeatherSection
             city={submittedCity?.name ?? ""}
             latitude={submittedCity?.latitude ?? null}
@@ -173,18 +214,20 @@ export function WeatherPage() {
                   : "account-empty"
                 : "guest"
             }
-            initialPreferences={isSignedIn ? accountPreferences : undefined}
-            onSave={(preferences) => void handlePreferencesSave(preferences)}
+            initialPreferences={
+              isSignedIn ? accountPreferences : undefined
+            }
+            onSave={(preferences) =>
+              void handlePreferencesSave(preferences)
+            }
           />
 
+          {/* OUTFIT REQUEST BUTTON */}
           <button
             type="button"
-            onClick={() => {
-              setRecommendation(null);
-              setRecommendationRequest((current) => current + 1);
-            }}
+            onClick={handleGetOutfit}
             disabled={!submittedCity}
-            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2"
+            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#E77D72] px-4 text-sm font-bold text-white shadow-[0_8px_18px_rgba(231,125,114,0.2)] transition-colors hover:bg-[#D96F65] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E77D72] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Get my outfit
           </button>
@@ -203,22 +246,25 @@ export function WeatherPage() {
             </p>
           </section>
 
-          <OutfitGrid
-            requestKey={recommendationRequest}
-            latitude={submittedCity?.latitude ?? null}
-            longitude={submittedCity?.longitude ?? null}
-            preferences={preferences}
-            onRecommendationChange={setRecommendation}
-          />
+          {/* ONLY RENDER OUTFIT AREA AFTER BUTTON HAS BEEN CLICKED */}
+          {recommendationRequest > 0 && (
+            <>
+              <OutfitGrid
+                requestKey={recommendationRequest}
+                latitude={submittedCity?.latitude ?? null}
+                longitude={submittedCity?.longitude ?? null}
+                preferences={preferences}
+                onRecommendationChange={setRecommendation}
+              />
 
-          <WhyThisOutfit
-            key={recommendationRequest}
-            recommendation={recommendation}
-            recommendationRequest={recommendationRequest}
-            latitude={submittedCity?.latitude ?? null}
-            longitude={submittedCity?.longitude ?? null}
-            preferences={preferences}
-          />
+              <WhyThisOutfit
+                recommendation={recommendation}
+                latitude={submittedCity?.latitude ?? null}
+                longitude={submittedCity?.longitude ?? null}
+                preferences={preferences}
+              />
+            </>
+          )}
         </div>
       </div>
     </main>

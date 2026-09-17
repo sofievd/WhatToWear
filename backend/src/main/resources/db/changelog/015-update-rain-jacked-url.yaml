@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: "016"
+      author: "Tehreem"
+      changes:
+        - update:
+            tableName: clothes
+            columns:
+              - column:
+                  name: image_url
+                  value: "https://spdfnntptoqjxeqahiiu.supabase.co/storage/v1/object/public/Outfit-Images/rain-jacket.jpeg"
+            where: "id = 83 AND item = 'rain jacket'"

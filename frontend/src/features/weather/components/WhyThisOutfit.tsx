@@ -17,7 +17,6 @@ export function WhyThisOutfit({
   preferences,
 }: {
   recommendation: OutfitRecommendation | null;
-  recommendationRequest: number;
   latitude: number | null;
   longitude: number | null;
   preferences?: Preferences;

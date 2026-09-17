@@ -18,7 +18,7 @@ export interface CitySuggestion {
 export interface ClothingItem {
   name: string;
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface OutfitResponse {
