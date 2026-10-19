@@ -1,6 +1,6 @@
 # WearWise
 
-weather prediction app
+Know what to wear based on the weather.
 
 ### Authentication
 
